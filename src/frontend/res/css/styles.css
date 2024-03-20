@@ -1,0 +1,44 @@
+@import "styles/footer.css";
+@import "styles/navbar.css";
+@import "styles/generics.css";
+@import "styles/news.css";
+@import "styles/reservation.css";
+
+
+/*
+    Define color schema here:
+ */
+:root {
+    --primary: #FFFFFF;
+    --secondary: #f7e6ff;
+    --tertiary: #9b6bb3;
+    --headline: rgba(255, 153, 255, 1);
+    --text: #22223b;
+    --text-visited: #22223b;
+    --text-hover: #000000;
+    --highlight: #ed79b3;
+
+    --TheGreatFont: "Brush Script MT";
+}
+
+/*
+    Others and to be removed:
+ */
+
+main div {
+    margin: 0;
+}
+
+.bgColor {
+    background-color: var(--primary);
+}
+
+/*selector with attribute*/
+label[for="title"] {
+    color: var(--primary);
+}
+
+/* pseudo class selector*/
+#loginLink {
+    color: var(--headline)
+}

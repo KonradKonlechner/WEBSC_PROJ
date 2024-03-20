@@ -1,0 +1,36 @@
+html {
+    background-color: var(--tertiary);
+}
+
+body {
+    padding-top: 10.5em;
+    margin-bottom: -10em;
+}
+
+h1 {
+    font-size: 48px;
+    color: var(--headline);
+}
+
+h2 {
+    font-size: 30px;
+    color: var(--headline);
+    opacity: 0.9;
+}
+
+a {
+    color: var(--text);
+    text-decoration: none;
+    padding: 5px;
+}
+
+a:visited {
+    color: var(--text-visited);
+}
+
+a:hover {
+    color: var(--text-hover);
+    border-radius: 10px;
+    text-decoration-line: underline;
+    background-color: var(--highlight);
+}

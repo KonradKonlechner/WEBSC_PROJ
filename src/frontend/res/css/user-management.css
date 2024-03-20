@@ -1,0 +1,11 @@
+.userListItem {
+    margin: 1em;
+}
+
+.userDataList {
+    list-style: none;
+}
+
+.userDataContainer {
+    margin-bottom: 2em;
+}

@@ -1,0 +1,57 @@
+.navBarColor {
+    background-color: var(--secondary);
+}
+
+.navLink {
+    color: var(--text);
+}
+
+navLink:visited {
+    color: var(--text-visited);
+}
+navLink:hover {
+    color: var(--text-hover);
+    border: 1px solid var(--highlight);
+    border-radius: 10px;
+    text-decoration-line: underline;
+    background-color: var(--highlight);
+}
+
+#nav-mother-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+#homeLink {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 10em;
+}
+
+#homeLink div{
+    font-family: var(--TheGreatFont) !important;
+    font-weight: 400 !important;
+    color: var(--headline);
+}
+
+#homeLink img{
+    max-width: 10em;
+}
+
+.nav-main-menu-item-list li {
+    font-size: 1.2em;
+}
+
+.btn-outline-info {
+    background-color: var(--headline) !important;
+    border-color: var(--highlight) !important;
+    color: var(--text) !important;
+}
+
+.bg-info-subtle {
+    background-color: var(--secondary) !important;
+}

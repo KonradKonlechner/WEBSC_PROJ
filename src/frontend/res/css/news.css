@@ -1,0 +1,31 @@
+.news-container {
+    display: flex;
+    flex-direction: column;
+}
+
+#newsList {
+    list-style: none;
+}
+
+.newsListItem {
+    margin-top: 3%;
+    margin-bottom: 2%;
+}
+
+.article {
+    display: flex;
+    flex-direction: row;
+}
+
+.newsBody {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5%;
+}
+
+.newsTextInputField {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
