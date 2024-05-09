@@ -1,6 +1,6 @@
 <?php
 
-namespace userManagement;
+//namespace userManagement;
 require_once 'User.php';
 require_once 'UserRepository.php';
 

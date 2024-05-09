@@ -1,13 +1,13 @@
 <?php
 
-namespace userManagement;
+//namespace userManagement;
 
 class UserRepository
 {
 
     public function getUserByUsername($usernameToCheck): User
     {
-        require '../../database/dbaccess.php';
+        require '././config/dbaccess.php';
         $sqlSelect = "SELECT * FROM users WHERE username = ?";
         # ? --> placeholder in prepared statement !!! Avoid SQL injection !!!
 
@@ -42,7 +42,7 @@ class UserRepository
 
     public function getHashedPasswordForUsernameAndActiveUser($usernameToCheck)
     {
-        require '../../database/dbaccess.php';
+        require '././config/dbaccess.php';
         # Prepared statement
         $sqlInsert = "SELECT password FROM users WHERE username = ? and is_user_inactive = 0";
 
@@ -68,7 +68,7 @@ class UserRepository
         $lastname = $user->getLastname();
         $email = $user->getEmail();
         
-        require '../../database/dbaccess.php';
+        require '././config/dbaccess.php';
         $sqlInsert = "INSERT INTO users (username, password, sex, firstname, lastname, email) VALUES (?,?,?,?,?,?)";
         
         $statement = $connection->prepare($sqlInsert);
@@ -91,7 +91,7 @@ class UserRepository
     {
         $password_hash = password_hash($newPassword, PASSWORD_BCRYPT);
 
-        require '../../database/dbaccess.php';
+        require '././config/dbaccess.php';
         $sqlInsert = "UPDATE users SET 
                  password = ?
                  WHERE username = ?";
@@ -119,7 +119,7 @@ class UserRepository
         $email = $user->getEmail();
         $userInactive = (integer) $user->isInactive();
 
-        require '../../database/dbaccess.php';
+        require '././config/dbaccess.php';
         $sqlInsert = "UPDATE users SET 
                  sex = ?, firstname = ?, lastname = ?, email = ?, is_user_inactive = ?
                  WHERE username = ?";
@@ -158,7 +158,7 @@ class UserRepository
         string $sqlInsert,
         string $stringValueToCheck
     ) {
-        require '../../database/dbaccess.php';
+        require '././config/dbaccess.php';
         $statement = $connection->prepare($sqlInsert);
         $statement->bind_param("s", $stringValueToCheck);
 
@@ -173,7 +173,7 @@ class UserRepository
 
     public function getAllUsers()
     {
-        require '../../database/dbaccess.php';
+        require '././config/dbaccess.php';
         $sqlInsert = "SELECT * FROM users";
 
         $statement = $connection->prepare($sqlInsert);

@@ -1,8 +1,8 @@
 <?php
-    $dbUsername="web1hotel";
-    $dbPassword="hotel123";
+    $dbUsername="pawsomeadmin";
+    $dbPassword="paw1234";
     $dbHost="localhost";
-    $dbName="web1hoteldb";
+    $dbName="pawsomedb";
 
     $connection = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
 ?>
