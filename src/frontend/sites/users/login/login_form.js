@@ -12,7 +12,7 @@ $(document).ready(function () {
 function login(username, password) {    
     $.ajax({
         type: "POST",
-        url: "../backend/login_check.php",
+        url: "../../../../backend/login_check.php",
         cache: false,
         data: {username: username, password: password},
         dataType: "text" // better use json!
