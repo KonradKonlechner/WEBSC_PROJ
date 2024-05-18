@@ -12,10 +12,10 @@ $(document).ready(function () {
 function login(username, password) {    
     $.ajax({
         type: "POST",
-        url: "../backend/login_check.php",
+        url: "../../../../backend/logic/userManagement/login/login_logic.php",
         cache: false,
         data: {username: username, password: password},
-        dataType: "text" // better use json!
+        dataType: "text"
     }).done(function(response) {
         console.log("Request succeeded! Response: " + response);   
         displayLogInInfo(response); 
@@ -30,5 +30,5 @@ function displayLogInInfo(response) {
     $("<p/>", {
 		id: "login_info",
 		html: response
-	}).appendTo( "#login_field" );
+	}).appendTo( "#login_field");
 }
