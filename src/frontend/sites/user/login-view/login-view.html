@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="DE">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Login</title>
+
+    <!-- Load all JQuery and co -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../../res/css/styles.css"/>
+
+    <!-- Scripts -->
+    <script src="login-view.js"></script>
+</head>
+
+<body class="bgColor bg-gradient">
+
+
+<header id="navbar">
+</header>
+
+<main>
+
+    <div class="container justify-content-left">
+
+        <!-- <form method="POST" class="mt-2 col-3"> -->
+        <div class="mt-2 col-3">
+            <div class="mb-3">
+                <label class="form-label" for="username">Benutzername</label>
+                <input class="form-control" type="text" name="username" id="username" required/>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="password">Passwort</label>
+                <input class="form-control" type="password" name="password" id="password" required/>
+            </div>
+
+            <div class="mt-1">
+                <button class="btn btn-danger" type="reset" name="reset">Reset</button>
+                <button class="btn btn-success" type="submit" name="submit" id="submit" value="login">Login</button>
+            </div>
+        </div>
+        <!-- </form> -->
+
+        <div class="mb-3">
+            <p>Noch kein Profil angelegt? Hier können Sie sich
+                <a href="../registration/registration_form.php">registrieren.</a>
+            </p>
+        </div>
+
+    </div>
+</main>
+
+<footer id="footer">
+
+</footer>
+</body>
+</html>

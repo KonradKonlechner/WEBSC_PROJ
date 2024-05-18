@@ -1,14 +1,9 @@
 <?php
 require_once "dbaccess.php";
 
-if (
-    !isset($dbHost)
-    || !isset($dbUsername)
-    || !isset($dbPassword)
-    || !isset($dbName)
-) {
-    return;
-}
+$dbconnection = new DBConnection();
+
+$connection = $dbconnection->getConnection();
 
 // Check connection
 if ($connection->connect_error) {
