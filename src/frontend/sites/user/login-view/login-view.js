@@ -31,5 +31,5 @@ function login(username, password) {
         console.log("Request succeeded! Response: " + response);           
     }).fail(function() {
         console.log("Request failed!");         
-    });;
+    });
 }
