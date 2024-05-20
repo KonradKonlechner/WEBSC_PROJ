@@ -17,6 +17,18 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-3 nav-main-menu-item-list">
+                <?php
+                // uses cookie just as an example on how cookie data could be retrieved and used
+                // this is not best practise and just for experimentation
+                if (!isset($_SESSION["currentUser"])) {
+                    echo "
+                        <li class='nav-item px-2'>
+                            <a href='../../userManagement/registration/registration_form.php'>Benutzer-Registrierung</a>
+                            <a href='../../userManagement/registration/registration_form.php'>Benutzer-Registrierung</a>
+                        </li>
+                        ";
+                }
+                ?>
                 <li class="nav-item px-2">
                     <a href="../../content/news/news_form.php">Neuigkeiten</a>
                 </li>
