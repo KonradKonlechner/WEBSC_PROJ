@@ -1,4 +1,5 @@
 <?php
+namespace user;
 require_once "../service/LoginService.php";
 
 class UserControllerRequestHandler
