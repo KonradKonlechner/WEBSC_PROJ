@@ -1,4 +1,6 @@
-
+<?php
+session_start();
+?>
 <nav class="navbar fixed-top navbar-expand-lg navBarColor bg-gradient">
     <div class="container justify-content-left" id="nav-mother-container">
         <div class="navbar d-flex flex-column navbar-brand">

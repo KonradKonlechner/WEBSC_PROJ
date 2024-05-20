@@ -8,7 +8,7 @@ class UserControllerRequestHandler
 
     function __construct()
     {
-        $this->service = new \user\LoginService();
+        $this->service = new LoginService();
     }
 
     function handleRequest($method, $param)

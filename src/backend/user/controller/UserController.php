@@ -1,5 +1,6 @@
 <?php
 namespace user;
+session_start();
 require_once "UserControllerRequestHandler.php";
 
 $param = "";
