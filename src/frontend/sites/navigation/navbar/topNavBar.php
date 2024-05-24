@@ -26,7 +26,6 @@ session_start();
                     echo "
                         <li class='nav-item px-2'>
                             <a href='../../userManagement/registration/registration_form.php'>Benutzer-Registrierung</a>
-                            <a href='../../userManagement/registration/registration_form.php'>Benutzer-Registrierung</a>
                         </li>
                         ";
                 }
@@ -57,7 +56,7 @@ session_start();
                 <?php endif; ?>
             </ul>
             <div class="nav-item d-flex justify-content-end bg-info-subtle bg-opacity-25 rounded">
-                <a class="btn btn-outline-info" id="loginLink" href="../../userManagement/login/login_form.php">
+                <a class="btn btn-outline-info" id="loginLink" href="../../user/login-view/login-view.html">
                     <?php
                     if (!isset($_SESSION["currentUser"])) {
                         echo 'Login';
