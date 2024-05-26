@@ -1,7 +1,7 @@
 <?php
 namespace user;
-require_once "../persistence/UserManagementSystem.php";
 require_once "../model/User.php";
+require_once "../persistence/UserManagementSystem.php";
 require_once "UserInputValidator.php";
 
 class LoginService
@@ -54,4 +54,14 @@ class LoginService
             return "0";
         }
     }
+
+    public function getCurrentUser()
+    {
+        if (isset($_SESSION["currentUser"])) {
+            return $_SESSION["currentUser"];
+        } else {
+            return "No user has been logged in!";
+        }
+    }
+
 }

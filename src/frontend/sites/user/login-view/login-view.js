@@ -16,7 +16,7 @@ $(document).ready(function () {
 });
 
 function checkIfUserIsLoggedIn() {
-    console.log("chek if user is logged in");
+    console.log("check if user is logged in");
     $.ajax({
         type: "GET",
         url: "../../../../backend/user/controller/UserController.php",
@@ -29,12 +29,29 @@ function checkIfUserIsLoggedIn() {
             $("#loginLink").html('Profil');
             $("#loginForm").hide();
             $("#logout").show();
-            showUserProfile()
+            currentUser = getCurrentUser();
         }
     }).fail(function() {
         console.log("Request failed!");
     });
 }
+
+function getCurrentUser() {
+    console.log("get current user");
+    $.ajax({
+        type: "GET",
+        url: "../../../../backend/user/controller/UserController.php",
+        cache: false,
+        data: {method: "getCurrentUser", param: null},
+        dataType: "json"
+    }).done(function(response) {
+        console.log("Request succeeded! Response: " + JSON.stringify(response));
+        showUserProfile(response)
+    }).fail(function() {
+        console.log("Request failed!");
+    });
+}
+
 
 function login(username, password) {
 
@@ -56,7 +73,7 @@ function login(username, password) {
             $("#loginLink").html('Profil');
             $("#loginForm").hide();
             $("#logout").show();
-            showUserProfile();
+            showUserProfile(response);
         }
     }).fail(function() {
         console.log("Request failed!");         
@@ -83,9 +100,9 @@ function logout() {
     });
 }
 
-function showUserProfile() {
+function showUserProfile(currentUser) {
     $( "<div/>", {
         id: "userProfile",
-        text: "Wilkommen!"
+        text: "Wilkommen " + currentUser["sex"] + " " + currentUser["name"] + " " + currentUser["lastname"] + "!"
     }).appendTo( "#loginContainer" );
 }

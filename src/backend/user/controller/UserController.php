@@ -1,8 +1,8 @@
 <?php
 namespace user;
-session_start();
 require_once "UserControllerRequestHandler.php";
 require_once "../model/User.php";
+session_start();
 
 $param = "";
 $method = "";

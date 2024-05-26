@@ -23,6 +23,9 @@ class UserControllerRequestHandler
             case "checkUserSession":
                 $res = $this->service->checkUserSession();
                 break;
+            case "getCurrentUser":
+                $res = $this->service->getCurrentUser();
+                break;
             default:
                 $res = null;
                 break;

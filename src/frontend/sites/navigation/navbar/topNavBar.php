@@ -60,15 +60,7 @@ session_start();
                 <?php endif; ?>
             </ul>
             <div class="nav-item d-flex justify-content-end bg-info-subtle bg-opacity-25 rounded">
-                <a class="btn btn-outline-info" id="loginLink" href="../../user/login-view/login-view.html">
-                    <?php
-                    if (!isset($_SESSION["currentUser"])) {
-                        echo 'Login';
-                    } else {
-                        echo 'Profil';
-                    }
-                    ?>
-                </a>
+                <a class="btn btn-outline-info mb-2" id="loginLink" href="../../user/login-view/login-view.html">Login</a>
             </div>
         </div>
     </div>

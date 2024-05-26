@@ -1,5 +1,7 @@
 <?php
-require_once "dbaccess.php";
+namespace db;
+
+require_once "./dbaccess.php";
 
 $dbconnection = new DBConnection();
 
