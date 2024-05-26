@@ -1,15 +1,21 @@
 <?php
+include ('../../../../backend/user/model/User.php');
 session_start();
+/*if (isset($_SESSION["currentUser"]))
+{
+    $currentUser = $_SESSION["currentUser"]->getUsername();
+    echo "Aktuell eingeloggter User: $currentUser";
+}*/
 ?>
 <nav class="navbar fixed-top navbar-expand-lg navBarColor bg-gradient">
     <div class="container justify-content-left" id="nav-mother-container">
         <div class="navbar d-flex flex-column navbar-brand">
-            <a class="p-1 mb-2" id="homeLink" href="../../index.php">
+            <a class="p-1" id="homeLink" href="../../index.html">
                 <div>
-                    <img src="../../images/fiveGoldenStarsTransparentBG.png" alt="">
+                    <img src="../../../res/images/paw_print.png" alt="paw print">
                 </div>
                 <div>
-                    The Great Old One
+                    Pawsomemart
                 </div>
             </a>
         </div>
@@ -20,15 +26,13 @@ session_start();
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-3 nav-main-menu-item-list">
                 <?php
-                // uses cookie just as an example on how cookie data could be retrieved and used
-                // this is not best practise and just for experimentation
-                if (!isset($_SESSION["currentUser"])) {
-                    echo "
-                        <li class='nav-item px-2'>
-                            <a href='../../userManagement/registration/registration_form.php'>Benutzer-Registrierung</a>
-                        </li>
-                        ";
-                }
+                    if (!isset($_SESSION["currentUser"])) {
+                        echo "
+                            <li class='nav-item px-2'>
+                                <a href='../../userManagement/registration/registration_form.php'>Benutzer-Registrierung</a>
+                            </li>
+                            ";
+                    }
                 ?>
                 <li class="nav-item px-2">
                     <a href="../../content/news/news_form.php">Neuigkeiten</a>

@@ -4,6 +4,7 @@ namespace user;
 use db;
 
 include ('../../config/dbaccess.php');
+require_once "../model/User.php";
 
 class UserRepository
 {

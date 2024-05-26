@@ -1,3 +1,8 @@
+.navbar{
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
 .navBarColor {
     background-color: var(--secondary);
 }
@@ -21,8 +26,8 @@ navLink:hover {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-top: 1em;
-    margin-bottom: 1em;
+    /* margin-top: 1em;
+    margin-bottom: 1em;*/
 }
 
 #homeLink {
@@ -33,13 +38,14 @@ navLink:hover {
 }
 
 #homeLink div{
+    font-size: 34px;
     font-family: var(--TheGreatFont) !important;
     font-weight: 400 !important;
-    color: var(--headline);
+    color: black;
 }
 
 #homeLink img{
-    max-width: 10em;
+    max-width: 3em;
 }
 
 .nav-main-menu-item-list li {

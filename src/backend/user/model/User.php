@@ -2,7 +2,9 @@
 
 namespace user;
 
-class User
+use JsonSerializable;
+
+class User implements JsonSerializable
 {
 
     private $id = 1;
@@ -116,5 +118,19 @@ class User
     public function isInactive()
     {
         return $this->isInactive;
+    }
+
+    public function jsonSerialize() {
+        return [
+            'id' => $this->id,
+            'username' => $this->username,
+            'password' => $this->password,
+            'sex' => $this->sex,
+            'name' => $this->name,
+            'lastname' => $this->lastname,
+            'email' => $this->email,
+            'isAdmin' => $this->isAdmin,
+            'isInactive' => $this->isInactive
+        ];
     }
 }

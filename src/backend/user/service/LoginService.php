@@ -1,6 +1,7 @@
 <?php
 namespace user;
 require_once "../persistence/UserManagementSystem.php";
+require_once "../model/User.php";
 require_once "UserInputValidator.php";
 
 class LoginService
@@ -26,13 +27,31 @@ class LoginService
             $_SESSION["currentUser"] = $loggedInUser;
             $_SESSION["currentUserIsAdminUser"] = $loggedInUser->isAdmin();
 
-            //setcookie("LOGON_USER", $_SESSION["currentUser"]->getUsername(), time()+31557500, '/');
-
-            //echo "<script>console.log(' Logged in as $enteredUsername' );</script>";
-            return "Login Successful";
+            return $loggedInUser;
         } else {
-            //echo "<script>console.log(' Please check if you are already logged in or your input!' );</script>";
-            return "Login was not successful";
+            return "Login was not successful!";
+        }
+    }
+
+    public function logout()
+    {
+        if (isset($_SESSION["currentUser"])) {
+            $_SESSION["currentUser"] = null;
+            $_SESSION["currentUserIsAdminUser"] = null;
+            return "User logged out.";
+        } else {
+            return "No user has been logged in!";
+        }
+    }
+
+    public function checkUserSession()
+    {
+        if (isset($_SESSION["currentUser"])) {
+            //echo "user session is set!";
+            return "1";
+        } else {
+            //echo "user session is not set!";
+            return "0";
         }
     }
 }

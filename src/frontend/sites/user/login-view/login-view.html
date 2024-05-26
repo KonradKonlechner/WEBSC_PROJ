@@ -28,26 +28,26 @@
 </header>
 
 <main>
-
     <div class="container justify-content-left">
 
-        <!-- <form method="POST" class="mt-2 col-3"> -->
-        <div class="mt-2 col-3">
-            <div class="mb-3">
-                <label class="form-label" for="username">Benutzername</label>
-                <input class="form-control" type="text" name="username" id="username" required/>
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="password">Passwort</label>
-                <input class="form-control" type="password" name="password" id="password" required/>
-            </div>
+        <div id="loginContainer" class="mt-2 col-3">
+            <div id="loginForm" class="mb-3">
+                <div class="mb-3">
+                    <label class="form-label" for="username">Benutzername</label>
+                    <input class="form-control" type="text" name="username" id="username" required/>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="password">Passwort</label>
+                    <input class="form-control" type="password" name="password" id="password" required/>
+                </div>
 
-            <div class="mt-1">
-                <button class="btn btn-danger" type="reset" name="reset">Reset</button>
-                <button class="btn btn-success" type="submit" name="submit" id="submit" value="login">Login</button>
+                <div class="mt-1">
+                    <button class="btn btn-danger" type="reset" name="reset">Reset</button>
+                    <button class="btn btn-success" type="submit" name="submit" id="submit" value="login">Login</button>
+                </div>
             </div>
+            <button class="btn btn-danger" type="submit" name="logout" id="logout" value="logout">Logout</button>
         </div>
-        <!-- </form> -->
 
         <div class="mb-3">
             <p>Noch kein Profil angelegt? Hier können Sie sich

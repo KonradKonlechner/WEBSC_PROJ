@@ -5,5 +5,5 @@
         <li class="nav-item col-6"><a href="../../content/information/datenschutzinfo.php" class="px-2">Information über Ihre Rechte gemäß DSGVO</a></li>
         <li class="nav-item col-6"><a href="../../content/information/about.php" class="px-2">Über uns</a></li>
     </ul>
-    <p class="text-left copyright-text">&copy; 2023 WEB1@FHTW Hotel Betriebsgesellschaft mbH</p>
+    <p class="text-left copyright-text">&copy; 2024 Pawsomemart GmbH</p>
 </div> 

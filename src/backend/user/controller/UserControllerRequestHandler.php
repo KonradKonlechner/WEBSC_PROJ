@@ -17,6 +17,12 @@ class UserControllerRequestHandler
             case "login":
                 $res = $this->service->loginWithParameters($param);
                 break;
+            case "logout":
+                $res = $this->service->logout();
+                break;
+            case "checkUserSession":
+                $res = $this->service->checkUserSession();
+                break;
             default:
                 $res = null;
                 break;
