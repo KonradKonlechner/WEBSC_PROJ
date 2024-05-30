@@ -24,6 +24,9 @@ $tableSqlList = [
         `sex` ENUM('Keine','Herr','Frau') NOT NULL DEFAULT 'Keine' COLLATE 'utf8mb4_general_ci',
         `firstname` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_general_ci',
         `lastname` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_general_ci',
+        `address` varchar(250) NOT NULL COLLATE 'utf8mb4_general_ci',
+        `postal_code` varchar(50) NOT NULL COLLATE 'utf8mb4_general_ci',
+        `city` varchar(50) NOT NULL COLLATE 'utf8mb4_general_ci',
         `email` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_general_ci',
         `is_admin` TINYINT(1) NOT NULL DEFAULT '0',
         `is_user_inactive` TINYINT(1) NOT NULL DEFAULT '0',
@@ -34,10 +37,10 @@ $tableSqlList = [
     ENGINE=InnoDB;"
     
     ,
-    "INSERT INTO `users` (`id`, `username`, `password`, `sex`, `firstname`, `lastname`, `email`, `is_admin`) 
+    "INSERT INTO `users` (`id`, `username`, `password`, `sex`, `firstname`, `lastname`, `address`, `postal_code`, `city`, `email`, `is_admin`) 
     VALUES 
-    (1, 'maxim', '$hashedMaximPW', 'Herr', 'Max', 'Meier', 'max@meier.at', 0),
-    (2, 'admin', '$hashedAdminPW', 'Herr', 'Admin', 'LeBoss', 'chef.admin@mailmail.com', 1);"
+    (1, 'maxim', '$hashedMaximPW', 'Herr', 'Max', 'Meier', 'Hauptstraße 123', '3210', 'Meierndorf', 'max@meier.at', 0),
+    (2, 'admin', '$hashedAdminPW', 'Herr', 'Admin', 'LeBoss', '47th floor', '47001', 'Rooftop Penthouse', 'chef.admin@mailmail.com', 1);"
 ];
 
 foreach ($tableSqlList as $tableSql) {

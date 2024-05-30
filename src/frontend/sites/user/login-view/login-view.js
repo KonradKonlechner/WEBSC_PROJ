@@ -1,22 +1,19 @@
 $(document).ready(function () {
 
-    checkIfUserIsLoggedIn()
-
-    $("#logout").hide();
-    $("#userProfile").hide();
+    setLoginFormIfUserIsLoggedIn()
 
     // event handler for clicking on login button
     $("#submit").click(function (e) {
         login($("#username").val(), $("#password").val());
     });
+    // event handler for clicking on logout button
     $("#logout").click(function (e) {
         logout();
     });
-
 });
 
-function checkIfUserIsLoggedIn() {
-    console.log("check if user is logged in");
+function setLoginFormIfUserIsLoggedIn() {
+    //console.log("check if user is logged in");
     $.ajax({
         type: "GET",
         url: "../../../../backend/user/controller/UserController.php",
@@ -24,34 +21,17 @@ function checkIfUserIsLoggedIn() {
         data: {method: "checkUserSession", param: null},
         dataType: "json"
     }).done(function(response) {
-        console.log("Request succeeded! Response: " + response);
+        //console.log("Request succeeded! Response: " + response);
         if(response == '1') {
-            $("#loginLink").html('Profil');
-            $("#loginForm").hide();
-            $("#logout").show();
-            currentUser = getCurrentUser();
+            //console.log("a user is already logged in!");
+            setLoginForm(true);
+        } else {
+            setLoginForm(false);
         }
     }).fail(function() {
         console.log("Request failed!");
     });
 }
-
-function getCurrentUser() {
-    console.log("get current user");
-    $.ajax({
-        type: "GET",
-        url: "../../../../backend/user/controller/UserController.php",
-        cache: false,
-        data: {method: "getCurrentUser", param: null},
-        dataType: "json"
-    }).done(function(response) {
-        console.log("Request succeeded! Response: " + JSON.stringify(response));
-        showUserProfile(response)
-    }).fail(function() {
-        console.log("Request failed!");
-    });
-}
-
 
 function login(username, password) {
 
@@ -69,12 +49,8 @@ function login(username, password) {
         dataType: "json"      
     }).done(function(response) {
         console.log("Request succeeded! Response: " + JSON.stringify(response));
-        if(response != "Login was not successful!") {
-            $("#loginLink").html('Profil');
-            $("#loginForm").hide();
-            $("#logout").show();
-            showUserProfile(response);
-        }
+        setLoginFormIfUserIsLoggedIn()
+        setTopNavBarLinksIfUserIsLoggedIn();
     }).fail(function() {
         console.log("Request failed!");         
     });
@@ -91,16 +67,47 @@ function logout() {
         dataType: "json"
     }).done(function(response) {
         console.log("Request succeeded! Response: " + response);
-        $("#loginLink").html('Login');
+        setLoginFormIfUserIsLoggedIn()
+        setTopNavBarLinksIfUserIsLoggedIn();
+    }).fail(function() {
+        console.log("Request failed!");
+    });
+}
+
+function setLoginForm(userIsLoggedIn) {
+
+    if(userIsLoggedIn) {
+        $("#loginForm").hide();
+        $("#noProfile").hide();
+        $("#logout").show();
+        showProfileOfCurrentUser()
+    } else {
         $("#loginForm").show();
+        $("#noProfile").show();
         $("#logout").hide();
         $("#userProfile").remove();
+    }
+}
+
+function showProfileOfCurrentUser() {
+    console.log("show profile of current user");
+    $.ajax({
+        type: "GET",
+        url: "../../../../backend/user/controller/UserController.php",
+        cache: false,
+        data: {method: "getCurrentUser", param: null},
+        dataType: "json"
+    }).done(function(response) {
+        //console.log("Request succeeded! Response: " + JSON.stringify(response));
+        showUserProfile(response)
     }).fail(function() {
         console.log("Request failed!");
     });
 }
 
 function showUserProfile(currentUser) {
+    $("#userProfile").remove();
+
     $( "<div/>", {
         id: "userProfile",
         text: "Wilkommen " + currentUser["sex"] + " " + currentUser["name"] + " " + currentUser["lastname"] + "!"

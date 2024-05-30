@@ -48,6 +48,10 @@ navLink:hover {
     max-width: 3em;
 }
 
+#shoppingCartIcon{
+    width: 30px;
+}
+
 .nav-main-menu-item-list li {
     font-size: 1.2em;
 }

@@ -1,11 +1,6 @@
 <?php
-include ('../../../../backend/user/model/User.php');
-session_start();
-/*if (isset($_SESSION["currentUser"]))
-{
-    $currentUser = $_SESSION["currentUser"]->getUsername();
-    echo "Aktuell eingeloggter User: $currentUser";
-}*/
+    include ('../../../../backend/user/model/User.php');
+    session_start();
 ?>
 <nav class="navbar fixed-top navbar-expand-lg navBarColor bg-gradient">
     <div class="container justify-content-left" id="nav-mother-container">
@@ -15,7 +10,7 @@ session_start();
                     <img src="../../../res/images/paw_print.png" alt="paw print">
                 </div>
                 <div>
-                    Pawsomemart
+                    PawsomeMart
                 </div>
             </a>
         </div>
@@ -25,43 +20,30 @@ session_start();
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-3 nav-main-menu-item-list">
-                <?php
-                    if (!isset($_SESSION["currentUser"])) {
-                        echo "
-                            <li class='nav-item px-2'>
-                                <a href='../../userManagement/registration/registration_form.php'>Benutzer-Registrierung</a>
-                            </li>
-                            ";
-                    }
-                ?>
-                <li class="nav-item px-2">
-                    <a href="../../content/news/news_form.php">Neuigkeiten</a>
+                <li id="registrationLinkListEntry" class='nav-item px-2'>
                 </li>
                 <li class="nav-item px-2">
-                    <a href="../../content/information/rooms.php">Zimmer</a>
+                    <a href="../../products/product-view/product-view.html">Produkte</a>
                 </li>
                 <li class="nav-item px-2">
-                    <a href="../../content/reservation/roomReservation.php">Reservierung</a>
+                    <a href="../../products/shopping_cart-view/shopping_cart-view.html">
+                            <img id="shoppingCartIcon" src="../../../res/images/shopping_cart.png" alt="shopping cart">
+                            Warenkorb
+                    </a>
+                </li>
+                <li id="manageProductsLinkListEntry" class="nav-item px-2">
+                </li>
+                <li id="manageCustomersLinkListEntry" class="nav-item px-2">
                 </li>
                 <!--<li class="nav-item px-2">
-                    <a href="../../content/information/coupons.php">Gutscheine</a>
+                    <a href="../../">Gutscheine verwalten</a>
                 </li>-->
-                <?php
-                    if (isset($_SESSION["currentUser"])
-                        && isset($_SESSION["currentUserIsAdminUser"])
-                        && $_SESSION["currentUserIsAdminUser"]):
-                ?>
-                        <li class="nav-item px-2">
-                            <a href="../../userManagement/admin_usermanagement/admin_usermanagement.php">Benutzer verwalten</a>
-                        </li>
-                        <li class="nav-item px-2">
-                            <a href="../../reservationManagement/admin_reservationManagement/admin_reservation_management.php">Reservierungen verwalten</a>
-                        </li>
-                <?php endif; ?>
             </ul>
-            <div class="nav-item d-flex justify-content-end bg-info-subtle bg-opacity-25 rounded">
-                <a class="btn btn-outline-info mb-2" id="loginLink" href="../../user/login-view/login-view.html">Login</a>
+            <div id="loginLinkArea" class="nav-item d-flex justify-content-end bg-info-subtle bg-opacity-25 rounded">
+               <!-- <a class="btn btn-outline-info mb-2" id="loginLink" href="../../user/login-view/login-view.html">Login</a> -->
             </div>
         </div>
     </div>
 </nav>
+
+<script src="../../navigation/navbar/topNavBar_logic.js"></script>

@@ -19,6 +19,8 @@
 CREATE DATABASE IF NOT EXISTS `pawsomedb` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 USE `pawsomedb`;
 
+DROP TABLE IF EXISTS `users`;
+
 -- Exportiere Struktur von Tabelle pawsomedb.users
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -27,6 +29,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `sex` enum('Keine','Herr','Frau') NOT NULL DEFAULT 'Keine',
   `firstname` varchar(50) NOT NULL,
   `lastname` varchar(50) NOT NULL,
+  `address` varchar(250) NOT NULL,
+  `postal_code` varchar(50) NOT NULL,
+  `city` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `is_admin` tinyint(1) NOT NULL DEFAULT 0,
   `is_user_inactive` tinyint(1) NOT NULL DEFAULT 0,
@@ -35,11 +40,11 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Exportiere Daten aus Tabelle pawsomedb.users: ~0 rows (ungefähr)
-DELETE FROM `users`;
-INSERT INTO `users` (`id`, `username`, `password`, `sex`, `firstname`, `lastname`, `email`, `is_admin`, `is_user_inactive`) VALUES
-	(1, 'maxim', '$2y$10$mBjBRPMcb2hsPdQ1D6dmJe3.zzo.sPr2/vY/ywC4ZRz5sUsP9RMvi', 'Herr', 'Max', 'Meier', 'max@meier.at', 0, 0),
-	(2, 'admin', '$2y$10$EDDkpyGs3izycQrfP/XFZela9Ua8HMqpNguFNpJt7wy3AgAlhgZj6', 'Herr', 'Admin', 'LeBoss', 'chef.admin@mailmail.com', 1, 0);
 
+INSERT INTO `users` (`id`, `username`, `password`, `sex`, `firstname`, `lastname`, `address`, `postal_code`, `city`, `email`, `is_admin`, `is_user_inactive`)
+VALUES
+    (1, 'maxim', '$2y$10$mBjBRPMcb2hsPdQ1D6dmJe3.zzo.sPr2/vY/ywC4ZRz5sUsP9RMvi', 'Herr', 'Max', 'Meier', 'Hauptstraße 123', '3210', 'Meierndorf', 'max@meier.at', 0, 0),
+	(2, 'admin', '$2y$10$EDDkpyGs3izycQrfP/XFZela9Ua8HMqpNguFNpJt7wy3AgAlhgZj6', 'Herr', 'Admin', 'LeBoss', '47th floor', '47001', 'Rooftop Penthouse', 'chef.admin@mailmail.com', 1, 0);
 
 GRANT USAGE ON *.* TO `pawsomeadmin`@`localhost` IDENTIFIED BY PASSWORD '*122F3B009504D146B213A98575C23E23B399E76C';
 

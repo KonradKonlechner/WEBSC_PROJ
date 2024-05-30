@@ -55,6 +55,20 @@ class LoginService
         }
     }
 
+    public function checkUserIsAdmin()
+    {
+        if (isset($_SESSION["currentUser"])) {
+            if($_SESSION["currentUser"]->isAdmin() == 1)
+            {
+                return "1";
+            } else {
+                return "0";
+            }
+        } else {
+            return "no user logged in";
+        }
+    }
+
     public function getCurrentUser()
     {
         if (isset($_SESSION["currentUser"])) {

@@ -25,7 +25,7 @@ class UserRepository
     private function fetchAndBindResult($statement): User
     {
         $statement->execute();
-        $statement->bind_result($id, $uName, $password, $sex, $fname, $lname, $email, $isAdmin, $isInactive);
+        $statement->bind_result($id, $uName, $password, $sex, $fname, $lname, $address, $postalCode, $city, $email, $isAdmin, $isInactive);
         $statement->fetch();
 
         $statement->close();
@@ -37,6 +37,9 @@ class UserRepository
             $sex,
             $fname,
             $lname,
+            $address,
+            $postalCode,
+            $city,
             $email,
             $isAdmin,
             $isInactive
@@ -71,18 +74,24 @@ class UserRepository
         $sex = $user->getSex();
         $firstname = $user->getName();
         $lastname = $user->getLastname();
+        $address = $user->getAddress();
+        $postalCode = $user->getPostalCode();
+        $city = $user->getCity();
         $email = $user->getEmail();
 
-        $sqlInsert = "INSERT INTO users (username, password, sex, firstname, lastname, email) VALUES (?,?,?,?,?,?)";
+        $sqlInsert = "INSERT INTO users (username, password, sex, firstname, lastname, address, postal_code, city, email) VALUES (?,?,?,?,?,?,?,?,?)";
         
         $statement = $connection->prepare($sqlInsert);
         $statement->bind_param(
-            "ssssss", 
+            "sssssssss",
             $userName,
             $password,
             $sex,
             $firstname,
             $lastname,
+            $address,
+            $postalCode,
+            $city,
             $email
         );
 
@@ -122,12 +131,14 @@ class UserRepository
         $sex = $user->getSex();
         $firstname = $user->getName();
         $lastname = $user->getLastname();
-        $email = $user->getEmail();
+        $address = $user->getAddress();
+        $postalCode = $user->getPostalCode();
+        $city = $user->getCity();
         $email = $user->getEmail();
         $userInactive = (integer) $user->isInactive();
 
         $sqlInsert = "UPDATE users SET 
-                 sex = ?, firstname = ?, lastname = ?, email = ?, is_user_inactive = ?
+                 sex = ?, firstname = ?, lastname = ?, address = ?, postal_code = ?, city = ?, email = ?, is_user_inactive = ?
                  WHERE username = ?";
 
         $statement = $connection->prepare($sqlInsert);
@@ -136,6 +147,9 @@ class UserRepository
             $sex,
             $firstname,
             $lastname,
+            $address,
+            $postalCode,
+            $city,
             $email,
             $userInactive,
             $userName
@@ -198,7 +212,7 @@ class UserRepository
     private function fetchAllAndBindResult(mixed $statement)
     {
         $statement->execute();
-        $statement->bind_result($id, $uName, $password, $sex, $fname, $lname, $email, $isAdmin, $isInactive);
+        $statement->bind_result($id, $uName, $password, $sex, $fname, $lname, $address, $postalCode, $city, $email, $isAdmin, $isInactive);
 
         $allUsers = [];
         while($statement->fetch()) {
@@ -209,6 +223,9 @@ class UserRepository
                 $sex,
                 $fname,
                 $lname,
+                $address,
+                $postalCode,
+                $city,
                 $email,
                 $isAdmin,
                 $isInactive
@@ -218,6 +235,4 @@ class UserRepository
 
         return $allUsers;
     }
-
-
 }
