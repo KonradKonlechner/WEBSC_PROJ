@@ -3,11 +3,11 @@ $(document).ready(function () {
     setLoginFormIfUserIsLoggedIn()
 
     // event handler for clicking on login button
-    $("#submit").click(function (e) {
+    $("#submit").click(function () {
         login($("#username").val(), $("#password").val());
     });
     // event handler for clicking on logout button
-    $("#logout").click(function (e) {
+    $("#logout").click(function () {
         logout();
     });
 });
@@ -22,7 +22,7 @@ function setLoginFormIfUserIsLoggedIn() {
         dataType: "json"
     }).done(function(response) {
         //console.log("Request succeeded! Response: " + response);
-        if(response == '1') {
+        if(response === '1') {
             //console.log("a user is already logged in!");
             setLoginForm(true);
         } else {

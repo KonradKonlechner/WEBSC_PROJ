@@ -1,4 +1,5 @@
 <?php
+
 namespace user;
 require_once "../model/User.php";
 require_once "../persistence/UserManagementSystem.php";
@@ -13,6 +14,54 @@ class LoginService
     {
         $this->ums = new UserManagementSystem();
         $this->inputValidator = new UserInputValidator($this->ums);
+    }
+
+    public function registerUser($param)
+    {
+        $enteredSex = $this->inputValidator->prepareInput($param["sex"]);
+        $enteredName = $this->inputValidator->prepareInput($param["name"]);
+        $enteredLastName = $this->inputValidator->prepareInput($param["lastname"]);
+        $enteredEmail = $this->inputValidator->prepareInput($param["email"]);
+        $enteredUsername = $this->inputValidator->prepareInput($param["username"]);
+        $enteredPassword = $this->inputValidator->prepareInput($param["password"]);
+        $enteredPassword2 = $this->inputValidator->prepareInput($param["password2"]);
+
+        if (!isset($_SESSION["currentUser"])) {
+
+            $validationErrors = $this->inputValidator->isValidRegistration(
+                $enteredEmail,
+                $enteredUsername,
+                $enteredPassword,
+                $enteredPassword2
+            );
+
+            if ($this->inputValidator->arrayContainsErrors($validationErrors)) {
+                $validationErrors = array_filter($validationErrors, function ($error) {return $error !== "";});
+                return "Die angegebenen Daten beinhalten "
+                    . count($validationErrors)
+                    . " Fehler:\n"
+                    . implode(PHP_EOL, $validationErrors);
+            }
+            $user = new User();
+            #$username, $password, $sex, $name, $lastname, $address, $postal_code, $city, $email
+            $user->setAllValues(
+                $enteredUsername,
+                $enteredPassword,
+                $enteredSex,
+                $enteredName,
+                $enteredLastName,
+                "",
+                "",
+                "",
+                $enteredEmail
+            );
+
+            $this->ums->saveUserAsRegistered($user);
+
+            $this->loginWithParameters($param);
+            return "Registrierung erfolgreich!";
+        }
+        return "User already logged in. Can't perform registration.";
     }
 
     public function loginWithParameters($param)
@@ -58,8 +107,7 @@ class LoginService
     public function checkUserIsAdmin()
     {
         if (isset($_SESSION["currentUser"])) {
-            if($_SESSION["currentUser"]->isAdmin() == 1)
-            {
+            if ($_SESSION["currentUser"]->isAdmin() == 1) {
                 return "1";
             } else {
                 return "0";

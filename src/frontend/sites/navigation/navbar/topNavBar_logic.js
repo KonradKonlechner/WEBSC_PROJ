@@ -11,7 +11,7 @@ function setTopNavBarLinksIfUserIsLoggedIn() {
         dataType: "json"
     }).done(function (response) {
         console.log("Request succeeded! UserSessionIsSet - Response: " + response);
-        if (response == '1') {
+        if (response === '1') {
             console.log("a user is already logged in!");
             $("#registrationLink").remove();
             setTopNavBarLinksIfUserIsAdmin();
@@ -58,7 +58,7 @@ function setTopNavBarLinksIfUserIsAdmin() {
         dataType: "json"
     }).done(function (response) {
         console.log("Request succeeded! IsAdmin - Response: " + response);
-        if (response == '1') {
+        if (response === '1') {
             console.log("the user logged in is admin!");
             setAdminLinks()
         } else {

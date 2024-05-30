@@ -17,8 +17,6 @@ class UserManagementSystem
     {
         if (!$this->isRegisteredUser($user->getUsername())) {
             $this->repository->addUserToDatabase($user);
-        } else {
-            echo "<script>console.log(' User with Username $user->getUsername() already exists ' );</script>";
         }
     }
 
@@ -26,8 +24,6 @@ class UserManagementSystem
     {
         if ($this->isRegisteredUser($updatedUser->getUsername())) {
             $this->repository->updateUserProfileData($updatedUser);
-        } else {
-            echo "<script>console.log(' User with Username $updatedUser->getUsername() does not exist ' );</script>";
         }
     }
 
@@ -59,6 +55,7 @@ class UserManagementSystem
         return $count > 0;
     }
 
+    // ToDo: this is for some reason broken
     public function isRegisteredEmail($emailToCheck): bool
     {
         $count = $this->repository->countUsersByEmail($emailToCheck);
