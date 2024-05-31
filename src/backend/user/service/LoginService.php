@@ -68,11 +68,15 @@ class LoginService
     {
         $enteredUsername = $this->inputValidator->prepareInput($param["username"]);
         $enteredPassword = $this->inputValidator->prepareInput($param["password"]);
+        $keepLogin = $this->inputValidator->prepareInput($param["keepLogin"]);
 
         if (!isset($_SESSION["currentUser"])
             && $this->ums->isRegisteredUserWithCorrectPassword($enteredUsername, $enteredPassword)) {
 
             $loggedInUser = $this->ums->getUserByUsername($enteredUsername);
+            if($keepLogin === "true") {
+                setcookie("keepLoggedIn", $enteredUsername, time() + 3600);
+            }
             $_SESSION["currentUser"] = $loggedInUser;
             $_SESSION["currentUserIsAdminUser"] = $loggedInUser->isAdmin();
 
@@ -87,6 +91,7 @@ class LoginService
         if (isset($_SESSION["currentUser"])) {
             $_SESSION["currentUser"] = null;
             $_SESSION["currentUserIsAdminUser"] = null;
+            setcookie("keepLoggedIn", "", time() - 3600);
             return "User logged out.";
         } else {
             return "No user has been logged in!";
@@ -95,6 +100,13 @@ class LoginService
 
     public function checkUserSession()
     {
+        if (isset($_COOKIE["keepLoggedIn"])) {
+            $keepLoggedInUsername = htmlspecialchars($_COOKIE["keepLoggedIn"]);
+            $loggedInUser = $this->ums->getUserByUsername($keepLoggedInUsername);
+            $_SESSION["currentUser"] = $loggedInUser;
+            $_SESSION["currentUserIsAdminUser"] = $loggedInUser->isAdmin();
+        }
+
         if (isset($_SESSION["currentUser"])) {
             //echo "user session is set!";
             return "1";

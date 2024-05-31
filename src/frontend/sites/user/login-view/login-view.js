@@ -2,9 +2,13 @@ $(document).ready(function () {
 
     setLoginFormIfUserIsLoggedIn()
 
+
+
     // event handler for clicking on login button
     $("#submit").click(function () {
-        login($("#username").val(), $("#password").val());
+        var keepLogin = $("#keepLogin").prop("checked");
+        console.log("Login merken: " + keepLogin);
+        login($("#username").val(), $("#password").val(), keepLogin);
     });
     // event handler for clicking on logout button
     $("#logout").click(function () {
@@ -33,11 +37,12 @@ function setLoginFormIfUserIsLoggedIn() {
     });
 }
 
-function login(username, password) {
+function login(username, password, keepLogin) {
 
     const loginParameter = {
         username: username,
         password: password,
+        keepLogin: keepLogin
     }
 
     console.log("Attempting to login");
