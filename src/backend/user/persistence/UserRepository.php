@@ -127,7 +127,6 @@ class UserRepository
         $connection = db\DBConnection::getConnection();
 
         $userName = $user->getUsername();
-        $password = password_hash($user->getPassword(), PASSWORD_BCRYPT);
         $sex = $user->getSex();
         $firstname = $user->getName();
         $lastname = $user->getLastname();

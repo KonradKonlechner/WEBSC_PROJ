@@ -32,6 +32,9 @@ class UserControllerRequestHandler
             case "registerUser":
                 $res = $this->service->registerUser($param);
                 break;
+            case "updateUserProfile":
+                $res = $this->service->updateUserProfile($param);
+                break;
             default:
                 $res = null;
                 break;

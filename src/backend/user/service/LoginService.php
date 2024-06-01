@@ -64,6 +64,36 @@ class LoginService
         return "User already logged in. Can't perform registration.";
     }
 
+    public function updateUserProfile($param)
+    {
+        $enteredUsername = $this->inputValidator->prepareInput($param["username"]);
+        $enteredSex = $this->inputValidator->prepareInput($param["sex"]);
+        $enteredName = $this->inputValidator->prepareInput($param["name"]);
+        $enteredLastName = $this->inputValidator->prepareInput($param["lastname"]);
+        $enteredAddress = $this->inputValidator->prepareInput($param["address"]);
+        $enteredPostalCode = $this->inputValidator->prepareInput($param["postal_code"]);
+        $enteredCity = $this->inputValidator->prepareInput($param["city"]);
+        $enteredEmail = $this->inputValidator->prepareInput($param["email"]);
+
+        $updatedUser = new User();;
+
+        $updatedUser->setAllValues(
+            $enteredUsername,
+            null,
+            $enteredSex,
+            $enteredName,
+            $enteredLastName,
+            $enteredAddress,
+            $enteredPostalCode,
+            $enteredCity,
+            $enteredEmail
+        );
+
+        $this->ums->updateUser($updatedUser);
+
+    }
+
+
     public function loginWithParameters($param)
     {
         $enteredUsername = $this->inputValidator->prepareInput($param["username"]);
