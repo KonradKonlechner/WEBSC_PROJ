@@ -74,25 +74,38 @@ class LoginService
         $enteredPostalCode = $this->inputValidator->prepareInput($param["postal_code"]);
         $enteredCity = $this->inputValidator->prepareInput($param["city"]);
         $enteredEmail = $this->inputValidator->prepareInput($param["email"]);
+        $enteredNewPassword = $this->inputValidator->prepareInput($param["passwordNew"]);
+        $enteredPassword = $this->inputValidator->prepareInput($param["password"]);
 
-        $updatedUser = new User();;
+        if($this->ums->isRegisteredUserWithCorrectPassword($enteredUsername, $enteredPassword)) {
 
-        $updatedUser->setAllValues(
-            $enteredUsername,
-            null,
-            $enteredSex,
-            $enteredName,
-            $enteredLastName,
-            $enteredAddress,
-            $enteredPostalCode,
-            $enteredCity,
-            $enteredEmail
-        );
+            $updatedUser = new User();;
 
-        $this->ums->updateUser($updatedUser);
+            $updatedUser->setAllValues(
+                $enteredUsername,
+                null,
+                $enteredSex,
+                $enteredName,
+                $enteredLastName,
+                $enteredAddress,
+                $enteredPostalCode,
+                $enteredCity,
+                $enteredEmail
+            );
 
+            $this->ums->updateUser($updatedUser);
+
+            if($enteredNewPassword != "") {
+                $this->ums->updateUserPassword($enteredUsername, $enteredNewPassword);
+            }
+
+            $_SESSION["currentUser"] = $this->ums->getUserByUsername($enteredUsername);
+
+            return "user profile has been updated";
+        } else {
+            return "failed to update user profile";
+        }
     }
-
 
     public function loginWithParameters($param)
     {

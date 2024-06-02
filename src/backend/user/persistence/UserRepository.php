@@ -106,11 +106,11 @@ class UserRepository
 
         $password_hash = password_hash($newPassword, PASSWORD_BCRYPT);
 
-        $sqlInsert = "UPDATE users SET 
+        $sqlUpdate = "UPDATE users SET 
                  password = ?
                  WHERE username = ?";
 
-        $statement = $connection->prepare($sqlInsert);
+        $statement = $connection->prepare($sqlUpdate);
         $statement->bind_param(
             "ss",
             $password_hash,
@@ -142,7 +142,7 @@ class UserRepository
 
         $statement = $connection->prepare($sqlInsert);
         $statement->bind_param(
-            "ssssis",
+            "sssssssis",
             $sex,
             $firstname,
             $lastname,

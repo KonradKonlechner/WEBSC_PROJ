@@ -1,38 +1,6 @@
 $(document).ready(function () {
 
     setLoginFormIfUserIsLoggedIn()
-
-    // event handler for clicking on login button
-    $("#submit").click(function () {
-        var keepLogin = $("#keepLogin").prop("checked");
-        console.log("Login merken: " + keepLogin);
-        login($("#username").val(), $("#password").val(), keepLogin);
-    });
-    // event handler for clicking on logout button
-    $("#logout").click(function () {
-        logout();
-    });
-
-    // event handler for clicking on update user profile button
-    $("#updateUserProfile").click(function () {
-
-        console.log("new password: test"); // + $("#passwordNew").val());
-        /*
-        updateUserProfile(
-            $("#username").val(),
-            $("#sex").val(),
-            $("#name").val(),
-            $("#lastname").val(),
-            $("#address").val(),
-            $("#postal_code").val(),
-            $("#city").val(),
-            $("#email").val(),
-            $("#passwordNew").val(),
-            $("#passwordNew2").val(),
-            $("#password").html()
-            );
-         */
-    });
 });
 
 function setLoginFormIfUserIsLoggedIn() {
@@ -73,10 +41,23 @@ function login(username, password, keepLogin) {
         dataType: "json"      
     }).done(function(response) {
         console.log("Request succeeded! Response: " + JSON.stringify(response));
-        setLoginFormIfUserIsLoggedIn()
-        setTopNavBarLinksIfUserIsLoggedIn();
+        if(response == "Login was not successful!") {
+
+            $("#username").addClass("is-invalid");
+            $("#usernameHelp").addClass("text-danger");
+            $("#usernameHelp").html("Username oder Passwort falsch!");
+            $("#password").addClass("is-invalid");
+            $("#passwordHelp").addClass("text-danger");
+            $("#passwordHelp").html("Username oder Passwort falsch!");
+
+        } else {
+            setLoginFormIfUserIsLoggedIn()
+            setTopNavBarLinksIfUserIsLoggedIn();
+        }
     }).fail(function() {
-        console.log("Request failed!");         
+        console.log("Request failed!");
+        alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
+            "Bitte probieren Sie es später erneut.");
     });
 }
 
@@ -95,60 +76,158 @@ function logout() {
         setTopNavBarLinksIfUserIsLoggedIn();
     }).fail(function() {
         console.log("Request failed!");
-    });
-}
-
-function updateUserProfile(username, sex, name, lastname, address, postal_code, city, email, passwordNew, passwordNew2, password) {
-
-    console.log("updating user profile...");
-
-    if(passwordNew != passwordNew2) {
-        console.log("new passwords do not match!");
-        $("#passwordNew").addClass("is-invalid");
-        $("#passwordNew2").addClass("is-invalid");
-        return;
-    }
-
-    const updateUserProfileParameter = {
-        username: username,
-        sex: sex,
-        name: name,
-        lastname: lastname,
-        address: address,
-        postal_code: postal_code,
-        city: city,
-        email: email,
-        passwordNew: passwordNew,
-        password: password
-    }
-
-    console.log("Attempting to login");
-    $.ajax({
-        type: "POST",
-        url: "../../../../backend/user/controller/UserController.php",
-        cache: false,
-        data: {method: "updateUserProfile", param: updateUserProfileParameter},
-        dataType: "json"
-    }).done(function(response) {
-        console.log("Request succeeded! Response: " + response);
-    }).fail(function() {
-        console.log("Request failed!");
+        alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
+            "Bitte probieren Sie es später erneut.");
     });
 }
 
 function setLoginForm(userIsLoggedIn) {
 
     if(userIsLoggedIn) {
-        $("#loginForm").hide();
+        $("#loginForm").remove();
         $("#noProfile").hide();
-        $("#logout").show();
-        showProfileOfCurrentUser()
+        showLogoutButton();
+        showProfileOfCurrentUser();
     } else {
-        $("#loginForm").show();
+        $("#logoutBtn").remove();
+        $("#updateProfileForm").remove();
+        showLoginForm()
         $("#noProfile").show();
-        $("#logout").hide();
-        $("#profileContainer").hide();
     }
+}
+
+function showLoginForm() {
+
+    $("#loginForm").remove();
+
+    $("<div/>", {
+        id: "loginForm",
+        class: "mb-3",
+        method: null
+    }).appendTo("#loginContainer");
+
+    $("#userAccountName").remove();
+
+    $("<div/>", {
+        id: "userAccountName",
+        class: "mb-3"
+    }).append(
+        $("<label/>", {
+            htmlFor: "username",
+            class: "form-label",
+            text: "Benutzername"
+        }),
+        $("<input/>", {
+            type: "text",
+            id: "username",
+            class: "form-control",
+            name: "username",
+            "aria-describedby": "usernameHelp",
+            value: null,
+            required: true
+        }),
+        $("<div/>", {
+            id: "usernameHelp",
+            class: "form-text"
+        })
+    ).appendTo("#loginForm");
+
+    $("#userPassword").remove();
+
+    $("<div/>", {
+        id: "userPassword",
+        class: "mb-3"
+    }).append(
+        $("<label/>", {
+            htmlFor: "password",
+            class: "form-label",
+            text: "Aktuelles Passwort"
+        }),
+        $("<input/>", {
+            type: "password",
+            id: "password",
+            class: "form-control",
+            name: "password",
+            "aria-describedby": "passwordHelp",
+            value: null,
+            required: true
+        }),
+        $("<div/>", {
+            id: "passwordHelp",
+            class: "form-text"
+        })
+    ).appendTo("#loginForm");
+
+    $("#userKeepLogin").remove();
+
+    $("<div/>", {
+        id: "userKeepLogin",
+        class: "form-check mb-3"
+    }).append(
+        $("<label/>", {
+            htmlFor: "keepLogin",
+            class: "form-check-label",
+            text: "Login merken"
+        }),
+        $("<input/>", {
+            type: "checkbox",
+            id: "keepLogin",
+            class: "form-check-input",
+            name: "keepLogin",
+            value: "keep login data"
+        })
+    ).appendTo("#loginForm");
+
+    $("#loginAndResetBtn").remove();
+
+    $("<div/>", {
+        id: "loginAndResetBtn",
+        class: "mb-3"
+    }).append(
+        $("<button/>", {
+            id: "reset",
+            class: "btn btn-danger",
+            type: "reset",
+            name: "reset",
+            text: "Reset"
+        }),
+        $("<button/>", {
+            id: "login",
+            class: "btn btn-success ms-2",
+            type: "submit",
+            name: "login",
+            text: "Login"
+        }),
+    ).appendTo("#loginForm");
+
+    // event handler for clicking on login button
+    $("#login").click(function () {
+        var keepLogin = $("#keepLogin").prop("checked");
+        console.log("Login merken: " + keepLogin);
+        login($("#username").val(), $("#password").val(), keepLogin);
+    });
+}
+
+function showLogoutButton() {
+    $("#logoutBtn").remove();
+
+    $("<div/>", {
+        id: "logoutBtn",
+        class: "mb-3"
+    }).append(
+        $("<button/>", {
+            id: "logout",
+            class: "btn btn-danger",
+            type: "submit",
+            name: "logout",
+            text: "Logout"
+        })
+    ).appendTo("#loginContainer");
+
+    // event handler for clicking on logout button
+    $("#logout").click(function () {
+        logout();
+    });
 }
 
 function showProfileOfCurrentUser() {
@@ -164,6 +243,8 @@ function showProfileOfCurrentUser() {
         showUserProfile(response)
     }).fail(function() {
         console.log("Request failed!");
+        alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
+            "Bitte probieren Sie es später erneut.");
     });
 }
 
@@ -178,17 +259,22 @@ function showUserProfile(currentUser) {
     var email = currentUser["email"];
     var username = currentUser["username"];
 
-    $("#profileContainer").show();
+    $("#updateProfileForm").remove();
+
+    $("<div/>", {
+        id: "updateProfileForm",
+        class: "mb-3"
+    }).appendTo("#loginContainer");
 
     $("#userProfileGreeting").remove();
 
     $("<div/>", {
         id: "userProfileGreeting",
         class: "mb-3",
-        text: "Wilkommen " + sex + " " + firstname + " " + lastname + "!"
+        text: "Willkommen " + sex + " " + firstname + " " + lastname + "!"
     }).append($("<p/>", {
         text: "Hier können Sie Ihr Profil einsehen und ändern."
-    })).appendTo("#profileContainer");
+    })).appendTo("#updateProfileForm");
 
     $("#userSex").remove();
 
@@ -219,7 +305,7 @@ function showUserProfile(currentUser) {
                 selected: (sex == "Herr")
             })
         )
-    ).appendTo("#profileContainer");
+    ).appendTo("#updateProfileForm");
 
     $("#userFirstName").remove();
 
@@ -240,7 +326,7 @@ function showUserProfile(currentUser) {
             value: firstname,
             required: true
         })
-    ).appendTo("#profileContainer");
+    ).appendTo("#updateProfileForm");
 
     $("#userLastName").remove();
 
@@ -261,7 +347,7 @@ function showUserProfile(currentUser) {
             value: lastname,
             required: true
         })
-    ).appendTo("#profileContainer");
+    ).appendTo("#updateProfileForm");
 
     $("#userAddress").remove();
 
@@ -282,7 +368,7 @@ function showUserProfile(currentUser) {
             value: address,
             required: true
         })
-    ).appendTo("#profileContainer");
+    ).appendTo("#updateProfileForm");
 
     $("#userPostalCode").remove();
 
@@ -303,7 +389,7 @@ function showUserProfile(currentUser) {
             value: postal_code,
             required: true
         })
-    ).appendTo("#profileContainer");
+    ).appendTo("#updateProfileForm");
 
     $("#userCity").remove();
 
@@ -324,12 +410,12 @@ function showUserProfile(currentUser) {
             value: city,
             required: true
         })
-    ).appendTo("#profileContainer");
+    ).appendTo("#updateProfileForm");
 
-    $("#userName").remove();
+    $("#userAccountName").remove();
 
     $("<div/>", {
-        id: "userName",
+        id: "userAccountName",
         class: "mb-3"
     }).append(
         $("<label/>", {
@@ -348,9 +434,10 @@ function showUserProfile(currentUser) {
         }),
         $("<div/>", {
             id: "usernameHelp",
-            class: "form-text"
+            class: "form-text",
+            text: "Der Benutzername kann nicht geändert werden!"
         })
-    ).appendTo("#profileContainer");
+    ).appendTo("#updateProfileForm");
 
     $("#userEmail").remove();
 
@@ -376,7 +463,7 @@ function showUserProfile(currentUser) {
             id: "emailHelp",
             class: "form-text"
         })
-    ).appendTo("#profileContainer");
+    ).appendTo("#updateProfileForm");
 
     $("#userPasswordNew").remove();
 
@@ -396,13 +483,15 @@ function showUserProfile(currentUser) {
             name: "passwordNew",
             "aria-describedby": "passwordNewHelp",
             value: null,
-            required: false
+            required: false,
+            placeholder: "Optional"
         }),
         $("<div/>", {
             id: "passwordNewHelp",
-            class: "form-text"
+            class: "form-text",
+            text: "Das Passwort muss mindestens 8 Zeichen lang sein!"
         })
-    ).appendTo("#profileContainer");
+    ).appendTo("#updateProfileForm");
 
     $("#userPasswordNew2").remove();
 
@@ -422,13 +511,14 @@ function showUserProfile(currentUser) {
             name: "passwordNew2",
             "aria-describedby": "passwordNew2Help",
             value: null,
-            required: false
+            required: false,
+            placeholder: "Optional"
         }),
         $("<div/>", {
             id: "passwordNew2Help",
             class: "form-text"
         })
-    ).appendTo("#profileContainer");
+    ).appendTo("#updateProfileForm");
 
     $("#userPassword").remove();
 
@@ -454,7 +544,7 @@ function showUserProfile(currentUser) {
             id: "passwordHelp",
             class: "form-text"
         })
-    ).appendTo("#profileContainer");
+    ).appendTo("#updateProfileForm");
 
     $("#updateUserProfile").remove();
 
@@ -464,6 +554,104 @@ function showUserProfile(currentUser) {
         type: "submit",
         name: "updateUserProfile",
         text: "Änderungen übernehmen"
-    }).appendTo("#profileContainer");
+    }).appendTo("#updateProfileForm");
 
+    // event handler for clicking on update user profile button
+    $("#updateUserProfile").click(function () {
+
+        updateUserProfile(
+            username,
+            $("#sex").val(),
+            $("#name").val(),
+            $("#lastname").val(),
+            $("#address").val(),
+            $("#postal_code").val(),
+            $("#city").val(),
+            $("#email").val(),
+            $("#passwordNew").val(),
+            $("#passwordNew2").val(),
+            $("#password").val()
+        );
+    });
 }
+
+function updateUserProfile(username, sex, name, lastname, address, postal_code, city, email, passwordNew, passwordNew2, password) {
+
+    if (checkNewPasswordInput(passwordNew, passwordNew2)) {
+
+        const updateUserProfileParameter = {
+            username: username,
+            sex: sex,
+            name: name,
+            lastname: lastname,
+            address: address,
+            postal_code: postal_code,
+            city: city,
+            email: email,
+            passwordNew: passwordNew,
+            password: password
+        }
+
+        console.log("Attempting to update user profile");
+
+        $.ajax({
+            type: "POST",
+            url: "../../../../backend/user/controller/UserController.php",
+            cache: false,
+            data: {method: "updateUserProfile", param: updateUserProfileParameter},
+            dataType: "json"
+        }).done(function (response) {
+            console.log("Request succeeded! Response: " + response);
+            if(response == "user profile has been updated") {
+                showProfileOfCurrentUser()
+            } else {
+                $("#password").addClass("is-invalid");
+                $("#passwordHelp").addClass("text-danger");
+                $("#passwordHelp").html("Das Passwort ist falsch!");
+            }
+        }).fail(function () {
+            console.log("Request failed!");
+            alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
+                "Bitte probieren Sie es später erneut.");
+        });
+
+    }
+}
+
+function checkNewPasswordInput(passwordNew, passwordNew2) {
+    if (passwordNew == "" && passwordNew2 == "") {
+        // no new password has been set
+        return true;
+    }else {
+
+        if (passwordNew != passwordNew2) {
+            console.log("new passwords do not match!");
+            $("#passwordNew").addClass("is-invalid");
+            $("#passwordNewHelp").addClass("text-danger");
+            $("#passwordNewHelp").html("Passwörter stimmen nicht überein!");
+            $("#passwordNew2").addClass("is-invalid");
+            $("#passwordNew2Help").addClass("text-danger");
+            $("#passwordNew2Help").html("Passwörter stimmen nicht überein!");
+            return false;
+        } else {
+            console.log("new passwords match!");
+            $("#passwordNew").removeClass("is-invalid");
+            $("#passwordNewHelp").removeClass("text-danger");
+            $("#passwordNew2").removeClass("is-invalid");
+            $("#passwordNew2Help").removeClass("text-danger");
+            $("#passwordNewHelp").html("");
+            $("#passwordNew2Help").html("");
+
+            if (passwordNew.length < 8) {
+                $("#passwordNew").addClass("is-invalid");
+                $("#passwordNewHelp").addClass("text-danger");
+                $("#passwordNewHelp").html("Das Passwort muss mindestens 8 Zeichen lang sein!");
+
+                return false;
+            }
+
+            return true;
+        }
+    }
+}
+
