@@ -41,7 +41,7 @@ function login(username, password, keepLogin) {
         dataType: "json"      
     }).done(function(response) {
         console.log("Request succeeded! Response: " + JSON.stringify(response));
-        if(response == "Login was not successful!") {
+        if(response === "Login was not successful!") {
 
             $("#username").addClass("is-invalid");
             $("#usernameHelp").addClass("text-danger");
@@ -602,7 +602,7 @@ function updateUserProfile(username, sex, name, lastname, address, postal_code, 
             dataType: "json"
         }).done(function (response) {
             console.log("Request succeeded! Response: " + response);
-            if(response == "user profile has been updated") {
+            if(response === "user profile has been updated") {
                 showProfileOfCurrentUser()
             } else {
                 $("#password").addClass("is-invalid");

@@ -29,6 +29,9 @@ class UserControllerRequestHandler
             case "getCurrentUser":
                 $res = $this->service->getCurrentUser();
                 break;
+            case "getAllUsers":
+                $res = $this->service->getAllUsers();
+                break;
             case "registerUser":
                 $res = $this->service->registerUser($param);
                 break;

@@ -184,4 +184,13 @@ class LoginService
         }
     }
 
+    public function getAllUsers()
+    {
+        // check if user is admin, else return no user information
+        if ($_SESSION["currentUser"]->isAdmin() == 1) {
+          return $this->ums->getAllUsers();
+        }
+        return [];
+    }
+
 }
