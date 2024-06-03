@@ -55,7 +55,6 @@ class UserManagementSystem
         return $count > 0;
     }
 
-    // ToDo: this is for some reason broken
     public function isRegisteredEmail($emailToCheck): bool
     {
         $count = $this->repository->countUsersByEmail($emailToCheck);

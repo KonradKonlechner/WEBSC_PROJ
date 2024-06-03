@@ -21,6 +21,9 @@ class LoginService
         $enteredSex = $this->inputValidator->prepareInput($param["sex"]);
         $enteredName = $this->inputValidator->prepareInput($param["name"]);
         $enteredLastName = $this->inputValidator->prepareInput($param["lastname"]);
+        $enteredAddress = $this->inputValidator->prepareInput($param["address"]);
+        $enteredPostalCode = $this->inputValidator->prepareInput($param["postalCode"]);
+        $enteredCity = $this->inputValidator->prepareInput($param["city"]);
         $enteredEmail = $this->inputValidator->prepareInput($param["email"]);
         $enteredUsername = $this->inputValidator->prepareInput($param["username"]);
         $enteredPassword = $this->inputValidator->prepareInput($param["password"]);
@@ -43,21 +46,21 @@ class LoginService
                     . implode(PHP_EOL, $validationErrors);
             }
             $user = new User();
-            #$username, $password, $sex, $name, $lastname, $address, $postal_code, $city, $email
             $user->setAllValues(
                 $enteredUsername,
                 $enteredPassword,
                 $enteredSex,
                 $enteredName,
                 $enteredLastName,
-                "",
-                "",
-                "",
+                $enteredAddress,
+                $enteredPostalCode,
+                $enteredCity,
                 $enteredEmail
             );
 
             $this->ums->saveUserAsRegistered($user);
 
+            $param["keepLogin"] = "false";
             $this->loginWithParameters($param);
             return "Registrierung erfolgreich!";
         }

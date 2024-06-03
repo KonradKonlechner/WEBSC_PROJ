@@ -20,11 +20,10 @@ class UserInputValidator
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return "Ungültiges E-Mail-Format!";
-        } /*
- ToDo: add these lines again once the method is working
- else if ($this->ums->isRegisteredEmail($email)) {
+        }
+        if ($this->ums->isRegisteredEmail($email)) {
             return "Die E-Mail-Adresse wurde bereits registriert!";
-        } */
+        }
         return "";
     }
 

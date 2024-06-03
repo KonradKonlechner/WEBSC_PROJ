@@ -294,15 +294,15 @@ function showUserProfile(currentUser) {
         }).append(
             $("<option/>", {
                 text: "Keine",
-                selected: (sex == "Keine")
+                selected: (sex === "Keine")
             }),
             $("<option/>", {
                 text: "Frau",
-                selected: (sex == "Frau")
+                selected: (sex === "Frau")
             }),
             $("<option/>", {
                 text: "Herr",
-                selected: (sex == "Herr")
+                selected: (sex === "Herr")
             })
         )
     ).appendTo("#updateProfileForm");

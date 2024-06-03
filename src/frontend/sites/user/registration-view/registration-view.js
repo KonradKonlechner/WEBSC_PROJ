@@ -7,6 +7,9 @@ $(document).ready(function () {
         registerUser(
             $("#sex").val(),
             $("#name").val(),
+            $("#address").val(),
+            $("#postalCode").val(),
+            $("#city").val(),
             $("#lastname").val(),
             $("#email").val(),
             $("#username").val(),
@@ -36,6 +39,9 @@ function registerUser(
     sex,
     name,
     lastname,
+    address,
+    postalCode,
+    city,
     email,
     username,
     password,
@@ -45,12 +51,16 @@ function registerUser(
         sex: sex,
         name: name,
         lastname: lastname,
+        address: address,
+        postalCode: postalCode,
+        city: city,
         email: email,
         username: username,
         password: password,
         password2: password2,
     }
     console.log("registering user...");
+    console.log(parameter);
     $.ajax({
         type: "POST",
         url: "../../../../backend/user/controller/UserController.php",
