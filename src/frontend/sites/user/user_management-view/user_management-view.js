@@ -21,14 +21,32 @@ function getAllUsers() {
     });
 }
 
+function userClicked(user) {
+    console.log(user.username + "has been clicked.")
+}
+
 function appendUser(user) {
     $("#users")
         .append(
             $("<div/>", {
                 id: user.username,
-                type: "user",
-                name: user.username,
-                text: user.username
+                class: "userClickBox",
+                type: "user"
             })
+                .click(function(e) {userClicked(user)})
+                .append(
+                    $("<div/>", {
+                        name: user.username,
+                        text: user.username
+                    }),
+                    $("<div/>", {
+                        name: user.name,
+                        text: user.name
+                    }),
+                    $("<div/>", {
+                        name: user.lastname,
+                        text: user.lastname
+                    }),
+                )
         )
 }
