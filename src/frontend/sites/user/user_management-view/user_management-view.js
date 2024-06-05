@@ -74,16 +74,16 @@ function appendUser(user) {
 
 function setUpdateEventListener(user) {
     console.log("Attempting to update user profile");
-    $("#submit"+user.username).click(function () {
+    $("#submit" + user.username).click(function () {
         updateUser(
             user.username,
-            $("#sex"+user.username).val(),
-            $("#name"+user.username).val(),
-            $("#lastname"+user.username).val(),
-            $("#address"+user.username).val(),
-            $("#postalCode"+user.username).val(),
-            $("#city"+user.username).val(),
-            $("#email"+user.username).val()
+            $("#sex" + user.username).val(),
+            $("#name" + user.username).val(),
+            $("#lastname" + user.username).val(),
+            $("#address" + user.username).val(),
+            $("#postalCode" + user.username).val(),
+            $("#city" + user.username).val(),
+            $("#email" + user.username).val()
         );
     });
 }
@@ -99,7 +99,16 @@ function updateUser(
     email
 ) {
 
-    // ToDo: check if sure
+    const userShouldBeUpdated = confirm(
+        "Sie sind dabei die Daten des Users "
+        + username
+        + " zu ändern.\nMöchten Sie fortfahren?"
+    );
+
+    if (!userShouldBeUpdated) {
+        return;
+    }
+
     console.log("Attempting to update user profile of User " + username);
 
     const updateUserProfileParameter = {
@@ -120,8 +129,9 @@ function updateUser(
         data: {method: "updateUserProfileAsAdmin", param: updateUserProfileParameter},
         dataType: "json"
     }).done(function (response) {
-        alert(response);
-        // ToDo: change data to updated values
+        alert("Der User " + response.username + " wurde erfolgreich geändert!");
+        // technically not required
+        setFieldsToUpdatedValues(response)
     }).fail(function () {
         console.log("Request failed!");
         alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
@@ -129,40 +139,50 @@ function updateUser(
     });
 }
 
+function setFieldsToUpdatedValues(user) {
+    $("#sex" + user.username).val(user.sex);
+    $("#name" + user.username).val(user.name);
+    $("#lastname" + user.username).val(user.lastname);
+    $("#address" + user.username).val(user.address);
+    $("#postalCode" + user.username).val(user.postal_code);
+    $("#city" + user.username).val(user.city);
+    $("#email" + user.username).val(user.email);
+}
+
 function getAppendableObjectsFor(user) {
     // Note: yes, this is ugly but its easy to write and gets the job done.
     return "<div class=\"mb-3\">\n" +
         "  <label for=\"sex\" class=\"form-label\">Anrede</label>\n" +
-        "  <select name=\"sex\" id=\"sex"+user.username+"\" class=\"form-select\">\n" +
-        "    <option " + (user.sex === "Keine" ? "selected" : "") +" value=\"Keine\">Keine</option>\n" +
+        "  <select name=\"sex\" id=\"sex" + user.username + "\" class=\"form-select\">\n" +
+        "    <option " + (user.sex === "Keine" ? "selected" : "") + " value=\"Keine\">Keine</option>\n" +
         "    <option " + (user.sex === "Frau" ? "selected" : "") + " value=\"Frau\">Frau</option>\n" +
-        "    <option " + (user.sex === "Herr" ? "selected" : "") +" value=\"Herr\">Herr</option>\n" +
+        "    <option " + (user.sex === "Herr" ? "selected" : "") + " value=\"Herr\">Herr</option>\n" +
         "  </select>\n" +
         "</div>" +
         "<div class=\"mb-3\">\n" +
         "  <label for=\"name\" class=\"form-label\">Vorname</label>\n" +
-        "  <input type=\"text\" class=\"form-control\" name=\"name\" id=\"name"+user.username+"\" value=\""+user.name+"\" required >\n" +
+        "  <input type=\"text\" class=\"form-control\" name=\"name\" id=\"name" + user.username + "\" value=\"" + user.name + "\" required >\n" +
         "</div>\n" +
         "<div class=\"mb-3\">\n" +
         "  <label for=\"lastname\" class=\"form-label\">Nachname</label>\n" +
-        "  <input type=\"text\" class=\"form-control\" name=\"lastname\" id=\"lastname"+user.username+"\" value=\""+user.lastname+"\" required>\n" +
+        "  <input type=\"text\" class=\"form-control\" name=\"lastname\" id=\"lastname" + user.username + "\" value=\"" + user.lastname + "\" required>\n" +
         "</div>\n" +
         "<div class=\"mb-3\">\n" +
         "  <label for=\"address\" class=\"form-label\">Adresse</label>\n" +
-        "  <input type=\"text\" class=\"form-control\" name=\"address\" id=\"address"+user.username+"\" value=\""+user.address+"\" required>\n" +
+        "  <input type=\"text\" class=\"form-control\" name=\"address\" id=\"address" + user.username + "\" value=\"" + user.address + "\" required>\n" +
         "</div>\n" +
         "<div class=\"mb-3\">\n" +
         "  <label for=\"postalCode\" class=\"form-label\">Postleitzahl</label>\n" +
-        "  <input type=\"text\" class=\"form-control\" name=\"postalCode\" id=\"postalCode"+user.username+"\" value=\""+user.postal_code+"\" required>\n" +
+        "  <input type=\"text\" class=\"form-control\" name=\"postalCode\" id=\"postalCode" + user.username + "\" value=\"" + user.postal_code + "\" required>\n" +
         "</div>\n" +
         "<div class=\"mb-3\">\n" +
         "  <label for=\"city\" class=\"form-label\">Ort</label>\n" +
-        "  <input type=\"text\" class=\"form-control\" name=\"city\" id=\"city"+user.username+"\" value=\""+user.city+"\" required>\n" +
+        "  <input type=\"text\" class=\"form-control\" name=\"city\" id=\"city" + user.username + "\" value=\"" + user.city + "\" required>\n" +
         "</div>\n" +
         "<div class=\"mb-3\">\n" +
         "  <label for=\"email\" class=\"form-label\">Email</label>\n" +
-        "  <input class=\"form-control\" name=\"email\" id=\"email"+user.username+"\" aria-describedby=\"emailHelp\" value=\""+user.email+"\" required>\n" +
+        "  <input class=\"form-control\" name=\"email\" id=\"email" + user.username + "\" aria-describedby=\"emailHelp\" value=\"" + user.email + "\" required>\n" +
         "  <div id=\"emailHelp\" class=\"form-text\"></div>\n" +
         "</div>\n" +
-        "<button class=\"btn btn-success\" type=\"submit\" name=\"submit\" id=\"submit"+user.username+"\">Ändern</button>\n"
+        "<button class=\"btn btn-success\" type=\"submit\" name=\"submit\" id=\"submit" + user.username + "\">Ändern</button>\n"
 }

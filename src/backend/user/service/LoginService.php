@@ -193,7 +193,7 @@ class LoginService
         return [];
     }
 
-    public function updateUserProfileAsAdmin($param)
+    public function updateUserProfileAsAdmin($param): User
     {
         // check if user is admin, else return no user information
         if ($_SESSION["currentUser"]->isAdmin() == 1) {
