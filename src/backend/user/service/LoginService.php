@@ -193,4 +193,39 @@ class LoginService
         return [];
     }
 
+    public function updateUserProfileAsAdmin($param)
+    {
+        // check if user is admin, else return no user information
+        if ($_SESSION["currentUser"]->isAdmin() == 1) {
+            $enteredUsername = $this->inputValidator->prepareInput($param["username"]);
+            $enteredSex = $this->inputValidator->prepareInput($param["sex"]);
+            $enteredName = $this->inputValidator->prepareInput($param["name"]);
+            $enteredLastName = $this->inputValidator->prepareInput($param["lastname"]);
+            $enteredAddress = $this->inputValidator->prepareInput($param["address"]);
+            $enteredPostalCode = $this->inputValidator->prepareInput($param["postal_code"]);
+            $enteredCity = $this->inputValidator->prepareInput($param["city"]);
+            $enteredEmail = $this->inputValidator->prepareInput($param["email"]);
+
+            $oldUserData = $this->ums->getUserByUsername($enteredUsername);
+
+            $updatedUser = User::of(
+                $oldUserData->getUserId(),
+                $oldUserData->getUsername(),
+                $oldUserData->getPassword(),
+                $enteredSex,
+                $enteredName,
+                $enteredLastName,
+                $enteredAddress,
+                $enteredPostalCode,
+                $enteredCity,
+                $enteredEmail,
+                $oldUserData->isAdmin(),
+                $oldUserData->isInactive()
+            );
+            $this->ums->updateUser($updatedUser);
+            return $updatedUser;
+        }
+        throw new \Exception("You are not allowed to change user profiles");
+    }
+
 }

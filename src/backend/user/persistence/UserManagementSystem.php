@@ -38,7 +38,7 @@ class UserManagementSystem
         return false;
     }
 
-    public function getUserByUsername($usernameToCheck)
+    public function getUserByUsername($usernameToCheck): User
     {
         return $this->repository->getUserByUsername($usernameToCheck);
     }

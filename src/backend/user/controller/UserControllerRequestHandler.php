@@ -38,6 +38,9 @@ class UserControllerRequestHandler
             case "updateUserProfile":
                 $res = $this->service->updateUserProfile($param);
                 break;
+            case "updateUserProfileAsAdmin":
+                $res = $this->service->updateUserProfileAsAdmin($param);
+                break;
             default:
                 $res = null;
                 break;
