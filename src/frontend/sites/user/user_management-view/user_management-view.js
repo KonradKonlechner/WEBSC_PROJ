@@ -29,6 +29,8 @@ function openUserInfo(user) {
         $("#userInfo" + user.username)
             .removeClass("closed")
             .css("display", "block");
+        $("#"+user.username)
+            .addClass("active");
     }
 }
 
@@ -36,6 +38,8 @@ function closeAllUserInfos() {
     $(".userInfo")
         .addClass("closed")
         .css("display", "none");
+    $(".userClickBox")
+        .removeClass("active");
 }
 
 function appendUser(user) {
