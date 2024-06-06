@@ -28,7 +28,7 @@ function rerouteToLoginFormIfUserIsLoggedIn() {
         dataType: "json"
     }).done(function (response) {
         if (response === '1') {
-            window.location.replace("../../user/login-view/login-view.html")
+            window.location.replace("../../user/login-view/login-view.html");
         }
     }).fail(function () {
         console.log("Request failed!");
@@ -69,6 +69,7 @@ function registerUser(
         dataType: "json"
     }).done(function (response) {
         console.log("Request succeeded! Response: " + response);
+        window.location.replace("../../user/login-view/login-view.html");
         alert(response);
     }).fail(function () {
         console.log("Request failed!");

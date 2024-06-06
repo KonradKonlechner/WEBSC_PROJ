@@ -1,6 +1,28 @@
 $(document).ready(function () {
+    validateAdminAuthorization()
     getAllUsers();
 });
+
+function validateAdminAuthorization() {
+    $.ajax({
+        type: "GET",
+        url: "../../../../backend/user/controller/UserController.php",
+        cache: false,
+        data: {method: "checkUserIsAdmin", param: null},
+        dataType: "json"
+    }).done(function (response) {
+        console.log("Request succeeded! IsAdmin - Response: " + response);
+        if (response !== '1') {
+            // redirect to welcome page
+            window.location.href = "../../welcome/welcome-view/welcome-view.html"
+        }
+    }).fail(function () {
+        console.log("Request failed!");
+        alert("Adminauthentifizierung konnte nicht durchgeführt werden.\nBitte versuchen Sie es später noch einmal")
+        // redirect to welcome page
+        window.location.href = "../../welcome/welcome-view/welcome-view.html"
+    });
+}
 
 function getAllUsers() {
     console.log("show profile of current user");
