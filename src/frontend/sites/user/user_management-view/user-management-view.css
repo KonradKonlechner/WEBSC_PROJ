@@ -6,13 +6,14 @@
     color: #444;
     cursor: pointer;
     padding: 18px;
-    width: 100%;
+    width: 95%;
     border: none;
     text-align: left;
     outline: none;
     font-size: 15px;
-}
 
+    justify-content: space-between;
+}
 
 .active, .userClickBox:hover {
     background-color: #ccc;
@@ -24,6 +25,7 @@
     border: 2px solid #ccc;
     border-radius: 0 0 10px 10px;
     border-top: 0;
+    width: 95%;
 }
 
 .closed {
@@ -31,4 +33,37 @@
     float: right;
     font-size: 28px;
     font-weight: bold;
+}
+
+.userNameHeader {
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.nameHeader {
+    border-left: 2px solid black;
+    width: 100%;
+    text-align: center;
+}
+
+.userState {
+    text-align: left;
+    border-radius: 5px;
+    padding: 3px;
+}
+
+.inactiveState {
+    border: 3px solid #b03f3f;
+    color: #a31d1d;
+    background: #ffb8b8;
+    font-weight: bolder;
+}
+
+.activeState {
+    border: 3px solid #8ce683;
+    color: #2f7a27;
+    background: #bfffb8;
+    font-weight: bolder;
 }

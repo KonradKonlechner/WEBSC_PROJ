@@ -205,6 +205,7 @@ class LoginService
             $enteredPostalCode = $this->inputValidator->prepareInput($param["postal_code"]);
             $enteredCity = $this->inputValidator->prepareInput($param["city"]);
             $enteredEmail = $this->inputValidator->prepareInput($param["email"]);
+            $enteredActiveState = $this->inputValidator->prepareInput($param["isActive"]);
 
             $oldUserData = $this->ums->getUserByUsername($enteredUsername);
 
@@ -220,7 +221,7 @@ class LoginService
                 $enteredCity,
                 $enteredEmail,
                 $oldUserData->isAdmin(),
-                $oldUserData->isInactive()
+                $enteredActiveState ==="true" ? 0 : 1
             );
             $this->ums->updateUser($updatedUser);
             return $updatedUser;

@@ -56,16 +56,21 @@ function appendUser(user) {
                 .append(
                     $("<div/>", {
                         name: user.username,
-                        text: user.username
+                        text: user.username,
+                        class: "userNameHeader"
                     }),
                     $("<div/>", {
+                        id: "nameHeader" + user.username,
                         name: user.name,
-                        text: user.name
+                        text: user.name + " " + user.lastname,
+                        class: "nameHeader"
                     }),
                     $("<div/>", {
-                        name: user.lastname,
-                        text: user.lastname
-                    })
+                        id: "userActiveState" + user.username,
+                        name: "userActiveState",
+                        text: user.isInactive === 0 ? "Aktiv" : "Inaktiv",
+                        class: user.isInactive === 0 ? "activeState" : "inactiveState"
+                    }).addClass("userState")
                 ),
             $("<div/>", {
                 class: "userInfo",
@@ -87,7 +92,8 @@ function setUpdateEventListener(user) {
             $("#address" + user.username).val(),
             $("#postalCode" + user.username).val(),
             $("#city" + user.username).val(),
-            $("#email" + user.username).val()
+            $("#email" + user.username).val(),
+            $("#isActive" + user.username).is(":checked"),
         );
     });
 }
@@ -100,9 +106,10 @@ function updateUser(
     address,
     postalCode,
     city,
-    email
+    email,
+    isActive
 ) {
-
+    console.log(isActive)
     const userShouldBeUpdated = confirm(
         "Sie sind dabei die Daten des Users "
         + username
@@ -123,7 +130,8 @@ function updateUser(
         address: address,
         postal_code: postalCode,
         city: city,
-        email: email
+        email: email,
+        isActive: isActive
     }
 
     $.ajax({
@@ -144,13 +152,12 @@ function updateUser(
 }
 
 function setFieldsToUpdatedValues(user) {
-    $("#sex" + user.username).val(user.sex);
-    $("#name" + user.username).val(user.name);
-    $("#lastname" + user.username).val(user.lastname);
-    $("#address" + user.username).val(user.address);
-    $("#postalCode" + user.username).val(user.postal_code);
-    $("#city" + user.username).val(user.city);
-    $("#email" + user.username).val(user.email);
+    $("#userActiveState" + user.username)
+        .removeClass("activeState")
+        .removeClass("inactiveState")
+        .addClass(user.isInactive === 0 ? "activeState" : "inactiveState")
+        .text(user.isInactive === 0 ? "Aktiv" : "Inaktiv");
+    $("#nameHeader" + user.username).text(user.name + " " + user.lastname);
 }
 
 function getAppendableObjectsFor(user) {
@@ -187,6 +194,10 @@ function getAppendableObjectsFor(user) {
         "  <label for=\"email\" class=\"form-label\">Email</label>\n" +
         "  <input class=\"form-control\" name=\"email\" id=\"email" + user.username + "\" aria-describedby=\"emailHelp\" value=\"" + user.email + "\" required>\n" +
         "  <div id=\"emailHelp\" class=\"form-text\"></div>\n" +
+        "</div>\n" +
+        "<div class=\"mb-3\">\n" +
+        "  <label for=\"isActive\" class=\"form-label\">Ist Aktiv?</label>\n" +
+        "  <input type=\"checkbox\"  name=\"isActive\" id=\"isActive" + user.username + "\" value=\"isActive\" "+(user.isInactive === 0 ? "checked" : "")+">\n" +
         "</div>\n" +
         "<button class=\"btn btn-success\" type=\"submit\" name=\"submit\" id=\"submit" + user.username + "\">Ändern</button>\n"
 }
