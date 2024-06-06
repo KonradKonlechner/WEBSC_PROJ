@@ -595,7 +595,7 @@ function updateUserProfile(username, sex, name, lastname, address, postal_code, 
         console.log("Attempting to update user profile");
 
         $.ajax({
-            type: "POST",
+            type: "PUT",
             url: "../../../../backend/user/controller/UserController.php",
             cache: false,
             data: {method: "updateUserProfile", param: updateUserProfileParameter},

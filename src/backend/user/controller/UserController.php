@@ -4,41 +4,53 @@ require_once "UserControllerRequestHandler.php";
 require_once "../model/User.php";
 session_start();
 
-$param = "";
-$method = "";
-$httpRequestMethod = "POST";
-
-isset($_POST["method"]) ? $method = $_POST["method"] : false;
-isset($_POST["param"]) ? $param = $_POST["param"] : false;
-
-if($method === "") {
-    $httpRequestMethod = "GET";
-    isset($_GET["method"]) ? $method = $_GET["method"] : false;
-    isset($_GET["param"]) ? $param = $_GET["param"] : false;
-}
+$httpRequestMethod = $_SERVER["REQUEST_METHOD"];
 
 $requestHandler = new UserControllerRequestHandler();
-$result = $requestHandler->handleRequest($method, $param);
-if ($result == null) {
-    response($httpRequestMethod, 400, null);
-} else {
-    response($httpRequestMethod, 200, $result);
-}
 
-function response($httpRequestMethod, $httpStatus, $data)
-{
-    header('Content-Type: application/json');
-    switch ($httpRequestMethod) {
-        case "POST":
-            http_response_code($httpStatus);
-            echo (json_encode($data));
-            break;
-        case "GET":
-            http_response_code($httpStatus);
-            echo (json_encode($data));
-            break;
-        default:
-            http_response_code(405);
-            echo ("Method not supported yet!");
-    }
+$param = "";
+$method = "";
+$httpStatus = 200;
+
+header('Content-Type: application/json');
+
+switch ($httpRequestMethod) {
+    case "POST":
+        isset($_POST["method"]) ? $method = $_POST["method"] : false;
+        isset($_POST["param"]) ? $param = $_POST["param"] : false;
+
+        $data = $requestHandler->handleRequest($method, $param);
+
+        if ($data == null) {
+            $httpStatus = 400;
+        }
+        http_response_code($httpStatus);
+        echo(json_encode($data));
+        break;
+    case "GET":
+        isset($_GET["method"]) ? $method = $_GET["method"] : false;
+        isset($_GET["param"]) ? $param = $_GET["param"] : false;
+
+        $data = $requestHandler->handleRequest($method, $param);
+
+        if ($data == null) {
+            $httpStatus = 400;
+        }
+        http_response_code($httpStatus);
+        echo(json_encode($data));
+        break;
+    case "PUT":
+        parse_str(file_get_contents("php://input"), $_PUT);
+
+        $data = $requestHandler->handleRequest($_PUT["method"], $_PUT["param"]);
+
+        if ($data == null) {
+            $httpStatus = 400;
+        }
+        http_response_code($httpStatus);
+        echo(json_encode($data));
+        break;
+    default:
+        http_response_code(405);
+        echo("Method not supported yet!");
 }
