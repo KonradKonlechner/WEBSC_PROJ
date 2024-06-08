@@ -24,16 +24,22 @@
 <body>
 <header id="navbar"></header>
 <main class="mt-2">
-    <div class="container justify-content-left">
+    <div id="productContainer" class="container justify-content-left">
         <h1>Hier finden Sie unsere Produkte!</h1>
 
-        <div id="selectCategoryContainer" class="mt-2 mb-3 col-2">
-            <label class="form-label" for="productCategory">Bitte wählen Sie eine Produktkategorie!</label>
-            <select class="form-select" id="productCategory" name="productCategory">
-                <option selected>Tiernahrung</option>
-                <option>Spielzeug</option>
-                <option>Zubehör</option>
-            </select>
+        <div class="row justify-content-between">
+            <div id="selectCategoryContainer" class="mt-2 mb-3 col-sm">
+                <label class="form-label" for="productCategory">Bitte wählen Sie eine Produktkategorie!</label>
+                <select class="form-select" id="productCategory" name="productCategory">
+                    <option selected>Tiernahrung</option>
+                    <option>Spielzeug</option>
+                    <option>Zubehör</option>
+                </select>
+            </div>
+            <div id="productSearchContainer" class="mt-2 mb-3 col-sm">
+                <label class="form-label" for="productSearch">Produktsuche</label>
+                <input id="productSearch" type="text" class="form-control" placeholder="Bitte hier Suchbegriff eingeben!">
+            </div>
         </div>
         <ul id="productList" class="list-group mb-3"></ul>
     </div>

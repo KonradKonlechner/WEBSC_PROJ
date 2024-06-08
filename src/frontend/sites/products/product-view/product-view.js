@@ -59,40 +59,44 @@ function insertProductsIntoList(products) {
         $( "<li/>", {
             class: "list-group-item"
         }).append(
-            $( "<h3/>", {
-                text: name
-            }),
             $( "<div/>", {
-                class: "row align-items-center"
+                class: "container text-center"
             }).append(
+                $( "<h3/>", {
+                    text: name
+                }),
                 $( "<div/>", {
-                    class: "col-2"
-                }).append(
-                    $( "<img/>", {
-                        src: "../../../../backend/product/pictures/" + imgPath
-                    })
-                ),
-                $( "<div/>", {
-                    class: "col-5"
+                    class: "row align-items-center"
                 }).append(
                     $( "<div/>", {
-                        text: description
-                    })
-                ),
-                $( "<div/>", {
-                    class: "col-2",
+                        class: "col-sm"
+                    }).append(
+                        $( "<img/>", {
+                            src: "../../../../backend/product/pictures/" + imgPath
+                        })
+                    ),
+                    $( "<div/>", {
+                        class: "col-sm"
+                    }).append(
+                        $( "<div/>", {
+                            text: description
+                        })
+                    ),
+                    $( "<div/>", {
+                        class: "col-sm",
 
-                }).append(
-                    $( "<p/>", {
-                        class: "productPrice",
-                        id: prodId,
-                        text: price + " €"
-                    }),
-                    $( "<a/>", {
-                        class: "addToShoppingCartLink",
-                        id: prodId,
-                        text: "In den Warenkorb legen"
-                    })
+                    }).append(
+                        $( "<p/>", {
+                            class: "productPrice",
+                            id: prodId,
+                            text: price + " €"
+                        }),
+                        $( "<a/>", {
+                            class: "addToShoppingCartLink",
+                            id: prodId,
+                            text: "In den Warenkorb legen"
+                        })
+                    )
                 )
             )
         ).appendTo("#productList" );
