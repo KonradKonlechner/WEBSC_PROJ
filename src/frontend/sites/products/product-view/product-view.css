@@ -1,0 +1,9 @@
+.addToShoppingCartLink {
+    cursor: pointer;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.productPrice {
+    font-weight: bold;
+}

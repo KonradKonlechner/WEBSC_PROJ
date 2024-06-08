@@ -1,0 +1,65 @@
+<?php
+namespace product;
+require_once "ProductControllerRequestHandler.php";
+require_once "../model/Product.php";
+session_start();
+
+$httpRequestMethod = $_SERVER["REQUEST_METHOD"];
+
+$requestHandler = new ProductControllerRequestHandler();
+
+$param = "";
+$method = "";
+$httpStatus = 200;
+
+header('Content-Type: application/json');
+
+switch ($httpRequestMethod) {
+    case "POST":
+        isset($_POST["method"]) ? $method = $_POST["method"] : false;
+        isset($_POST["param"]) ? $param = $_POST["param"] : false;
+
+        $method = htmlspecialchars($method);
+        $param = htmlspecialchars($param);
+
+        $data = $requestHandler->handleRequest($method, $param);
+
+        if ($data == null) {
+            $httpStatus = 400;
+        }
+        http_response_code($httpStatus);
+        echo(json_encode($data));
+        break;
+    case "GET":
+        isset($_GET["method"]) ? $method = $_GET["method"] : false;
+        isset($_GET["param"]) ? $param = $_GET["param"] : false;
+
+        $method = htmlspecialchars($method);
+        $param = htmlspecialchars($param);
+
+        $data = $requestHandler->handleRequest($method, $param);
+
+        if ($data == null) {
+            $httpStatus = 400;
+        }
+        http_response_code($httpStatus);
+        echo(json_encode($data));
+        break;
+    case "PUT":
+        parse_str(file_get_contents("php://input"), $_PUT);
+
+        $method = htmlspecialchars($_PUT["method"]);
+        $param = htmlspecialchars($_PUT["param"]);
+
+        $data = $requestHandler->handleRequest($method, $param);
+
+        if ($data == null) {
+            $httpStatus = 400;
+        }
+        http_response_code($httpStatus);
+        echo(json_encode($data));
+        break;
+    default:
+        http_response_code(405);
+        echo("Method not supported yet!");
+}

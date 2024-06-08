@@ -15,6 +15,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="../../../res/css/styles.css"/>
+    <link rel="stylesheet" href="product-view.css"/>
 
     <!-- Scripts -->
     <script src="../../navigation/include_nav.js"></script>
@@ -23,7 +24,19 @@
 <body>
 <header id="navbar"></header>
 <main class="mt-2">
-    <h1>Hier finden Sie unsere Produkte!</h1>
+    <div class="container justify-content-left">
+        <h1>Hier finden Sie unsere Produkte!</h1>
+
+        <div id="selectCategoryContainer" class="mt-2 mb-3 col-2">
+            <label class="form-label" for="productCategory">Bitte wählen Sie eine Produktkategorie!</label>
+            <select class="form-select" id="productCategory" name="productCategory">
+                <option selected>Tiernahrung</option>
+                <option>Spielzeug</option>
+                <option>Zubehör</option>
+            </select>
+        </div>
+        <ul id="productList" class="list-group mb-3"></ul>
+    </div>
 </main>
 <footer id="footer"></footer>
 </body>

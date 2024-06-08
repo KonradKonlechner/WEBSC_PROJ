@@ -40,11 +40,32 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Exportiere Daten aus Tabelle pawsomedb.users: ~0 rows (ungefähr)
-
 INSERT INTO `users` (`id`, `username`, `password`, `sex`, `firstname`, `lastname`, `address`, `postal_code`, `city`, `email`, `is_admin`, `is_user_inactive`)
 VALUES
     (1, 'maxim', '$2y$10$mBjBRPMcb2hsPdQ1D6dmJe3.zzo.sPr2/vY/ywC4ZRz5sUsP9RMvi', 'Herr', 'Max', 'Meier', 'Hauptstraße 123', '3210', 'Meierndorf', 'max@meier.at', 0, 0),
 	(2, 'admin', '$2y$10$EDDkpyGs3izycQrfP/XFZela9Ua8HMqpNguFNpJt7wy3AgAlhgZj6', 'Herr', 'Admin', 'LeBoss', '47th floor', '47001', 'Rooftop Penthouse', 'chef.admin@mailmail.com', 1, 0);
+
+DROP TABLE IF EXISTS `products`;
+
+-- Exportiere Struktur von Tabelle pawsomedb.products
+CREATE TABLE IF NOT EXISTS `products` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(50) NOT NULL,
+  `description` text NOT NULL,
+  `category` ENUM('food','toys','accessories') NOT NULL,
+  `price_per_unit_eur` float NOT NULL,
+  `image_path` varchar(255) DEFAULT NULL,
+  `thumbnail_path` varchar(255) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Exportiere Daten aus Tabelle pawsomedb.products: ~0 rows (ungefähr)
+INSERT INTO `products` (`id`, `name`, `description`, `category`, `price_per_unit_eur`, `image_path`, `thumbnail_path`)
+VALUES
+   (1, 'Whiskas Crunch', 'Whiskas Snacks Crunch Huhn, Truthahn & Ente 100g Katzensnack', 'food', 2.89, 'uploads/whiskas_crunch.jpeg', 'thumbnails/thumbnail_whiskas_crunch.jpg'),
+   (2, 'Pedigree Classic', 'Pedigree Classic 12x800g 3 Sorten Geflügel', 'food', 29.99, 'uploads/pedigree_classic.jpg', 'thumbnails/thumbnail_pedigree_classic.jpg'),
+   (3, 'Katzenangel 3 in 1 XXL', 'Katzenspielangel mit extra langem Stab für besonders großen Spielradius; mit drei unterschiedlichen, austauschbaren Federanhängern, befriedigt den Jagdtrieb Ihrer Katze. Gesamtlänge ca. 200 cm', 'toys', 3.49, 'uploads/cat_teasing_stick.jpg', 'thumbnails/thumbnail_cat_teasing_stick.jpg');
 
 GRANT USAGE ON *.* TO `pawsomeadmin`@`localhost` IDENTIFIED BY PASSWORD '*122F3B009504D146B213A98575C23E23B399E76C';
 
