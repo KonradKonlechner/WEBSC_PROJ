@@ -38,13 +38,13 @@ function setProductList() {
         insertProductsIntoList(response)
     }).fail(function() {
         console.log("Request failed!");
-        $( "li" ).remove();
+        $( "#productList > li" ).remove();
     });
 }
 
 function insertProductsIntoList(products) {
 
-    $( "li" ).remove();
+    $( "#productList > " ).remove();
 
     $.each(products, function( key, val ) {
 
