@@ -1,19 +1,33 @@
-
 $(document).ready(function () {
-    setProductList();
+    filterProductList();
 
-    $( "#productCategory" ).on( "change", function() {
-        setProductList();
-    } );
+    $("#productCategory").on( "change", function() {
+        filterProductList();
+    });
+
+    $("#productSearch").on( "keyup", function() {
+        filterProductList();
+    });
 });
 
-function setProductList() {
+function filterProductList() {
+    if($("#productSearch").val() === "") {
+        filterProductListByCategory();
+    } else {
+        filterProductListBySearchInput();
+    }
+}
+
+function filterProductListByCategory() {
     console.log("getting products by category...");
 
     var productCategory = $("#productCategory").val();
     console.log("selected product category: " + productCategory);
 
     switch(productCategory) {
+        case "Alle":
+            insertAllProducts();
+            return;
         case "Tiernahrung":
             productCategory = "food";
             break;
@@ -27,6 +41,10 @@ function setProductList() {
             productCategory = null;
     }
 
+    insertAllProductsOfCategory(productCategory)
+}
+
+function insertAllProductsOfCategory(productCategory) {
     $.ajax({
         type: "GET",
         url: "../../../../backend/product/controller/ProductController.php",
@@ -40,6 +58,71 @@ function setProductList() {
         console.log("Request failed!");
         $( "#productList > li" ).remove();
     });
+}
+
+function insertAllProducts() {
+    $.ajax({
+        type: "GET",
+        url: "../../../../backend/product/controller/ProductController.php",
+        cache: false,
+        data: {method: "getAllProducts", param: null},
+        dataType: "json"
+    }).done(function(response) {
+        //console.log("Request succeeded! Response: " + response);
+        insertProductsIntoList(response)
+    }).fail(function() {
+        console.log("Request failed!");
+        $( "#productList > li" ).remove();
+    });
+}
+
+function filterProductListBySearchInput() {
+    console.log("getting products filtered by search input...");
+
+    var searchTerm = $("#productSearch").val();
+    console.log("searching for products by term: " + searchTerm);
+
+    var productCategory = $("#productCategory").val();
+
+    switch(productCategory) {
+        case "Alle":
+            productCategory = "all";
+            break;
+        case "Tiernahrung":
+            productCategory = "food";
+            break;
+        case "Spielzeug":
+            productCategory = "toys";
+            break;
+        case "Zubehör":
+            productCategory = "accessories";
+            break;
+        default:
+            productCategory = null;
+    }
+
+    const searchParameter = {
+        searchTerm: searchTerm,
+        productCategory: productCategory
+    }
+
+    if(searchTerm != "") {
+        $.ajax({
+            type: "GET",
+            url: "../../../../backend/product/controller/ProductController.php",
+            cache: false,
+            data: {method: "getAllProductsFilteredBySearchTermAndCategory", param: searchParameter},
+            dataType: "json"
+        }).done(function (response) {
+            //console.log("Request succeeded! Response: " + response);
+            insertProductsIntoList(response)
+        }).fail(function () {
+            console.log("Request failed!");
+            $("#productList > li").remove();
+        });
+    } else {
+        filterProductListByCategory();
+    }
 }
 
 function insertProductsIntoList(products) {

@@ -10,6 +10,20 @@ require_once "../model/Product.php";
 
 class ProductRepository
 {
+
+    public function getAllProducts()
+    {
+        $connection = db\DBConnection::getConnection();
+        $sqlSelect = "SELECT * FROM products";
+
+        $statement = $connection->prepare($sqlSelect);
+
+        $allProducts = $this->fetchAllAndBindResult($statement);
+        $statement->close();
+        $connection->close();
+        return $allProducts;
+    }
+
     public function getAllProductsOfCategory($productCategory)
     {
         $connection = db\DBConnection::getConnection();
@@ -22,6 +36,34 @@ class ProductRepository
         $connection->close();
         return $allProductsOfCategory;
     }
+
+    public function getAllProductsFilteredBySearchTerm($searchTerm)
+    {
+        $connection = db\DBConnection::getConnection();
+        $sqlSelect = "SELECT * FROM products WHERE name LIKE CONCAT('%',?,'%')";
+
+        $statement = $connection->prepare($sqlSelect);
+        $statement->bind_param("s", $searchTerm); # character "s" is used due to placeholders of type String
+        $allProductsFilteredBySearchTerm = $this->fetchAllAndBindResult($statement);
+        $statement->close();
+        $connection->close();
+        return $allProductsFilteredBySearchTerm;
+    }
+
+    public function getAllProductsFilteredBySearchTermAndCategory($searchTerm, $productCategory)
+    {
+        $connection = db\DBConnection::getConnection();
+        $sqlSelect = "SELECT * FROM products WHERE name LIKE CONCAT('%',?,'%') AND category = ?";
+
+        $statement = $connection->prepare($sqlSelect);
+        $statement->bind_param("ss", $searchTerm, $productCategory); # character "s" is used due to placeholders of type String
+        $allProductsFilteredBySearchTerm = $this->fetchAllAndBindResult($statement);
+        $statement->close();
+        $connection->close();
+        return $allProductsFilteredBySearchTerm;
+    }
+
+
 
     private function fetchAllAndBindResult(mixed $statement)
     {

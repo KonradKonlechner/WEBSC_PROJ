@@ -19,9 +19,6 @@ switch ($httpRequestMethod) {
         isset($_POST["method"]) ? $method = $_POST["method"] : false;
         isset($_POST["param"]) ? $param = $_POST["param"] : false;
 
-        $method = htmlspecialchars($method);
-        $param = htmlspecialchars($param);
-
         $data = $requestHandler->handleRequest($method, $param);
 
         if ($data == null) {
@@ -34,9 +31,6 @@ switch ($httpRequestMethod) {
         isset($_GET["method"]) ? $method = $_GET["method"] : false;
         isset($_GET["param"]) ? $param = $_GET["param"] : false;
 
-        $method = htmlspecialchars($method);
-        $param = htmlspecialchars($param);
-
         $data = $requestHandler->handleRequest($method, $param);
 
         if ($data == null) {
@@ -48,8 +42,8 @@ switch ($httpRequestMethod) {
     case "PUT":
         parse_str(file_get_contents("php://input"), $_PUT);
 
-        $method = htmlspecialchars($_PUT["method"]);
-        $param = htmlspecialchars($_PUT["param"]);
+        $method = $_PUT["method"];
+        $param = $_PUT["param"];
 
         $data = $requestHandler->handleRequest($method, $param);
 

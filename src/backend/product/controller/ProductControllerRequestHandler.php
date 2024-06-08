@@ -16,8 +16,14 @@ class ProductControllerRequestHandler
     function handleRequest($method, $param)
     {
         switch ($method) {
+            case "getAllProducts":
+                $res = $this->service->getAllProducts();
+                break;
             case "getAllProductsOfCategory":
                 $res = $this->service->getAllProductsOfCategory($param);
+                break;
+            case "getAllProductsFilteredBySearchTermAndCategory":
+                $res = $this->service->getAllProductsFilteredBySearchTermAndCategory($param);
                 break;
             default:
                 $res = null;
