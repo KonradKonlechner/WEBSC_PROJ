@@ -1,0 +1,47 @@
+.productClickBox {
+    display: flex;
+    flex-direction: row;
+
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 95%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+
+    justify-content: space-between;
+}
+
+.active, .productClickBox:hover {
+    background-color: #ccc;
+}
+
+.productNameHeader {
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.thumbnail {
+    width: 9em;
+}
+
+.productInfo {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 0 0 10px 10px;
+    border-top: 0;
+    width: 95%;
+}
+
+.closed {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
