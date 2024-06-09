@@ -1,6 +1,8 @@
 <?php
 namespace db;
 
+use mysqli_sql_exception;
+
 require_once "./dbaccess.php";
 
 $dbconnection = new DBConnection();
@@ -66,17 +68,11 @@ $tableSqlList = [
 foreach ($tableSqlList as $tableSql) {
     try {
         if ($connection->query($tableSql) === TRUE) {
-            echo "<script>console.log('Created table using:" . $tableSql . "');</script>";
+            echo "Created table using: " . $tableSql;
         } else {
-            echo '<script>console.log("Error creating table: '
-                . $connection->error
-                . '");</script>';
+            echo "Error creating table: " . $connection->error;
         }
     } catch (mysqli_sql_exception $mysqli_sql_exception) {
-        echo '<script>console.log("Error creating table: '
-            . $mysqli_sql_exception->getMessage()
-            . '");</script>';
+        echo "Error creating table: " . $mysqli_sql_exception->getMessage();
     }
 }
-
-?>
