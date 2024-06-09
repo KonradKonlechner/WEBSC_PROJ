@@ -25,7 +25,6 @@ function validateAdminAuthorization() {
 }
 
 function getAllUsers() {
-    console.log("show profile of current user");
     $.ajax({
         type: "GET",
         url: "../../../../backend/user/controller/UserController.php",
