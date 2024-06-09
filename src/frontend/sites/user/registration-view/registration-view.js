@@ -7,10 +7,10 @@ $(document).ready(function () {
         registerUser(
             $("#sex").val(),
             $("#name").val(),
+            $("#lastname").val(),
             $("#address").val(),
             $("#postalCode").val(),
             $("#city").val(),
-            $("#lastname").val(),
             $("#email").val(),
             $("#username").val(),
             $("#password").val(),
