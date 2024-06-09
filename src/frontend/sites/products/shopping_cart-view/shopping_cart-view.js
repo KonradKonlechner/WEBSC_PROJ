@@ -40,7 +40,7 @@ function insertPositionsIntoList(positions) {
         const price_num = product["price"];
         const price= price_num.toString().replace(".", ",");
         const posPrice_num = price_num * quantity;
-        const posPrice= posPrice_num.toString().replace(".", ",");
+        const posPrice= posPrice_num.toFixed(2).toString().replace(".", ",");
         const imgPath = product["thumbnailPath"];
 
         //console.log(name);
@@ -90,7 +90,7 @@ function insertPositionsIntoList(positions) {
                             name: "positionQuantity",
                             value: quantity,
                             min: 1,
-                            text: positionId
+                            "data-positionId": positionId
                         }),
                         $( "<p/>", {
                             class: "productPrice",
@@ -108,7 +108,7 @@ function insertPositionsIntoList(positions) {
     })
 
     $(".quantityInput").on( "change", function() {
-        const positionId = $(this).html();
+        const positionId = $(this).attr("data-positionId");
         const newQuantity = $(this).val();
         console.log("PositionId: " + positionId + ", Quantity: " + newQuantity);
 
