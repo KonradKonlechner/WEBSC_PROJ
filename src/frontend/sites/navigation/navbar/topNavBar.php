@@ -26,9 +26,7 @@
                     <a href="../../products/product-view/product-view.html">Produkte</a>
                 </li>
                 <li class="nav-item px-2">
-                    <a href="../../products/shopping_cart-view/shopping_cart-view.html">
-                        <img id="shoppingCartIcon" src="../../../res/images/shopping_cart.png" alt="shopping cart">
-                        Warenkorb
+                    <a id="navbarShoppingCartLink" href="../../products/shopping_cart-view/shopping_cart-view.html">
                     </a>
                 </li>
                 <li id="manageProductsLinkListEntry" class="nav-item px-2">

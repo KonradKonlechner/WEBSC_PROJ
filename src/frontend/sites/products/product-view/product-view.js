@@ -171,7 +171,6 @@ function insertProductsIntoList(products) {
                     }).append(
                         $( "<p/>", {
                             class: "productPrice",
-                            id: prodId,
                             text: price + " €"
                         }),
                         $( "<a/>", {
@@ -184,4 +183,30 @@ function insertProductsIntoList(products) {
             )
         ).appendTo("#productList" );
     })
+
+    $(".addToShoppingCartLink").on( "click", function() {
+        console.log("adding to shopping cart link clicked");
+
+        addProductToShoppingCart(this.id);
+    });
+}
+
+function addProductToShoppingCart(productId) {
+
+    console.log("adding to shopping cart product with id=" + productId);
+
+    $.ajax({
+        type: "POST",
+        url: "../../../../backend/order/controller/OrderController.php",
+        cache: false,
+        data: {method: "addProductToShoppingCart", param: productId},
+        dataType: "json"
+    }).done(function(response) {
+        console.log("Request succeeded! Response: " + response);
+        setTopNavBarShoppingCartCount()
+    }).fail(function() {
+        console.log("Request failed!");
+        alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
+            "Bitte probieren Sie es später erneut.");
+    });
 }

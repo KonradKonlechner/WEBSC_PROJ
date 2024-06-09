@@ -1,5 +1,7 @@
 setTopNavBarLinksIfUserIsLoggedIn();
 
+setTopNavBarShoppingCartCount();
+
 function setTopNavBarLinksIfUserIsLoggedIn() {
     console.log("check if user is logged in");
 
@@ -87,3 +89,39 @@ function setAdminLinks() {
         text: "Kunden bearbeiten"
     }).appendTo("#manageCustomersLinkListEntry");
 }
+
+function setTopNavBarShoppingCartCount() {
+    $.ajax({
+        type: "GET",
+        url: "../../../../backend/order/controller/OrderController.php",
+        cache: false,
+        data: {method: "getSessionShoppingCart", param: null},
+        dataType: "json"
+    }).done(function (response) {
+        console.log("Request succeeded! ShoppingCart - Response: " + response);
+        if (response != "no shoppingCart is set") {
+            count = response["positions"].length;
+            linkText = "(" + count + ") Warenkorb";
+            setTopNavBarShoppingCartLink(linkText);
+        } else {
+            setTopNavBarShoppingCartLink(" Warenkorb");
+        }
+    }).fail(function () {
+        console.log("Request failed!");
+        alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
+            "Bitte probieren Sie es später erneut.");
+    });
+}
+
+function setTopNavBarShoppingCartLink(linkText) {
+    $("#navbarShoppingCartLink").html("");
+    $("#navbarShoppingCartLink").append(
+        $("<img/>", {
+            id: "shoppingCartIcon",
+            src: "../../../res/images/shopping_cart.png",
+            alt: "shopping cart"
+        }),
+        linkText
+    );
+}
+

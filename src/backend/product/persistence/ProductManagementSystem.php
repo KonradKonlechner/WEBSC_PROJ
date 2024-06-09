@@ -2,7 +2,7 @@
 
 namespace product;
 
-require_once '../model/Product.php';
+require_once __DIR__ . '/../model/Product.php';
 require_once 'ProductRepository.php';
 
 class ProductManagementSystem
@@ -17,6 +17,11 @@ class ProductManagementSystem
     public function getAllProducts()
     {
         return$this->repository->getAllProducts();
+    }
+
+    public function getProductById($productId)
+    {
+        return$this->repository->getProductById($productId);
     }
 
     public function getAllProductsOfCategory($productCategory)
