@@ -55,15 +55,15 @@
 }
 
 .inactiveState {
-    border: 3px solid #b03f3f;
-    color: #a31d1d;
-    background: #ffb8b8;
+    border: darkred;
+    color: white;
+    background: darkred;
     font-weight: bolder;
 }
 
 .activeState {
-    border: 3px solid #8ce683;
-    color: #2f7a27;
-    background: #bfffb8;
+    border: green;
+    color: white;
+    background: green;
     font-weight: bolder;
 }
