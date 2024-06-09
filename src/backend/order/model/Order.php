@@ -54,7 +54,11 @@ class Order implements JsonSerializable
 
     public function addPosition($product)
     {
-        $positionId = $this->positions[count($this->positions)-1]->getPositionId()+1;
+        if(count($this->positions) === 0) {
+            $positionId = 1;
+        } else {
+            $positionId = $this->positions[count($this->positions)-1]->getPositionId()+1;
+        }
 
         $newOrderPosition = new OrderPosition($positionId, $product, 1);
 
