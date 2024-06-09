@@ -1,8 +1,8 @@
 $(document).ready(function () {
     // load navbar
     $("#navbar")
-        .load("../../navigation/navbar/topNavBar.php");
+        .load("../../navigation/navbar/topNavBar.html");
     // load footer
     $("#footer")
-        .load("../../navigation/footer/footerNav.php");
+        .load("../../navigation/footer/footerNav.html");
 });
