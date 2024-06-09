@@ -1,3 +1,5 @@
+const imageStore = "../../../../backend/product/pictures/"; // path to image storage
+
 $(document).ready(function () {
     validateAdminAuthorization()
     getAllProducts();
@@ -13,7 +15,7 @@ function validateAdminAuthorization() {
     }).done(function (response) {
         console.log("Request succeeded! IsAdmin - Response: " + response);
         if (response !== '1') {
-            // redirect to welcome page
+            // redirect to welcome page if not admin
             window.location.href = "../../welcome/welcome-view/welcome-view.html"
         }
     }).fail(function () {
@@ -57,14 +59,30 @@ function appendProduct(product) {
                     openProductInfo(product)
                 })
                 .append(
-                    $("<div/>", {
-                        name: product.name,
-                        text: product.name,
-                        class: "productNameHeader"
+                    $("<button/>", {
+                        id: "delete" + product.id,
+                        class: "fa fa-trash deleteButton"
+                    }).click(function (e) {
+                        deleteProduct(product)
                     }),
-                    $("<img/>", { // <img src="../../../res/images/paw_print.png" alt="paw print">
+                    $("<div/>", {
+                        class: "headerText"
+                    })
+                        .append(
+                            $("<div/>", {
+                                name: product.name,
+                                text: product.name,
+                                class: "productNameHeader"
+                            }),
+                            $("<div/>", {
+                                name: "productCategory",
+                                text: getProductCategoryTranslation(product),
+                                class: "productCategoryHeader"
+                            })
+                        ),
+                    $("<img/>", {
                         id: "thumbnail" + product.id,
-                        src: "../../../../backend/product/pictures/" + product.thumbnailPath,
+                        src: imageStore + product.thumbnailPath,
                         alt: product.name + " thumbnail",
                         class: "thumbnail"
                     })
@@ -77,6 +95,23 @@ function appendProduct(product) {
     setUpdateEventListener(product)
 }
 
+function deleteProduct(product) {
+// ToDo: add delete method
+}
+
+function getProductCategoryTranslation(product) {
+    switch (product.category) {
+        case "food":
+            return "Tiernahrung";
+        case "toys":
+            return "Spielzeug";
+        case "accessories":
+            return "Zubehör";
+        default:
+            return "";
+    }
+}
+
 function openProductInfo(product) {
     const isAlreadyOpen = $("#productInfo" + product.id).hasClass("closed");
     closeAllProductInfos();
@@ -84,7 +119,7 @@ function openProductInfo(product) {
         $("#productInfo" + product.id)
             .removeClass("closed")
             .css("display", "block");
-        $("#"+product.id)
+        $("#" + product.id)
             .addClass("active");
     }
 }
@@ -97,9 +132,41 @@ function closeAllProductInfos() {
         .removeClass("active");
 }
 
-function getAppendableObjectsFor(product) {
-    console.log("setting up appendages for " + product.id);
-}
 function setUpdateEventListener(product) {
+    // ToDo: add event listener
     console.log("setting up event listener for " + product.id);
+}
+
+
+function getAppendableObjectsFor(product) {
+    // Note: yes, this is ugly but its easy to write and gets the job done.
+    return "<div class=\"mb-3\">\n" +
+        "  <label for=\"name\" class=\"form-label\">Bezeichnung</label>\n" +
+        "  <input type=\"text\" class=\"form-control\" name=\"name\" id=\"name" + product.id + "\" value=\"" + product.name + "\" required >\n" +
+        "</div>" +
+
+        "<div class=\"inlineProductInfo\">\n" +
+        "  <div class=\"mb-3\">\n" +
+        "    <label for=\"category\" class=\"form-label\">Kategorie</label>\n" +
+        "    <select name=\"category\" id=\"category" + product.category + "\" class=\"form-select\">\n" +
+        "      <option " + (product.category === "food" ? "selected" : "") + " value=\"food\">Tiernahrung</option>\n" +
+        "      <option " + (product.category === "toys" ? "selected" : "") + " value=\"toys\">Spielzeug</option>\n" +
+        "      <option " + (product.category === "accessories" ? "selected" : "") + " value=\"accessories\">Zubehör</option>\n" +
+        "    </select>\n" +
+        "  </div>\n" +
+        "  <div class=\"mb-3\">\n" +
+        "    <label for=\"price\" class=\"form-label\">Preis</label>\n" +
+        "    <input type=\"number\" class=\"form-control\" name=\"price\" id=\"price" + product.id + "\" value=\"" + product.price + "\" required >\n" +
+        "  </div>\n" +
+        "</div>\n" +
+
+        "<div class=\"mb-3\">\n" +
+        "  <label for=\"description\" class=\"form-label\">Beschreibung</label>\n" +
+        "  <textarea type=\"text\" class=\"form-control\" name=\"description\" id=\"description" + product.id + "\" required >" +
+        product.description +
+        "</textarea>\n" +
+        "</div>\n" +
+
+        "<button class=\"btn btn-success\" type=\"submit\" name=\"submit\" id=\"submit" + product.id + "\">Ändern</button>\n"
+
 }

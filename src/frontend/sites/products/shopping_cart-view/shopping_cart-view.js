@@ -43,8 +43,6 @@ function insertPositionsIntoList(positions) {
         const posPrice= posPrice_num.toFixed(2).toString().replace(".", ",");
         const imgPath = product["thumbnailPath"];
 
-        //console.log(name);
-
         $( "<li/>", {
             class: "list-group-item"
         }).append(

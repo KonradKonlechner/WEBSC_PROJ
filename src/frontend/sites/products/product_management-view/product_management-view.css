@@ -19,15 +19,39 @@
     background-color: #ccc;
 }
 
-.productNameHeader {
+.deleteButton {
+    width: 2em;
+    height: 2em;
+    font-size: 24px;
+    color: white;
+    background: darkred;
+    border: darkred;
+    border-radius: 4px;
+}
+
+.deleteButton:hover {
+    background: red;
+}
+
+.headerText {
     width: 100%;
     text-align: center;
+}
+.productNameHeader {
     font-size: 18px;
     font-weight: bold;
 }
+.productCategoryHeader {
+    font-size: 16px;
+}
+
+.inlineProductInfo {
+    display: flex;
+    flex-direction: row;
+}
 
 .thumbnail {
-    width: 9em;
+    width: 7em;
 }
 
 .productInfo {
