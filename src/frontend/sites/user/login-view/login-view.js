@@ -41,7 +41,7 @@ function login(username, password, keepLogin) {
         dataType: "json"      
     }).done(function(response) {
         console.log("Request succeeded! Response: " + JSON.stringify(response));
-        if(response === "Login was not successful!") {
+        if(response === "Login was not successful!") { // specific error case, login Data incorrect
 
             $("#username").addClass("is-invalid");
             $("#usernameHelp").addClass("text-danger");
@@ -50,7 +50,9 @@ function login(username, password, keepLogin) {
             $("#passwordHelp").addClass("text-danger");
             $("#passwordHelp").html("Username oder Passwort falsch!");
 
-        } else {
+        } else if (typeof response === 'string') { // any other failure case
+            alert(response)
+        } else { // success case
             setLoginFormIfUserIsLoggedIn()
             setTopNavBarLinksIfUserIsLoggedIn();
         }

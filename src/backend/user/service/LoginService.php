@@ -16,7 +16,7 @@ class LoginService
         $this->inputValidator = new UserInputValidator($this->ums);
     }
 
-    public function registerUser($param)
+    public function registerUser($param): string
     {
         $enteredSex = $this->inputValidator->prepareInput($param["sex"]);
         $enteredName = $this->inputValidator->prepareInput($param["name"]);
@@ -128,6 +128,9 @@ class LoginService
 
             return $loggedInUser;
         } else {
+            if ($this->ums->isUserInactive($enteredUsername)) {
+                return "Your account has been inactivated.\nPlease contact you administrator for further information!";
+            }
             return "Login was not successful!";
         }
     }

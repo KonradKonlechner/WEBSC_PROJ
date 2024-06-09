@@ -70,4 +70,14 @@ class UserManagementSystem
             echo "<script>console.log(' User with Username $username does not exist ' );</script>";
         }
     }
+
+    public function isUserInactive(string $username) {
+        if ($this->isRegisteredUser($username)) {
+            User: $user = $this->getUserByUsername($username);
+            if ($user != null) {
+                return $user->isInactive();
+            }
+        }
+        return false;
+    }
 }
