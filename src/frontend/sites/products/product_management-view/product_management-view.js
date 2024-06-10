@@ -1,4 +1,4 @@
-import {saveImage} from "../../util/image-handler.js";
+import {saveImage} from "../util/image-handler.js";
 
 const imageStore = "../../../../pictures/"; // path to image storage
 
@@ -104,7 +104,15 @@ function setImageHandler(product) {
             event.preventDefault();
             var fileInput = document.getElementById('fileInput'+product.id);
             var file = fileInput.files[0];
-            saveImage(file);
+            var savedFileResponse = saveImage(file);
+
+            const thumbnail = savedFileResponse.thumbnail;
+            $("#thumbnail"+ product.id).attr("src", imageStore + thumbnail);
+            product.thumbnail = thumbnail;
+
+            const image = savedFileResponse.image;
+            $("#image"+ product.id).attr("src", imageStore + image);
+            product.image = image;
         });
 }
 
@@ -181,7 +189,7 @@ function getAppendableObjectsFor(product) {
         "</div>\n" +
 
         "<div class=\"mb-3\">\n" +
-        "  <label id=\"image" + product.id + "\" class=\"form-label\">Bild</label>\n" +
+        "  <label class=\"form-label\">Bild</label>\n" +
         "  <img src=\""+imageStore + product.imagePath+"\" class=\"productImage\" id=\"image" + product.id + "\" alt=\"Image of "+product.name+"\" >" +
         "  <input type=\"file\" id=\"fileInput"+product.id+"\" accept=\"image/*\">" +
         "  <input type=\"submit\" id=\"upload"+product.id+"\" value=\"Hochladen\">" +
