@@ -1,3 +1,5 @@
+import {saveImage} from "../../util/image-handler.js";
+
 const imageStore = "../../../../backend/product/pictures/"; // path to image storage
 
 $(document).ready(function () {
@@ -92,7 +94,18 @@ function appendProduct(product) {
                 id: "productInfo" + product.id,
             }).append(getAppendableObjectsFor(product))
         );
+    setImageHandler(product);
     setUpdateEventListener(product)
+}
+
+function setImageHandler(product) {
+    $("#upload"+product.id)
+        .click(function (event) {
+            event.preventDefault();
+            var fileInput = document.getElementById('fileInput');
+            var file = fileInput.files[0];
+            saveImage(file);
+        });
 }
 
 function deleteProduct(product) {
@@ -165,6 +178,13 @@ function getAppendableObjectsFor(product) {
         "  <textarea type=\"text\" class=\"form-control\" name=\"description\" id=\"description" + product.id + "\" required >" +
         product.description +
         "</textarea>\n" +
+        "</div>\n" +
+
+        "<div class=\"mb-3\">\n" +
+        "  <label id=\"image" + product.id + "\" class=\"form-label\">Bild</label>\n" +
+        "  <img src=\""+imageStore + product.imagePath+"\" class=\"productImage\" id=\"image" + product.id + "\" alt=\"Image of "+product.name+"\" >" +
+        "  <input type=\"file\" id=\"fileInput\" accept=\"image/*\">" +
+        "  <input type=\"submit\" id=\"upload"+product.id+"\" value=\"Hochladen\">" +
         "</div>\n" +
 
         "<button class=\"btn btn-success\" type=\"submit\" name=\"submit\" id=\"submit" + product.id + "\">Ändern</button>\n"

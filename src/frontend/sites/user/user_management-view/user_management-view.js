@@ -98,7 +98,6 @@ function appendUser(user) {
                 id: "userInfo" + user.username,
             }).append(getAppendableObjectsFor(user))
         );
-
     setUpdateEventListener(user)
 }
 
