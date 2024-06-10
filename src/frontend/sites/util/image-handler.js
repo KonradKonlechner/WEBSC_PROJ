@@ -9,6 +9,7 @@ export function saveImage(image) {
     formData.append('method', 'upload');
     formData.append('param', 'image');
 
+    console.log(formData.get("image"));
     $.ajax({
         type: "POST",
         url: "../../../../backend/product/controller/ImageController.php",

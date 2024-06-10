@@ -4,18 +4,19 @@ namespace product;
 
 class ImageService {
 
-    private static string $uploadDir = '../../../pictures/uploads/';
-    private static string $thumbnailPath = '../../../pictures/thumbnails/';
+    private static string $pictureDir = '../../../pictures/';
+    private static string $uploadDir = 'uploads/';
+    private static string $thumbnailPath = 'thumbnails/';
 
     public function saveImage() {
         $fileName = time() ."_" . basename($_FILES['image']['name']);
 
         $uploadFileDir = $this::$uploadDir . $fileName;
 
-        if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadFileDir)) {
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $this::$pictureDir . $uploadFileDir)) {
 
             $thumbnailName = $this::$thumbnailPath . 'thumbnail_' . $fileName;
-            if ($this::createThumbnail($uploadFileDir, $thumbnailName)) {
+            if ($this::createThumbnail($this::$pictureDir . $uploadFileDir, $thumbnailName)) {
                 echo json_encode([
                     'status' => 'success',
                     'message' => 'Image uploaded successfully',
@@ -33,7 +34,7 @@ class ImageService {
     private function createThumbnail($imagePath, $thumbnailName): bool
     {
         $resizedImage = $this->resizeImage($imagePath, 200, 200);
-        return imagejpeg($resizedImage, $thumbnailName);
+        return imagejpeg($resizedImage, $this::$pictureDir . $thumbnailName);
     }
 
     private function resizeImage($file, $w, $h, $crop=FALSE) {

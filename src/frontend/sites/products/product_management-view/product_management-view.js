@@ -102,7 +102,7 @@ function setImageHandler(product) {
     $("#upload"+product.id)
         .click(function (event) {
             event.preventDefault();
-            var fileInput = document.getElementById('fileInput');
+            var fileInput = document.getElementById('fileInput'+product.id);
             var file = fileInput.files[0];
             saveImage(file);
         });
@@ -183,7 +183,7 @@ function getAppendableObjectsFor(product) {
         "<div class=\"mb-3\">\n" +
         "  <label id=\"image" + product.id + "\" class=\"form-label\">Bild</label>\n" +
         "  <img src=\""+imageStore + product.imagePath+"\" class=\"productImage\" id=\"image" + product.id + "\" alt=\"Image of "+product.name+"\" >" +
-        "  <input type=\"file\" id=\"fileInput\" accept=\"image/*\">" +
+        "  <input type=\"file\" id=\"fileInput"+product.id+"\" accept=\"image/*\">" +
         "  <input type=\"submit\" id=\"upload"+product.id+"\" value=\"Hochladen\">" +
         "</div>\n" +
 
