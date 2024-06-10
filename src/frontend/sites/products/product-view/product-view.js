@@ -106,7 +106,7 @@ function filterProductListBySearchInput() {
         productCategory: productCategory
     }
 
-    if(searchTerm != "") {
+    if(searchTerm !== "") {
         $.ajax({
             type: "GET",
             url: "../../../../backend/product/controller/ProductController.php",
@@ -155,7 +155,7 @@ function insertProductsIntoList(products) {
                         class: "col-sm"
                     }).append(
                         $( "<img/>", {
-                            src: "../../../../backend/product/pictures/" + imgPath
+                            src: "../../../../pictures/" + imgPath
                         })
                     ),
                     $( "<div/>", {

@@ -4,8 +4,8 @@ namespace product;
 
 class ImageService {
 
-    private static string $uploadDir = '../pictures/uploads/';
-    private static string $thumbnailPath = '../pictures/thumbnails/';
+    private static string $uploadDir = '../../../pictures/uploads/';
+    private static string $thumbnailPath = '../../../pictures/thumbnails/';
 
     public function saveImage() {
         $fileName = time() ."_" . basename($_FILES['image']['name']);

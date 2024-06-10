@@ -59,7 +59,7 @@ function insertPositionsIntoList(positions) {
                         class: "col-sm"
                     }).append(
                         $( "<img/>", {
-                            src: "../../../../backend/product/pictures/" + imgPath
+                            src: "../../../../pictures/" + imgPath
                         })
                     ),
                     $( "<div/>", {

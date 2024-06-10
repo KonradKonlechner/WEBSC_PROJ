@@ -1,6 +1,6 @@
 import {saveImage} from "../../util/image-handler.js";
 
-const imageStore = "../../../../backend/product/pictures/"; // path to image storage
+const imageStore = "../../../../pictures/"; // path to image storage
 
 $(document).ready(function () {
     validateAdminAuthorization()
