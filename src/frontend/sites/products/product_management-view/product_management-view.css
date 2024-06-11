@@ -69,3 +69,21 @@
     font-size: 28px;
     font-weight: bold;
 }
+
+.productImage {
+    width: 5em;
+}
+
+input[type=file]::file-selector-button {
+    border-radius: 5px;
+    border: #eeeeee;
+    background: #eeeeee;
+    color: #444444;
+}
+
+input[type=file]::file-selector-button:hover {
+    border-radius: 5px;
+    border: darkgray;
+    background: darkgray;
+    color: white;
+}

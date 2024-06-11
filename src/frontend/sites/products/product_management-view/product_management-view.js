@@ -190,9 +190,11 @@ function getAppendableObjectsFor(product) {
 
         "<div class=\"mb-3\">\n" +
         "  <label class=\"form-label\">Bild</label>\n" +
-        "  <img src=\""+imageStore + product.imagePath+"\" class=\"productImage\" id=\"image" + product.id + "\" alt=\"Image of "+product.name+"\" >" +
-        "  <input type=\"file\" id=\"fileInput"+product.id+"\" accept=\"image/*\">" +
-        "  <input type=\"submit\" id=\"upload"+product.id+"\" value=\"Hochladen\">" +
+        "  <div>"+
+        "    <img src=\""+imageStore + product.imagePath+"\" class=\"productImage\" id=\"image" + product.id + "\" alt=\"Image of "+product.name+"\" >" +
+        "    <input type=\"file\" id=\"fileInput"+product.id+"\" accept=\"image/*\">" +
+        "    <input type=\"submit\" id=\"upload"+product.id+"\" value=\"Hochladen\" class =\"btn btn-primary\">" +
+        "  </div>\n" +
         "</div>\n" +
 
         "<button class=\"btn btn-success\" type=\"submit\" name=\"submit\" id=\"submit" + product.id + "\">Ändern</button>\n"
