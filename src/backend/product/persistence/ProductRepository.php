@@ -100,4 +100,38 @@ class ProductRepository
         return $allProducts;
     }
 
+    public function updateProduct(Product $productToUpdate)
+    {
+        $connection = db\DBConnection::getConnection();
+
+        $name = $productToUpdate->getName();
+        $description = $productToUpdate->getDescription();
+        $category = $productToUpdate->getCategory();
+        $price = $productToUpdate->getPrice();
+        $imagePath = $productToUpdate->getImagePath();
+        $thumbnailPath = $productToUpdate->getThumbnailPath();
+        $id = $productToUpdate->getId();
+
+        $sqlInsert = "UPDATE products SET 
+                 name = ?, description = ?, category = ?, price_per_unit_eur = ?, image_path = ?, thumbnail_path = ?
+                 WHERE id = ?";
+
+        $statement = $connection->prepare($sqlInsert);
+
+        $statement->bind_param(
+            "sssdssi",
+            $name,
+            $description,
+            $category,
+            $price,
+            $imagePath,
+            $thumbnailPath,
+            $id
+        );
+
+        $statement->execute();
+        $statement->close();
+        $connection->close();
+    }
+
 }

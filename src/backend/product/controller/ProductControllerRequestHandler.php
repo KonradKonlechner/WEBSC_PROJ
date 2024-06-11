@@ -25,6 +25,9 @@ class ProductControllerRequestHandler
             case "getAllProductsFilteredBySearchTermAndCategory":
                 $res = $this->service->getAllProductsFilteredBySearchTermAndCategory($param);
                 break;
+            case "updateProduct":
+                $res = $this->service->updateProduct($param);
+                break;
             default:
                 $res = null;
                 break;

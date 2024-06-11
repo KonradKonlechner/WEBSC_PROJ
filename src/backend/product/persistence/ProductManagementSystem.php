@@ -39,6 +39,11 @@ class ProductManagementSystem
         return$this->repository->getAllProductsFilteredBySearchTermAndCategory($searchTerm, $productCategory);
     }
 
+    public function updateProduct(Product $productToUpdate): ?Product
+    {
+        $this->repository->updateProduct($productToUpdate);
+        return $productToUpdate;
+    }
 
 
 }

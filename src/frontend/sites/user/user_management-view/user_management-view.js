@@ -129,7 +129,6 @@ function updateUser(
     email,
     isActive
 ) {
-    console.log(isActive)
     const userShouldBeUpdated = confirm(
         "Sie sind dabei die Daten des Users "
         + username

@@ -108,11 +108,11 @@ function setImageHandler(product) {
 
             const thumbnail = savedFileResponse.thumbnail;
             $("#thumbnail"+ product.id).attr("src", imageStore + thumbnail);
-            product.thumbnail = thumbnail;
+            product.thumbnailPath = thumbnail;
 
             const image = savedFileResponse.image;
             $("#image"+ product.id).attr("src", imageStore + image);
-            product.image = image;
+            product.imagePath = image;
         });
 }
 
@@ -154,8 +154,59 @@ function closeAllProductInfos() {
 }
 
 function setUpdateEventListener(product) {
-    // ToDo: add event listener
-    console.log("setting up event listener for " + product.id);
+    $("#submit" + product.id).click(function () {
+        product.name = $("#name" + product.id).val();
+        product.description = $("#description" + product.id).val();
+        product.category = $("#category" + product.id).val();
+        product.price = $("#price" + product.id).val();
+        updateProductData(product)
+    });
+}
+
+function updateProductData(product) {
+    const userShouldBeUpdated = confirm(
+        "Sie sind dabei die Daten des Users "
+        + product.name
+        + " zu ändern.\nMöchten Sie fortfahren?"
+    );
+
+    if (!userShouldBeUpdated) {
+        return;
+    }
+
+    console.log("Attempting to update product " + product.name);
+
+    const updateProduct = {
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        category: product.category,
+        price: product.price,
+        imagePath: product.imagePath,
+        thumbnailPath: product.thumbnailPath
+    }
+
+    $.ajax({
+        type: "PUT",
+        url: "../../../../backend/product/controller/ProductController.php",
+        cache: false,
+        data: {method: "updateProduct", param: updateProduct},
+        dataType: "json"
+    }).done(function (response) {
+        alert("Das Produkt " + response.name + " wurde erfolgreich geändert!");
+        setFieldsToUpdatedValues(response)
+    }).fail(function () {
+        console.log("Request failed!");
+        alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
+            "Bitte probieren Sie es später erneut.");
+    });
+}
+
+function setFieldsToUpdatedValues(product) {
+    $(".productNameHeader")
+        .text(product.name);
+    $(".productCategoryHeader")
+        .text(getProductCategoryTranslation(product));
 }
 
 
@@ -169,7 +220,7 @@ function getAppendableObjectsFor(product) {
         "<div class=\"inlineProductInfo\">\n" +
         "  <div class=\"mb-3\">\n" +
         "    <label for=\"category\" class=\"form-label\">Kategorie</label>\n" +
-        "    <select name=\"category\" id=\"category" + product.category + "\" class=\"form-select\">\n" +
+        "    <select name=\"category\" id=\"category" + product.id + "\" class=\"form-select\">\n" +
         "      <option " + (product.category === "food" ? "selected" : "") + " value=\"food\">Tiernahrung</option>\n" +
         "      <option " + (product.category === "toys" ? "selected" : "") + " value=\"toys\">Spielzeug</option>\n" +
         "      <option " + (product.category === "accessories" ? "selected" : "") + " value=\"accessories\">Zubehör</option>\n" +
