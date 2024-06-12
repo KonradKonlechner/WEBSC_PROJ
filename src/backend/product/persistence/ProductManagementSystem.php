@@ -45,5 +45,10 @@ class ProductManagementSystem
         return $productToUpdate;
     }
 
+    public function createProduct(product $product): Product
+    {
+        return$this->repository->createProduct($product);
+    }
+
 
 }

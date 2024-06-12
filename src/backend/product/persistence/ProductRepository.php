@@ -134,4 +134,49 @@ class ProductRepository
         $connection->close();
     }
 
+    public function createProduct(product $productToCreate)
+    {
+        $connection = db\DBConnection::getConnection();
+
+        $name = $productToCreate->getName();
+        $description = $productToCreate->getDescription();
+        $category = $productToCreate->getCategory();
+        $price = $productToCreate->getPrice();
+        $imagePath = $productToCreate->getImagePath();
+        $thumbnailPath = $productToCreate->getThumbnailPath();
+
+        $sqlInsert = "INSERT INTO `products` (`name`, `description`, `category`, `price_per_unit_eur`, `image_path`, `thumbnail_path`) VALUES (?, ?, ?, ?, ?, ?)";
+
+        $statement = $connection->prepare($sqlInsert);
+
+        $statement->bind_param(
+            "sssdss",
+            $name,
+            $description,
+            $category,
+            $price,
+            $imagePath,
+            $thumbnailPath
+        );
+
+        $statement->execute();
+
+        $newProductId = $connection->insert_id;
+
+        $createdProduct = new Product(
+            $newProductId,
+            $productToCreate->getName(),
+            $productToCreate->getDescription(),
+            $productToCreate->getCategory(),
+            $productToCreate->getPrice(),
+            $productToCreate->getImagePath(),
+            $productToCreate->getThumbnailPath()
+        );
+
+        $statement->close();
+        $connection->close();
+
+        return $createdProduct;
+    }
+
 }

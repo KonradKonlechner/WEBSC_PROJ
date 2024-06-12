@@ -1,11 +1,22 @@
 import {saveImage} from "../util/image-handler.js";
+import {updateProductData} from "./update-product-script.js";
+import {deleteProduct} from "./delete-product-script.js";
+import {appendEmptyProduct, createProduct} from "./create-product-script.js";
 
 const imageStore = "../../../../pictures/"; // path to image storage
 
 $(document).ready(function () {
     validateAdminAuthorization()
     getAllProducts();
+    setAddButtonListener()
 });
+
+
+function setAddButtonListener() {
+    $("#addProductButton").click(function () {
+        appendEmptyProduct();
+    })
+}
 
 function validateAdminAuthorization() {
     $.ajax({
@@ -49,7 +60,7 @@ function appendProductsToList(response) {
     closeAllProductInfos();
 }
 
-function appendProduct(product) {
+export function appendProduct(product) {
     $("#products")
         .append(
             $("<button/>", {
@@ -57,14 +68,14 @@ function appendProduct(product) {
                 class: "productClickBox",
                 type: "product"
             })
-                .click(function (e) {
+                .click(function () {
                     openProductInfo(product)
                 })
                 .append(
                     $("<button/>", {
                         id: "delete" + product.id,
                         class: "fa fa-trash deleteButton"
-                    }).click(function (e) {
+                    }).click(function () {
                         deleteProduct(product)
                     }),
                     $("<div/>", {
@@ -74,12 +85,14 @@ function appendProduct(product) {
                             $("<div/>", {
                                 name: product.name,
                                 text: product.name,
-                                class: "productNameHeader"
+                                class: "productNameHeader",
+                                id: "productNameHeader" + product.id
                             }),
                             $("<div/>", {
                                 name: "productCategory",
                                 text: getProductCategoryTranslation(product),
-                                class: "productCategoryHeader"
+                                class: "productCategoryHeader",
+                                id: "productCategoryHeader" + product.id
                             })
                         ),
                     $("<img/>", {
@@ -116,11 +129,7 @@ function setImageHandler(product) {
         });
 }
 
-function deleteProduct(product) {
-// ToDo: add delete method
-}
-
-function getProductCategoryTranslation(product) {
+export function getProductCategoryTranslation(product) {
     switch (product.category) {
         case "food":
             return "Tiernahrung";
@@ -154,59 +163,18 @@ function closeAllProductInfos() {
 }
 
 function setUpdateEventListener(product) {
-    $("#submit" + product.id).click(function () {
-        product.name = $("#name" + product.id).val();
-        product.description = $("#description" + product.id).val();
-        product.category = $("#category" + product.id).val();
-        product.price = $("#price" + product.id).val();
-        updateProductData(product)
-    });
-}
-
-function updateProductData(product) {
-    const userShouldBeUpdated = confirm(
-        "Sie sind dabei die Daten des Users "
-        + product.name
-        + " zu ändern.\nMöchten Sie fortfahren?"
-    );
-
-    if (!userShouldBeUpdated) {
-        return;
-    }
-
-    console.log("Attempting to update product " + product.name);
-
-    const updateProduct = {
-        id: product.id,
-        name: product.name,
-        description: product.description,
-        category: product.category,
-        price: product.price,
-        imagePath: product.imagePath,
-        thumbnailPath: product.thumbnailPath
-    }
-
-    $.ajax({
-        type: "PUT",
-        url: "../../../../backend/product/controller/ProductController.php",
-        cache: false,
-        data: {method: "updateProduct", param: updateProduct},
-        dataType: "json"
-    }).done(function (response) {
-        alert("Das Produkt " + response.name + " wurde erfolgreich geändert!");
-        setFieldsToUpdatedValues(response)
-    }).fail(function () {
-        console.log("Request failed!");
-        alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
-            "Bitte probieren Sie es später erneut.");
-    });
-}
-
-function setFieldsToUpdatedValues(product) {
-    $(".productNameHeader")
-        .text(product.name);
-    $(".productCategoryHeader")
-        .text(getProductCategoryTranslation(product));
+        $("#submit" + product.id).click(function () {
+            product.name = $("#name" + product.id).val();
+            product.description = $("#description" + product.id).val();
+            product.category = $("#category" + product.id).val();
+            product.price = $("#price" + product.id).val();
+            if (product.id === "") {
+                console.log(product)
+                createProduct(product);
+            } else {
+                updateProductData(product);
+            }
+        });
 }
 
 
@@ -248,6 +216,8 @@ function getAppendableObjectsFor(product) {
         "  </div>\n" +
         "</div>\n" +
 
-        "<button class=\"btn btn-success\" type=\"submit\" name=\"submit\" id=\"submit" + product.id + "\">Ändern</button>\n"
+        "<button class=\"btn btn-success\" type=\"submit\" name=\"submit\" id=\"submit" + product.id + "\">"+
+        (product.id != null && product.id !== "" ? "Ändern" : "Anlegen") +
+        "</button>\n"
 
 }

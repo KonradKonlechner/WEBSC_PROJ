@@ -28,6 +28,9 @@ class ProductControllerRequestHandler
             case "updateProduct":
                 $res = $this->service->updateProduct($param);
                 break;
+            case "createProduct":
+                $res = $this->service->createProduct($param);
+                break;
             default:
                 $res = null;
                 break;

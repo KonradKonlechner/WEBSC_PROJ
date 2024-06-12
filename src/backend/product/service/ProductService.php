@@ -22,7 +22,7 @@ class ProductService
         return  $allProducts;
     }
 
-    public function getAllProductsOfCategory($productCategory)
+    public function getAllProductsOfCategory($productCategory): array
     {
 
         $productCategory = htmlspecialchars($productCategory);
@@ -80,6 +80,31 @@ class ProductService
         $sanitizedInput = htmlspecialchars($data);
         $sanitizedInput = trim($sanitizedInput);
         return stripslashes($sanitizedInput);
+    }
+
+    public function createProduct($param)
+    {
+        if (isset($_SESSION["currentUser"]) && $_SESSION["currentUser"]->isAdmin() == 1) {
+            $enteredName = $this->prepareInput($param["name"]);
+            $enteredDescription = $this->prepareInput($param["description"]);
+            $enteredCategory = $this->prepareInput($param["category"]);
+            $enteredPrice = $this->prepareInput($param["price"]);
+            $enteredImagePath = $this->prepareInput($param["imagePath"]);
+            $enteredThumbnailPath = $this->prepareInput($param["thumbnailPath"]);
+
+            $productToCreate = new Product(
+                0,
+                $enteredName,
+                $enteredDescription,
+                $enteredCategory,
+                $enteredPrice,
+                $enteredImagePath,
+                $enteredThumbnailPath
+            );
+
+            return $this->pms->createProduct($productToCreate);
+        }
+        throw new \Exception('You are not an admin and therefore have no rights to use this API! Be gone!!!');
     }
 
 }
