@@ -19,7 +19,7 @@ class ProductService
     {
         $allProducts = $this->pms->getAllProducts();
 
-        return  $allProducts;
+        return $allProducts;
     }
 
     public function getAllProductsOfCategory($productCategory): array
@@ -29,7 +29,7 @@ class ProductService
 
         $productsOfCategory = $this->pms->getAllProductsOfCategory($productCategory);
 
-        return  $productsOfCategory;
+        return $productsOfCategory;
     }
 
     public function getAllProductsFilteredBySearchTermAndCategory($searchParameter)
@@ -37,13 +37,13 @@ class ProductService
         $searchTerm = htmlspecialchars($searchParameter["searchTerm"]);
         $productCategory = htmlspecialchars($searchParameter["productCategory"]);
 
-        if($productCategory === "all") {
+        if ($productCategory === "all") {
             $filteredProducts = $this->pms->getAllProductsFilteredBySearchTerm($searchTerm);
         } else {
             $filteredProducts = $this->pms->getAllProductsFilteredBySearchTermAndCategory($searchTerm, $productCategory);
         }
 
-        return  $filteredProducts;
+        return $filteredProducts;
     }
 
     public function updateProduct($param)
@@ -105,6 +105,22 @@ class ProductService
             return $this->pms->createProduct($productToCreate);
         }
         throw new \Exception('You are not an admin and therefore have no rights to use this API! Be gone!!!');
+    }
+
+    public function deleteProduct($param)
+    {
+        if (isset($_SESSION["currentUser"]) && $_SESSION["currentUser"]->isAdmin() == 1) {
+            $productId = $this->prepareInput($param["productId"]);
+            try {
+                $this->pms->deleteProduct($productId);
+                return true;
+            } catch (\Exception $e) {
+                return false;
+            }
+
+        } else {
+            throw new \Exception('You are not an admin and therefore have no rights to use this API! Be gone!!!');
+        }
     }
 
 }

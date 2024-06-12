@@ -31,6 +31,9 @@ class ProductControllerRequestHandler
             case "createProduct":
                 $res = $this->service->createProduct($param);
                 break;
+            case "deleteProduct":
+                $res = $this->service->deleteProduct($param);
+                break;
             default:
                 $res = null;
                 break;

@@ -53,6 +53,20 @@ switch ($httpRequestMethod) {
         http_response_code($httpStatus);
         echo(json_encode($data));
         break;
+    case "DELETE":
+        parse_str(file_get_contents("php://input"), $_DELETE);
+
+        $method = $_DELETE["method"];
+        $param = $_DELETE["param"];
+
+        $data = $requestHandler->handleRequest($method, $param);
+
+        if ($data == null) {
+            $httpStatus = 400;
+        }
+        http_response_code($httpStatus);
+        echo(json_encode($data));
+        break;
     default:
         http_response_code(405);
         echo("Method not supported yet!");

@@ -179,4 +179,23 @@ class ProductRepository
         return $createdProduct;
     }
 
+    public function deleteProduct($productId)
+    {
+        $connection = db\DBConnection::getConnection();
+
+        $sqlInsert = "DELETE FROM `products` WHERE id = ?";
+
+        $statement = $connection->prepare($sqlInsert);
+
+        $statement->bind_param(
+            "i",
+            $productId
+        );
+
+        $statement->execute();
+
+        $statement->close();
+        $connection->close();
+    }
+
 }

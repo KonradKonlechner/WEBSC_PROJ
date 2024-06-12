@@ -50,5 +50,10 @@ class ProductManagementSystem
         return$this->repository->createProduct($product);
     }
 
+    public function deleteProduct($productId)
+    {
+        $this->repository->deleteProduct($productId);
+    }
+
 
 }
