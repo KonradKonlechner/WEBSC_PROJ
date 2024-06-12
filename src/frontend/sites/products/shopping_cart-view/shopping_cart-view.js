@@ -1,3 +1,5 @@
+import {setTopNavBarShoppingCartCount} from "../../navigation/navbar/topNavBar_logic.js";
+
 $(document).ready(function () {
     showShoppingCart();
 });
@@ -12,9 +14,9 @@ function showShoppingCart() {
         dataType: "json"
     }).done(function (response) {
         console.log("Request succeeded! ShoppingCart - Response: " + response);
-        if (response != "no shoppingCart is set") {
-            positions = response["positions"];
-            totalPrice = response["totalPrice"];
+        if (response !== "no shoppingCart is set") {
+            const positions = response["positions"];
+            const totalPrice = response["totalPrice"];
             insertPositionsIntoList(positions);
             insertTotalPrice(totalPrice);
         }
@@ -31,7 +33,7 @@ function insertPositionsIntoList(positions) {
 
     $.each(positions, function( key, val ) {
 
-        const positionId = key; //val["positionId"];
+        const positionId = key;
         const quantity = val["quantity"];
         const product = val["product"]
 
@@ -111,6 +113,7 @@ function insertPositionsIntoList(positions) {
         console.log("PositionId: " + positionId + ", Quantity: " + newQuantity);
 
         updateShoppingCart(positionId, newQuantity);
+        setTopNavBarShoppingCartCount();
     });
 
     $(".removeFromShoppingCart").on( "click", function() {
@@ -148,11 +151,12 @@ function updateShoppingCart(positionId, newQuantity) {
         dataType: "json"
     }).done(function (response) {
         console.log("Request succeeded! ShoppingCart - Response: " + response);
-        if (response != "no shoppingCart is set") {
-            positions = response["positions"];
-            totalPrice = response["totalPrice"];
+        if (response !== "no shoppingCart is set") {
+            const positions = response["positions"];
+            const totalPrice = response["totalPrice"];
             insertPositionsIntoList(positions);
             insertTotalPrice(totalPrice);
+            setTopNavBarShoppingCartCount();
         }
     }).fail(function () {
         console.log("Request failed!");
@@ -171,9 +175,9 @@ function removePositionFromShoppingCart(positionId) {
         dataType: "json"
     }).done(function (response) {
         console.log("Request succeeded! RemovePositionFromShoppingCart - Response: " + response);
-        if (response != "no shoppingCart is set") {
-            positions = response["positions"];
-            totalPrice = response["totalPrice"];
+        if (response !== "no shoppingCart is set") {
+            const positions = response["positions"];
+            const totalPrice = response["totalPrice"];
             insertPositionsIntoList(positions);
             insertTotalPrice(totalPrice);
             setTopNavBarShoppingCartCount();

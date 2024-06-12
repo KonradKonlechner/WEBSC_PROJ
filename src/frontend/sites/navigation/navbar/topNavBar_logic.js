@@ -1,7 +1,84 @@
-setTopNavBarLinksIfUserIsLoggedIn();
+$(document).ready(function () {
+    setTopNavBarLinksIfUserIsLoggedIn();
+    setTopNavBarShoppingCartCount();
+});
 
-setTopNavBarShoppingCartCount();
 
+/*
+    *
+    * shopping cart
+    *
+ */
+export function setTopNavBarShoppingCartCount() {
+    $.ajax({
+        type: "GET",
+        url: "../../../../backend/order/controller/OrderController.php",
+        cache: false,
+        data: {method: "getSessionShoppingCart", param: null},
+        dataType: "json"
+    }).done(function (response) {
+        console.log("Request succeeded! ShoppingCart - Response: " + response);
+        if (response !== "no shoppingCart is set" && response["positions"].length > 0) {
+            let count = 0
+            const positions = response["positions"];
+            positions.forEach(function (position) {
+                count += Number(position.quantity);
+            });
+            const linkText = "(" + count + ") Warenkorb";
+            setTopNavBarShoppingCartLink(linkText);
+            setShoppingCartHoverEffect(positions);
+        } else {
+            setTopNavBarShoppingCartLink(" Warenkorb");
+            removeAnyHoverEffects()
+        }
+    }).fail(function () {
+        console.log("Request failed!");
+        alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
+            "Bitte probieren Sie es später erneut.");
+    });
+}
+
+function setShoppingCartHoverEffect(positions) {
+    $("#navbarShoppingCartLink")
+        .addClass("popup")
+        .append(
+            "<div class=\"popuptext\" id=\"myPopup\"> " +
+            positions.map(position =>
+                "<p>" + (position["product"].name) + ": " + (position.quantity) + "</p>"
+            ).join("") +
+            "</div>"
+        )
+        .hover(function () {
+            const popup = document.getElementById("myPopup");
+            popup.classList.toggle("show");
+        });
+}
+
+function removeAnyHoverEffects() {
+    $("#navbarShoppingCartLink")
+        .off("mouseenter")
+        .off("mouseleave")
+        .children().remove();
+}
+
+function setTopNavBarShoppingCartLink(linkText) {
+    $("#navbarShoppingCartLink").html("");
+    $("#navbarShoppingCartLink").append(
+        $("<img/>", {
+            id: "shoppingCartIcon",
+            src: "../../../res/images/shopping_cart.png",
+            alt: "shopping cart"
+        }),
+        linkText
+    );
+}
+
+
+/*
+    *
+    * actual navbar
+    *
+ */
 function setTopNavBarLinksIfUserIsLoggedIn() {
     console.log("check if user is logged in");
 
@@ -88,40 +165,5 @@ function setAdminLinks() {
         "href": "../../user/user_management-view/user_management-view.html",
         text: "Kunden bearbeiten"
     }).appendTo("#manageCustomersLinkListEntry");
-}
-
-function setTopNavBarShoppingCartCount() {
-    $.ajax({
-        type: "GET",
-        url: "../../../../backend/order/controller/OrderController.php",
-        cache: false,
-        data: {method: "getSessionShoppingCart", param: null},
-        dataType: "json"
-    }).done(function (response) {
-        console.log("Request succeeded! ShoppingCart - Response: " + response);
-        if (response != "no shoppingCart is set") {
-            count = response["positions"].length;
-            linkText = "(" + count + ") Warenkorb";
-            setTopNavBarShoppingCartLink(linkText);
-        } else {
-            setTopNavBarShoppingCartLink(" Warenkorb");
-        }
-    }).fail(function () {
-        console.log("Request failed!");
-        alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
-            "Bitte probieren Sie es später erneut.");
-    });
-}
-
-function setTopNavBarShoppingCartLink(linkText) {
-    $("#navbarShoppingCartLink").html("");
-    $("#navbarShoppingCartLink").append(
-        $("<img/>", {
-            id: "shoppingCartIcon",
-            src: "../../../res/images/shopping_cart.png",
-            alt: "shopping cart"
-        }),
-        linkText
-    );
 }
 

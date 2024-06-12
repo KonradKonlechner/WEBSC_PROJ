@@ -1,3 +1,5 @@
+import {setTopNavBarShoppingCartCount} from "../../navigation/navbar/topNavBar_logic.js";
+
 $(document).ready(function () {
     filterProductList();
 
