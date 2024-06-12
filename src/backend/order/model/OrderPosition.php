@@ -10,6 +10,8 @@ class OrderPosition implements JsonSerializable
 {
     private $positionId;
 
+    private $orderId;
+
     private Product $product;
 
     private $quantity;
@@ -27,6 +29,19 @@ class OrderPosition implements JsonSerializable
     public function getPositionId()
     {
         return $this->positionId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrderId()
+    {
+        return $this->orderId;
+    }
+
+    public function setOrderId($orderId)
+    {
+        $this->orderId = $orderId;
     }
 
     /**

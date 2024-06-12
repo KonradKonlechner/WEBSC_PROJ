@@ -16,6 +16,8 @@ class Order implements JsonSerializable
 
     private $totalPrice;
 
+    private $state;
+
     private $createdAt;
 
     public function __construct($orderId, $userId, $positions)
@@ -24,6 +26,7 @@ class Order implements JsonSerializable
         $this->userId = $userId;
         $this->positions = $positions;
         $this->totalPrice = $this->calculateTotalPrice();
+        $this->state = "new";
         $this->createdAt = date("Y-m-d H:i:s",time());
     }
 
