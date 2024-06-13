@@ -79,7 +79,7 @@ function setTopNavBarShoppingCartLink(linkText) {
     * actual navbar
     *
  */
-function setTopNavBarLinksIfUserIsLoggedIn() {
+export function setTopNavBarLinksIfUserIsLoggedIn() {
     console.log("check if user is logged in");
 
     $.ajax({

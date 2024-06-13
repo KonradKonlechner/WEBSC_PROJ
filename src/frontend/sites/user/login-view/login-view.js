@@ -1,10 +1,12 @@
+import {setTopNavBarLinksIfUserIsLoggedIn} from "../../navigation/navbar/topNavBar_logic.js";
+
 $(document).ready(function () {
 
     setLoginFormIfUserIsLoggedIn()
 });
 
 function setLoginFormIfUserIsLoggedIn() {
-    //console.log("check if user is logged in");
+    setTopNavBarLinksIfUserIsLoggedIn();
     $.ajax({
         type: "GET",
         url: "../../../../backend/user/controller/UserController.php",
@@ -53,8 +55,7 @@ function login(username, password, keepLogin) {
         } else if (typeof response === 'string') { // any other failure case
             alert(response)
         } else { // success case
-            setLoginFormIfUserIsLoggedIn()
-            setTopNavBarLinksIfUserIsLoggedIn();
+            setLoginFormIfUserIsLoggedIn();
         }
     }).fail(function() {
         console.log("Request failed!");
@@ -75,7 +76,6 @@ function logout() {
     }).done(function(response) {
         console.log("Request succeeded! Response: " + response);
         setLoginFormIfUserIsLoggedIn()
-        setTopNavBarLinksIfUserIsLoggedIn();
     }).fail(function() {
         console.log("Request failed!");
         alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
