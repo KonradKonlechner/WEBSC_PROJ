@@ -10,22 +10,10 @@ require_once "../model/Order.php";
 
 require_once "../model/OrderPosition.php";
 
+require_once "../../user/model/User.php";
+
 use product\ProductManagementSystem;
 
-/*
-use order\Order;
-use order\OrderManagementSystem;
-use order\OrderPosition;
-*/
-
-//use product\ProductManagementSystem;
-
-/*
-require_once "../model/Order.php";
-require_once "../persistence/OrderManagementSystem.php";
-require_once "../../product/model/Product.php";
-require_once "../../product/persistence/ProductManagementSystem.php";
-*/
 class OrderService
 {
     private OrderManagementSystem $oms;
@@ -42,7 +30,7 @@ class OrderService
     {
         $product = $this->pms->getProductById($productId);
 
-        if (!isset($_SESSION["shoppingCart"])){
+        if (!isset($_SESSION["shoppingCart"])) {
 
             $newOrderPosition = new OrderPosition(1, $product, 1);
 
@@ -62,7 +50,7 @@ class OrderService
 
     public function getSessionShoppingCart()
     {
-        if (!isset($_SESSION["shoppingCart"])){
+        if (!isset($_SESSION["shoppingCart"])) {
             return "no shoppingCart is set";
         } else {
             return $_SESSION["shoppingCart"];
@@ -71,7 +59,7 @@ class OrderService
 
     public function updateShoppingCart($updateParameter)
     {
-        if (!isset($_SESSION["shoppingCart"])){
+        if (!isset($_SESSION["shoppingCart"])) {
             return "no shoppingCart is set";
         } else {
             $positionId = $updateParameter["positionId"];
@@ -87,7 +75,7 @@ class OrderService
 
     public function removePositionFromShoppingCart($positionId)
     {
-        if (!isset($_SESSION["shoppingCart"])){
+        if (!isset($_SESSION["shoppingCart"])) {
             return "no shoppingCart is set";
         } else {
 
@@ -99,6 +87,23 @@ class OrderService
         }
     }
 
+    public function getOrdersForUser()
+    {
+        if (isset($_SESSION["currentUser"])) {
+            $userId = $_SESSION["currentUser"]->getUserId();
+            return $this->oms->getOrdersForUser($userId);
+        }
+        throw new \Exception('You have no permission to excess this order.');
+
+    }
+
+    private function prepareInput($data)
+    {
+        // Hier findet die Aufbereitung des User-inputs für sämtliche Eingabemasken statt
+        $sanitizedInput = htmlspecialchars($data);
+        $sanitizedInput = trim($sanitizedInput);
+        return stripslashes($sanitizedInput);
+    }
 
 
 }

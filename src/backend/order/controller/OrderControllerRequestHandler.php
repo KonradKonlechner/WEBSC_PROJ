@@ -28,6 +28,9 @@ class OrderControllerRequestHandler
             case "removePositionFromShoppingCart":
                 $res = $this->service->removePositionFromShoppingCart($param);
                 break;
+            case "getOrdersForUser":
+                $res = $this->service->getOrdersForUser();
+                break;
             default:
                 $res = null;
                 break;
