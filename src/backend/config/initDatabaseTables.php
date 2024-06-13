@@ -63,6 +63,31 @@ $tableSqlList = [
     (1, 'Whiskas Crunch', 'Whiskas Snacks Crunch Huhn, Truthahn & Ente 100g Katzensnack', 'food', 2.89, 'uploads/whiskas_crunch.jpeg', 'thumbnails/thumbnail_whiskas_crunch.jpg'),
 	(2, 'Pedigree Classic', 'Pedigree Classic 12x800g 3 Sorten Geflügel ', 'food', 29.99, 'uploads/pedigree_classic.jpg', 'thumbnails/thumbnail_pedigree_classic.jpg')
     (3, 'Katzenangel 3 in 1 XXL', 'Katzenspielangel mit extra langem Stab für besonders großen Spielradius; mit drei unterschiedlichen, austauschbaren Federanhängern, befriedigt den Jagdtrieb Ihrer Katze. Gesamtlänge ca. 200 cm', 'toys', 3.49, 'uploads/cat_teasing_stick.jpg', 'thumbnails/thumbnail_cat_teasing_stick.jpg');"
+
+    ,
+    "CREATE TABLE `orders` (
+       `id` int(11) NOT NULL AUTO_INCREMENT,
+       `user_id` int(11) NOT NULL,
+       `total_price_eur` float NOT NULL,
+       `state` enum('new','confirmed','cancelled', 'shipped') NOT NULL DEFAULT 'new',
+       `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+       PRIMARY KEY (`id`) USING BTREE,
+       KEY `FK_user_id` (`user_id`) USING BTREE,
+       CONSTRAINT `FK_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+     ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=UTF8MB4_GENERAL_CI;"
+
+     ,
+     "CREATE TABLE `orderpositions` (
+        `order_id` int(11) NOT NULL,
+        `position_id` int(11) NOT NULL,
+        `product_id` int(11) NOT NULL,
+        `quantity` int NOT NULL DEFAULT 1,
+        PRIMARY KEY (`order_id`, `position_id`) USING BTREE,
+        KEY `FK_order_id` (`order_id`) USING BTREE,
+        CONSTRAINT `FK_order_id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+        KEY `FK_product_id` (`product_id`) USING BTREE,
+        CONSTRAINT `FK_product_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
+      ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"
 ];
 
 foreach ($tableSqlList as $tableSql) {
