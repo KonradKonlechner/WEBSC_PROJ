@@ -19,6 +19,11 @@ function showShoppingCart() {
             const totalPrice = response["totalPrice"];
             insertPositionsIntoList(positions);
             insertTotalPriceAndOrderButton(totalPrice);
+        } else {
+            $("#shoppingCartList > ").remove();
+            $("#totalPrice").remove();
+            $("#orderBtnContainer").remove();
+            setTopNavBarShoppingCartCount();
         }
     }).fail(function () {
         console.log("Request failed!");
@@ -247,6 +252,7 @@ function orderFromShoppingCart() {
         dataType: "json"
     }).done(function (response) {
         console.log("Request succeeded! Order From Shopping Cart - Response: " + response);
+        showShoppingCart()
     }).fail(function () {
         console.log("Request failed!");
         alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +

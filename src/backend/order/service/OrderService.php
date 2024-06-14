@@ -103,8 +103,9 @@ class OrderService
         if (isset($_SESSION["currentUser"])) {
             $userId = $_SESSION["currentUser"]->getUserId();
             $_SESSION["shoppingCart"]->setUserId($userId);
-
-            return "OrderId: " . $this->oms->saveOrder($_SESSION["shoppingCart"]);
+            $orderId = $this->oms->saveOrder($_SESSION["shoppingCart"]);
+            $_SESSION["shoppingCart"] = null;
+            return "OrderId: " . $orderId;
         }
         return "no user session set";
     }
