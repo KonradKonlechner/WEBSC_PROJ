@@ -80,6 +80,10 @@ CREATE TABLE IF NOT EXISTS `orders` (
   CONSTRAINT `FK_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=UTF8MB4_GENERAL_CI;
 
+INSERT INTO `orders` (`id`, `user_id`, `total_price_eur`) 
+VALUES
+	(1, 1, 2.89);
+
 DROP TABLE IF EXISTS `orderpositions`;
 
 CREATE TABLE IF NOT EXISTS `orderpositions` (
@@ -92,7 +96,11 @@ CREATE TABLE IF NOT EXISTS `orderpositions` (
   CONSTRAINT `FK_order_id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   KEY `FK_product_id` (`product_id`) USING BTREE,    
   CONSTRAINT `FK_product_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=UTF8MB4_GENERAL_CI;
+
+INSERT INTO `orderpositions` (`order_id`, `position_id`, `product_id`, `quantity`) 
+VALUES
+	(1, 1, 1, 1);
 
 GRANT USAGE ON *.* TO `pawsomeadmin`@`localhost` IDENTIFIED BY PASSWORD '*122F3B009504D146B213A98575C23E23B399E76C';
 

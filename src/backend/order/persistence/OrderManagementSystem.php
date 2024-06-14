@@ -16,7 +16,12 @@ class OrderManagementSystem
 
     public function addProductToShoppingCart($productId)
     {
-        return$this->repository->addProductToShoppingCart($productId);
+        return $this->repository->addProductToShoppingCart($productId);
+    }
+
+    public function saveOrder(Order $order)
+    {
+        return $this->repository->addOrderToDatabase($order);
     }
 
     /**

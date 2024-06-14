@@ -75,7 +75,10 @@ $tableSqlList = [
        KEY `FK_user_id` (`user_id`) USING BTREE,
        CONSTRAINT `FK_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
      ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=UTF8MB4_GENERAL_CI;"
-
+    ,
+    "INSERT INTO `orders` (`id`, `user_id`, `total_price_eur`) 
+    VALUES
+    (1, 1, 2.89);"
      ,
      "CREATE TABLE `orderpositions` (
         `order_id` int(11) NOT NULL,
@@ -88,6 +91,10 @@ $tableSqlList = [
         KEY `FK_product_id` (`product_id`) USING BTREE,
         CONSTRAINT `FK_product_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
       ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"
+    ,
+    "INSERT INTO `orderpositions` (`order_id`, `position_id`, `product_id`, `quantity`) 
+    VALUES
+    (1, 1, 1, 1);"
 ];
 
 foreach ($tableSqlList as $tableSql) {

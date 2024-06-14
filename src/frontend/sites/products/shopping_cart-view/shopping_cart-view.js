@@ -18,7 +18,7 @@ function showShoppingCart() {
             const positions = response["positions"];
             const totalPrice = response["totalPrice"];
             insertPositionsIntoList(positions);
-            insertTotalPrice(totalPrice);
+            insertTotalPriceAndOrderButton(totalPrice);
         }
     }).fail(function () {
         console.log("Request failed!");
@@ -90,6 +90,7 @@ function insertPositionsIntoList(positions) {
                             name: "positionQuantity",
                             value: quantity,
                             min: 1,
+                            max: 1000,
                             "data-positionId": positionId
                         }),
                         $( "<p/>", {
@@ -123,7 +124,7 @@ function insertPositionsIntoList(positions) {
     });
 }
 
-function insertTotalPrice(totalPrice) {
+function insertTotalPriceAndOrderButton(totalPrice) {
 
     $("#totalPrice").remove();
 
@@ -134,6 +135,31 @@ function insertTotalPrice(totalPrice) {
         id: "totalPrice",
         text: "Preis gesamt (TOTAL): " + totalPrice + " €"
     }).appendTo("#shoppingCartContainer");
+
+    $("#orderBtnContainer").remove();
+
+    $( "<div/>", {
+        id: "orderBtnContainer",
+        class: "d-flex align-items-end flex-column"
+    }).append(
+        $( "<button/>", {
+            class: "btn btn-success orderButton mb-2",
+            id: "orderBtn",
+            "aria-describedby": "orderBtnHelp",
+            text: "Bestellung absenden"
+        }),
+        $("<div/>", {
+            id: "orderBtnHelp",
+            class: "text-danger mb-3"
+        })
+    ).appendTo("#shoppingCartContainer");
+
+
+    $("#orderBtn").on( "click", function() {
+        console.log("send order from shopping cart button clicked");
+
+        orderIfUserIsLoggedIn()
+    });
 }
 
 function updateShoppingCart(positionId, newQuantity) {
@@ -155,7 +181,7 @@ function updateShoppingCart(positionId, newQuantity) {
             const positions = response["positions"];
             const totalPrice = response["totalPrice"];
             insertPositionsIntoList(positions);
-            insertTotalPrice(totalPrice);
+            insertTotalPriceAndOrderButton(totalPrice);
             setTopNavBarShoppingCartCount();
         }
     }).fail(function () {
@@ -179,7 +205,7 @@ function removePositionFromShoppingCart(positionId) {
             const positions = response["positions"];
             const totalPrice = response["totalPrice"];
             insertPositionsIntoList(positions);
-            insertTotalPrice(totalPrice);
+            insertTotalPriceAndOrderButton(totalPrice);
             setTopNavBarShoppingCartCount();
         }
     }).fail(function () {
@@ -188,5 +214,45 @@ function removePositionFromShoppingCart(positionId) {
             "Bitte probieren Sie es später erneut.");
     });
 }
+
+function orderIfUserIsLoggedIn() {
+    console.log("check if user is logged in");
+
+    $.ajax({
+        type: "GET",
+        url: "../../../../backend/user/controller/UserController.php",
+        cache: false,
+        data: {method: "checkUserSession", param: null},
+        dataType: "json"
+    }).done(function (response) {
+        console.log("Request succeeded! UserSessionIsSet - Response: " + response);
+        if (response === '1') {
+            console.log("a user is already logged in!");
+            orderFromShoppingCart()
+        } else {
+            $("#orderBtnHelp").html("ACHTUNG! Sie müssen eingeloggt sein, um eine Bestellung abzusenden!")
+        }
+    }).fail(function () {
+        console.log("Request failed!");
+    });
+}
+
+function orderFromShoppingCart() {
+
+    $.ajax({
+        type: "GET",
+        url: "../../../../backend/order/controller/OrderController.php",
+        cache: false,
+        data: {method: "orderFromShoppingCart", param: null},
+        dataType: "json"
+    }).done(function (response) {
+        console.log("Request succeeded! Order From Shopping Cart - Response: " + response);
+    }).fail(function () {
+        console.log("Request failed!");
+        alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
+            "Bitte probieren Sie es später erneut.");
+    });
+}
+
 
 

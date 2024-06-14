@@ -9,6 +9,71 @@ require_once "../model/Order.php";
 
 class OrderRepository
 {
+    public function getUsersMaxOrderId($userId)
+    {
+        $connection = db\DBConnection::getConnection();
+        $sqlSelect = "SELECT MAX(id) FROM orders WHERE user_id = ?";
+
+        $statement = $connection->prepare($sqlSelect);
+        $statement->bind_param("i", $userId);
+        $statement->execute();
+        $statement->bind_result($maxId);
+        $statement->fetch();
+        $statement->close();
+        $connection->close();
+        return $maxId;
+    }
+
+    public function addOrderToDatabase(Order $order)
+    {
+        $connection = db\DBConnection::getConnection();
+
+        // save order to orders table
+
+        $userId = $order->getUserId();
+        $totalPrice = $order->getTotalPrice();
+
+        $sqlInsert = "INSERT INTO orders (user_id, total_price_eur) VALUES (?,?)";
+
+        $statement = $connection->prepare($sqlInsert);
+        $statement->bind_param(
+            "id",
+            $userId,
+            $totalPrice
+        );
+
+        $statement->execute();
+        $statement->close();
+
+        // save positions to orderpositions table
+
+        $orderId = $this->getUsersMaxOrderId($userId);
+        $positions = $order->getPositions();
+
+        foreach ($positions as $p) {
+            $positionId = $p->getPositionId();
+            $positionProductId = $p->getProduct()->getId();
+            $positionQuantity = $p->getQuantity();
+
+            $sqlInsert = "INSERT INTO orderpositions (order_id, position_id, product_id, quantity) VALUES (?,?,?,?)";
+
+            $statement = $connection->prepare($sqlInsert);
+            $statement->bind_param(
+                "iiii",
+                $orderId,
+                $positionId,
+                $positionProductId,
+                $positionQuantity
+            );
+
+            $statement->execute();
+            $statement->close();
+        }
+
+        $connection->close();
+
+        return $orderId;
+    }
 
     public function findAllByUserId($userId): array
     {

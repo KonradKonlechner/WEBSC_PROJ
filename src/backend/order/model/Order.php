@@ -40,6 +40,11 @@ class Order implements JsonSerializable
         return $this->userId;
     }
 
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+    }
+
     public function getState()
     {
         return $this->state;
@@ -53,11 +58,6 @@ class Order implements JsonSerializable
     public function getTotalPrice()
     {
         return $this->totalPrice;
-    }
-
-    public function setTotalPrice()
-    {
-        return $this->calculateTotalPrice();
     }
 
     public function calculateTotalPrice(): float
@@ -99,8 +99,12 @@ class Order implements JsonSerializable
 
     public function jsonSerialize() {
         return [
+            'orderId' => $this->orderId,
+            'userId' => $this->userId,
             'positions' => $this->positions,
-            'totalPrice' => $this->totalPrice
+            'totalPrice' => $this->totalPrice,
+            'state' => $this->state,
+            'createdAt' => $this->createdAt
         ];
     }
 }

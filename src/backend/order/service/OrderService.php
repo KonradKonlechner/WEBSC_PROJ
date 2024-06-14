@@ -35,7 +35,8 @@ class OrderService
             $newOrderPosition = new OrderPosition(1, $product, 1);
 
             $positions = [$newOrderPosition];
-            $newOrder = new Order(null, null, $positions);
+
+            $newOrder = new Order(null, null, $positions, "new", date("Y-m-d H:i:s", time()));
 
             $_SESSION["shoppingCart"] = $newOrder;
 
@@ -96,6 +97,18 @@ class OrderService
         throw new \Exception('You have no permission to excess this order.');
 
     }
+
+    public function orderFromShoppingCart()
+    {
+        if (isset($_SESSION["currentUser"])) {
+            $userId = $_SESSION["currentUser"]->getUserId();
+            $_SESSION["shoppingCart"]->setUserId($userId);
+
+            return "OrderId: " . $this->oms->saveOrder($_SESSION["shoppingCart"]);
+        }
+        return "no user session set";
+    }
+
 
     private function prepareInput($data)
     {
