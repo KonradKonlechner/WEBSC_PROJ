@@ -8,3 +8,20 @@
     margin-left: 1em;
     margin-right: 1em;
 }
+
+/* todo: prettify these*/
+.new {
+    background: blue;
+}
+
+.confirmed {
+    background: yellow;
+}
+
+.cancelled {
+    background: red;
+}
+
+.shipped {
+    background: green;
+}
