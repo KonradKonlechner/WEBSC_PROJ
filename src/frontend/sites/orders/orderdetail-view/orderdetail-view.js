@@ -12,9 +12,7 @@ $(document).ready(function () {
     updateHead(order);
     updateOrderInformation(order);
     if (userIsAdmin()) {
-
-    } else {
-
+        activateAdminMode();
     }
 });
 
@@ -44,7 +42,7 @@ function getOrder(orderId) {
 function updateHead(order) {
     // Hint: in a real world application, the id should never be used to display in the GUI, however for simplification reasons
     // we decided to use the id as a reference number
-    $("h1").text("Bestellung mit Referenznummer: " + order.orderId);
+    $("h1").text("Bestellung mit Bestellnummer: " + order.orderId);
 }
 
 function appendPosition(position) {
@@ -97,15 +95,16 @@ function appendPosition(position) {
                         max: 1000,
                         disabled: true,
                         "data-positionId": position.quantity
-                    }).change(function () {updatePositionPrice(position.positionId, product.price)}),
+                    }).change(function () {updatePositionPriceAndTotalPrice(position.positionId, product.price)}),
                     $( "<p/>", {
                         id: "productTotalPrice"+position.positionId,
                         class: "productPrice",
-                        text: "Preis gesamt: " + (product.price * position.quantity)  + " €"
+                        text: "Preis gesamt: " + (product.price * position.quantity)  + " €",
+                        val: (product.price * position.quantity)
                     }),
                     $( "<button/>", {
-                        class: "btn btn-danger",
-                        id: position.positionId,
+                        class: "btn btn-danger removeButton",
+                        id: "removeButton"+position.positionId,
                         text: "entfernen",
                         hidden: true
                     }).click(function () {removeItem()})
@@ -129,12 +128,32 @@ function updateOrderInformation(order) {
     })
 }
 
-function updatePositionPrice(positionId, price) {
+function updatePositionPriceAndTotalPrice(positionId, price) {
+    // Update position price
+    let totalPosPrice = ($("#positionQuantity" + positionId).val() * price);
     $("#productTotalPrice"+positionId)
         .text(
             "Preis gesamt: " +
-            ($("#positionQuantity" + positionId).val() * price)  +
+            totalPosPrice  +
             " €")
+        .val(totalPosPrice)
+    // update total price
+    let totalPPP = 0;
+    $(".productPrice").each(function() {
+        totalPPP += Number($(this).val());
+    })
+    $("#totalPrice").val(
+        totalPPP
+    );
+}
+
+function activateAdminMode() {
+    // display remove button
+    $(".removeButton").attr("hidden", false);
+    // enable quantity input
+    $(".quantityInput").attr("disabled", false);
+    // enable total order price --> not sure if this is a real use case
+    $("#totalPrice").attr("disabled", false);
 }
 
 function removeItem() {
@@ -143,5 +162,5 @@ function removeItem() {
 
 function userIsAdmin() {
     // ToDo: add methods
-    return false;
+    return true;
 }

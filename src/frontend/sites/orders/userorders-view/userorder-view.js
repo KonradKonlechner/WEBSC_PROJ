@@ -50,12 +50,12 @@ function getOrderAppendable(order) {
             $("<div>", {
                 id: "orderTimeStamp"+order.orderId,
                 class: "orderData orderTimeStamp",
-                text: "Bestellund vom "+order.createdAt
+                text: "Bestellung vom "+order.createdAt
             }),
             $("<div>", {
                 id: "orderRefNo"+order.orderId,
                 class: "orderData orderRefNo",
-                text: "Referenznummer: "+order.orderId // Hint: in a real world application, this would never be actual id, but for simplification we used it here
+                text: "Bestellnummer: "+order.orderId // Hint: in a real world application, this would never be actual id, but for simplification we used it here
             }),
             $("<div>", {
                 id: "orderState"+order.orderId,
