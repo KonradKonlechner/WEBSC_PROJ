@@ -39,4 +39,16 @@ class OrderManagementSystem
         }
         return $orders;
     }
+
+    public function getOrderById(string $oderId): Order
+    {
+        $order = $this->orderRepo->findByOrderId($oderId);
+        $positions = $this->orderPositionRepo->findAllOrdersJoinedProductsByOrderId($oderId);
+
+        foreach ($positions as $position) {
+            $order->addPositionWithQuantity($position->getProduct(), $position->getQuantity());
+        }
+
+        return $order;
+    }
 }

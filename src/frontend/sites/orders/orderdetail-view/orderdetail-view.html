@@ -15,6 +15,7 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="../../../res/css/styles.css"/>
+  <link rel="stylesheet" href="orderdetail-view.css"/>
 
   <!-- Scripts -->
   <script src="../../navigation/include_nav.js"></script>
@@ -24,7 +25,13 @@
 <header id="navbar"></header>
 <main class="mt-2">
   <div id="productContainer" class="container justify-content-left">
-    <h1>Bestellung: </h1>
+
+    <button id="userorder-view-button" class="btn btn-primary" onclick="location.href='../../orders/userorders-view/userorder-view.html'">
+      <div class="fa fa-arrow-left"></div>
+      <div>Zurück zu meinen Bestellungen</div>
+    </button>
+
+    <h1>Bestellung</h1>
 
   </div>
 </main>

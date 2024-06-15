@@ -110,6 +110,20 @@ class OrderService
         return "no user session set";
     }
 
+    public function getOrderByOrderId($param)
+    {
+        $userId = $_SESSION["currentUser"]->getUserId();
+        $isAdmin = $_SESSION["currentUser"]->isAdmin();
+        $oderId = $this->prepareInput($param["orderId"]);
+
+        $order = $this->oms->getOrderById($oderId);
+
+        if ($order->getUserId() === $userId || $isAdmin === 1) {
+            return $order;
+        }
+        throw new \Exception('You have no permission to excess this order.');
+    }
+
 
     private function prepareInput($data)
     {

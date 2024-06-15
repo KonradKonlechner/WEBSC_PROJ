@@ -1,0 +1,10 @@
+#userorder-view-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#userorder-view-button div {
+    margin-left: 1em;
+    margin-right: 1em;
+}

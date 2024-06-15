@@ -116,4 +116,28 @@ class OrderRepository
 
         return $allOrders;
     }
+
+    public function findByOrderId($orderId): Order
+    {
+        $connection = db\DBConnection::getConnection();
+        $sqlSelect = "SELECT * FROM orders WHERE id = ?";
+
+        $statement = $connection->prepare($sqlSelect);
+        $statement->bind_param("i", $orderId);
+
+        $statement->execute();
+        $statement->bind_result($foundOrderId, $userid, $totalPrice, $state, $createdAt);
+        $statement->fetch();
+        $order = new Order( # use constructor to create new instance of order
+            $foundOrderId,
+            $userid,
+            [],
+            $state,
+            $createdAt
+        );
+
+        $statement->close();
+        $connection->close();
+        return $order;
+    }
 }

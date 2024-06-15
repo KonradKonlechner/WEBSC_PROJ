@@ -3,10 +3,6 @@ import {translateState} from "../util/order-state-translator.js";
 $(document).ready(function () {
     const orders = getUserOrders();
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const myParam = urlParams.get('myParam');
-    console.log("########################"+myParam);
-
     displayOrders(orders);
 });
 
@@ -53,17 +49,22 @@ function getOrderAppendable(order) {
         .append(
             $("<div>", {
                 id: "orderTimeStamp"+order.orderId,
-                class: "orderTimeStamp",
-                text: "Bestellund vom: "+order.createdAt
+                class: "orderData orderTimeStamp",
+                text: "Bestellund vom "+order.createdAt
+            }),
+            $("<div>", {
+                id: "orderRefNo"+order.orderId,
+                class: "orderData orderRefNo",
+                text: "Referenznummer: "+order.orderId // Hint: in a real world application, this would never be actual id, but for simplification we used it here
             }),
             $("<div>", {
                 id: "orderState"+order.orderId,
-                class: "orderState",
+                class: "orderData orderState",
                 text: "Status: "+translateState(order.state)
             }),
             $("<div>", {
                 id: "orderPrice"+order.orderId,
-                class: "orderTimeStamp",
+                class: "orderData orderTimeStamp",
                 text: "Bestellwert: "+order.totalPrice + "€"
             }),
         )

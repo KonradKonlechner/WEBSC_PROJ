@@ -34,6 +34,9 @@ class OrderControllerRequestHandler
             case "orderFromShoppingCart":
                 $res = $this->service->orderFromShoppingCart();
                 break;
+            case "getOrderByOrderId":
+                $res = $this->service->getOrderByOrderId($param);
+                break;
             default:
                 $res = null;
                 break;
