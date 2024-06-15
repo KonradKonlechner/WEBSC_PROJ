@@ -82,13 +82,13 @@ function logout() {
             "Bitte probieren Sie es später erneut.");
     });
 }
-
 function setLoginForm(userIsLoggedIn) {
 
     if(userIsLoggedIn) {
         $("#loginForm").remove();
         $("#noProfile").hide();
         showLogoutButton();
+        showOrderButton();
         showProfileOfCurrentUser();
     } else {
         $("#logoutBtn").remove();
@@ -231,6 +231,23 @@ function showLogoutButton() {
         logout();
     });
 }
+
+function showOrderButton() {
+    $("<div/>", {
+        id: "orderBtn",
+        class: "mb-3"
+    }).append(
+        $("<button/>", {
+            id: "orders",
+            class: "btn btn-success",
+            name: "orders",
+            text: "Meine Bestellungen"
+        }).click(function() {
+            location.href="../../orders/userorders-view/userorder-view.html";
+        })
+    ).appendTo("#loginContainer");
+}
+
 
 function showProfileOfCurrentUser() {
     console.log("show profile of current user");

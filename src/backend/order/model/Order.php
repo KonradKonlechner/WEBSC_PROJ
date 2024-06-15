@@ -60,6 +60,11 @@ class Order implements JsonSerializable
         return $this->totalPrice;
     }
 
+    public function setTotalPrice()
+    {
+        return $this->calculateTotalPrice();
+    }
+
     public function calculateTotalPrice(): float
     {
         $totalPrice = 0;
