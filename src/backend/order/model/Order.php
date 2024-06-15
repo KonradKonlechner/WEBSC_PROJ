@@ -35,6 +35,11 @@ class Order implements JsonSerializable
         return $this->orderId;
     }
 
+    public function setOrderId($orderId)
+    {
+        $this->orderId = $orderId;
+    }
+
     public function getUserId()
     {
         return $this->userId;
@@ -88,7 +93,7 @@ class Order implements JsonSerializable
             $positionId = $this->positions[count($this->positions)-1]->getPositionId()+1;
         }
 
-        $newOrderPosition = new OrderPosition($positionId, $product, 1);
+        $newOrderPosition = new OrderPosition($this->orderId, $positionId, $product, 1);
 
         array_push($this->positions, $newOrderPosition);
 

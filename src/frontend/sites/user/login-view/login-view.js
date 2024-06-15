@@ -82,6 +82,7 @@ function logout() {
             "Bitte probieren Sie es später erneut.");
     });
 }
+
 function setLoginForm(userIsLoggedIn) {
 
     if(userIsLoggedIn) {
@@ -92,6 +93,7 @@ function setLoginForm(userIsLoggedIn) {
         showProfileOfCurrentUser();
     } else {
         $("#logoutBtn").remove();
+        $("#orderBtn").remove();
         $("#updateProfileForm").remove();
         showLoginForm()
         $("#noProfile").show();

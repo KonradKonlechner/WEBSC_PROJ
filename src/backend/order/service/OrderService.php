@@ -32,7 +32,7 @@ class OrderService
 
         if (!isset($_SESSION["shoppingCart"])) {
 
-            $newOrderPosition = new OrderPosition(1, $product, 1);
+            $newOrderPosition = new OrderPosition(null, 1, $product, 1);
 
             $positions = [$newOrderPosition];
 
@@ -65,9 +65,9 @@ class OrderService
         } else {
             $positionId = $updateParameter["positionId"];
             $newQuantity = $updateParameter["newQuantity"];
-
+            // update quantity of a position in shopping cart
             $_SESSION["shoppingCart"]->getPositions()[$positionId]->setQuantity($newQuantity);
-
+            // update total price of all positions in shopping cart
             $_SESSION["shoppingCart"]->calculateTotalPrice();
 
             return $_SESSION["shoppingCart"];
@@ -94,8 +94,7 @@ class OrderService
             $userId = $_SESSION["currentUser"]->getUserId();
             return $this->oms->getOrdersForUser($userId);
         }
-        throw new \Exception('You have no permission to excess this order.');
-
+        throw new \Exception('You have no permission to access this order.');
     }
 
     public function orderFromShoppingCart()
@@ -104,8 +103,11 @@ class OrderService
             $userId = $_SESSION["currentUser"]->getUserId();
             $_SESSION["shoppingCart"]->setUserId($userId);
             $orderId = $this->oms->saveOrder($_SESSION["shoppingCart"]);
-            $_SESSION["shoppingCart"] = null;
-            return "OrderId: " . $orderId;
+            if($orderId != null) {
+                // after successful saving of new order to database the shopping cart should be reset to empty
+                $_SESSION["shoppingCart"] = null;
+            }
+            return $orderId;
         }
         return "no user session set";
     }

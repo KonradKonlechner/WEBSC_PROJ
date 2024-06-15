@@ -9,6 +9,38 @@ require_once "../mapper/OrderPositionMapper.php";
 
 class PositionRepository
 {
+    public function addOrderPositionsToDatabase(Order $order)
+    {
+        $connection = db\DBConnection::getConnection();
+
+        $orderId = $order->getOrderId();
+        $positions = $order->getPositions();
+        $statementSuccess = false;
+
+        foreach ($positions as $p) {
+            $positionId = $p->getPositionId();
+            $positionProductId = $p->getProduct()->getId();
+            $positionQuantity = $p->getQuantity();
+
+            $sqlInsert = "INSERT INTO orderpositions (order_id, position_id, product_id, quantity) VALUES (?,?,?,?)";
+
+            $statement = $connection->prepare($sqlInsert);
+            $statement->bind_param(
+                "iiii",
+                $orderId,
+                $positionId,
+                $positionProductId,
+                $positionQuantity
+            );
+
+            $statementSuccess = $statement->execute();
+            $statement->close();
+        }
+
+        $connection->close();
+
+        return $statementSuccess;
+    }
 
     public function findAllOrdersJoinedProductsByOrderId($orderId): array
     {

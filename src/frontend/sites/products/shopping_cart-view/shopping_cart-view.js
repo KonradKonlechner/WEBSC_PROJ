@@ -253,6 +253,7 @@ function orderFromShoppingCart() {
     }).done(function (response) {
         console.log("Request succeeded! Order From Shopping Cart - Response: " + response);
         showShoppingCart()
+        showOrderConfirmation(response)
     }).fail(function () {
         console.log("Request failed!");
         alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
@@ -261,4 +262,8 @@ function orderFromShoppingCart() {
 }
 
 
+function showOrderConfirmation(orderId) {
 
+    $("#shoppingCartTitle").html("Ihr Auftrag mit der Bestellnummer " + orderId + " wurde erfolgreich abgesendet!");
+    $("#shoppingCartTitle").attr("class", "text-danger orderConfirmationText");
+}

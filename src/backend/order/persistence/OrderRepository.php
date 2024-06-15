@@ -22,6 +22,7 @@ class OrderRepository
         $statement->fetch();
         $statement->close();
         $connection->close();
+
         return $maxId;
     }
 
@@ -45,40 +46,9 @@ class OrderRepository
 
         $statement->execute();
         $statement->close();
-
-        // save positions to orderpositions table
-        // ToDo: please not here... saving order positions can be done in a separate repository
-        // Using our current format, these query methods are long and ugly enough, event without doing multiple actions
-        // For exactly this reason (keeping our repositories somewhat neat and clean) we use the management systems
-        // In a real world application which uses actually modern technology this would be done by JDBC or something similar
-        // As a rule of thumb I suggest: if you can reasonably put in in one query, then its ok (e.g. simple joins that reduce overhead
-        // time as we do not have to open and close connections x times) and event then, we try to do as much logic outside of the repos
-        // (e.g. using mappers, etc.)
+        $connection->close();
 
         $orderId = $this->getUsersMaxOrderId($userId);
-        $positions = $order->getPositions();
-
-        foreach ($positions as $p) {
-            $positionId = $p->getPositionId();
-            $positionProductId = $p->getProduct()->getId();
-            $positionQuantity = $p->getQuantity();
-
-            $sqlInsert = "INSERT INTO orderpositions (order_id, position_id, product_id, quantity) VALUES (?,?,?,?)";
-
-            $statement = $connection->prepare($sqlInsert);
-            $statement->bind_param(
-                "iiii",
-                $orderId,
-                $positionId,
-                $positionProductId,
-                $positionQuantity
-            );
-
-            $statement->execute();
-            $statement->close();
-        }
-
-        $connection->close();
 
         return $orderId;
     }

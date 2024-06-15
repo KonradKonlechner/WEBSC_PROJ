@@ -24,7 +24,18 @@ class OrderManagementSystem
 
     public function saveOrder(Order $order)
     {
-        return $this->orderRepo->addOrderToDatabase($order);
+        $previousOrderId = $this->orderRepo->getUsersMaxOrderId($order->getUserId());
+        $newOrderId = $this->orderRepo->addOrderToDatabase($order);
+
+        if($previousOrderId != $newOrderId) {
+            $order->setOrderId($newOrderId);
+            if($this->orderPositionRepo->addOrderPositionsToDatabase($order) === true)
+            {
+                return $newOrderId;
+            }
+        }
+
+        return null;
     }
 
     public function getOrdersForUser($userId)
