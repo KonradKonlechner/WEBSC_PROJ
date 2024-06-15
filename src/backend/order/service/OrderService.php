@@ -92,7 +92,11 @@ class OrderService
     {
         if (isset($_SESSION["currentUser"])) {
             $userId = $_SESSION["currentUser"]->getUserId();
-            return $this->oms->getOrdersForUser($userId);
+            $usersOrders = $this->oms->getOrdersForUser($userId);
+            if(count($usersOrders) === 0) {
+                return "no orders available";
+            }
+            return $usersOrders;
         }
         throw new \Exception('You have no permission to access this order.');
     }
@@ -140,6 +144,10 @@ class OrderService
         if ($_SESSION["currentUser"]->isAdmin()) {
             $userId = $this->prepareInput($param["userId"]);
             $ordersForUser = $this->oms->getOrdersForUser($userId);
+
+            if(count($ordersForUser) === 0) {
+                return "no orders available";
+            }
             return $ordersForUser;
         }
         throw new \Exception('You have no permission to excess this order.');

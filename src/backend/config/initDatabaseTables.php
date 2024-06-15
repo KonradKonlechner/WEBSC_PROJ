@@ -37,13 +37,11 @@ $tableSqlList = [
     )
     COLLATE='utf8mb4_general_ci'
     ENGINE=InnoDB;"
-    
     ,
     "INSERT INTO `users` (`id`, `username`, `password`, `sex`, `firstname`, `lastname`, `address`, `postal_code`, `city`, `email`, `is_admin`) 
     VALUES 
     (1, 'maxim', '$hashedMaximPW', 'Herr', 'Max', 'Meier', 'Hauptstraße 123', '3210', 'Meierndorf', 'max@meier.at', 0),
     (2, 'admin', '$hashedAdminPW', 'Herr', 'Admin', 'LeBoss', '47th floor', '47001', 'Rooftop Penthouse', 'chef.admin@mailmail.com', 1);"
-
     ,
     "CREATE TABLE `products` (
           `id` int(11) NOT NULL AUTO_INCREMENT,  
@@ -56,14 +54,12 @@ $tableSqlList = [
           `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP(),  
           PRIMARY KEY (`id`) USING BTREE
     ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"
-
     ,
     "INSERT INTO `products` (`id`, `name`, `description`, `category`, `price_per_unit_eur`, `image_path`, `thumbnail_path`) 
     VALUES
     (1, 'Whiskas Crunch', 'Whiskas Snacks Crunch Huhn, Truthahn & Ente 100g Katzensnack', 'food', 2.89, 'uploads/whiskas_crunch.jpeg', 'thumbnails/thumbnail_whiskas_crunch.jpg'),
 	(2, 'Pedigree Classic', 'Pedigree Classic 12x800g 3 Sorten Geflügel ', 'food', 29.99, 'uploads/pedigree_classic.jpg', 'thumbnails/thumbnail_pedigree_classic.jpg')
     (3, 'Katzenangel 3 in 1 XXL', 'Katzenspielangel mit extra langem Stab für besonders großen Spielradius; mit drei unterschiedlichen, austauschbaren Federanhängern, befriedigt den Jagdtrieb Ihrer Katze. Gesamtlänge ca. 200 cm', 'toys', 3.49, 'uploads/cat_teasing_stick.jpg', 'thumbnails/thumbnail_cat_teasing_stick.jpg');"
-
     ,
     "CREATE TABLE `orders` (
        `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -95,6 +91,15 @@ $tableSqlList = [
     "INSERT INTO `orderpositions` (`order_id`, `position_id`, `product_id`, `quantity`) 
     VALUES
     (1, 1, 1, 1);"
+    ,
+    "CREATE TABLE IF NOT EXISTS `invoices` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+      `order_id` int(11) NOT NULL,   
+      `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+      PRIMARY KEY (`id`) USING BTREE,
+      KEY `FK_invoice_order_id` (`order_id`) USING BTREE,    
+      CONSTRAINT `FK_invoice_order_id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+    ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=UTF8MB4_GENERAL_CI;"
 ];
 
 foreach ($tableSqlList as $tableSql) {
