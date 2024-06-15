@@ -5,7 +5,7 @@ $(document).ready(function () {
 });
 
 function showShoppingCart() {
-
+    // send request to backend to get current content of shopping cart and add items to the site's list
     $.ajax({
         type: "GET",
         url: "../../../../backend/order/controller/OrderController.php",
@@ -113,6 +113,7 @@ function insertPositionsIntoList(positions) {
         ).appendTo("#shoppingCartList");
     })
 
+    // event handler on change of quantity of any shopping cart position
     $(".quantityInput").on( "change", function() {
         const positionId = $(this).attr("data-positionId");
         const newQuantity = $(this).val();
@@ -122,6 +123,7 @@ function insertPositionsIntoList(positions) {
         setTopNavBarShoppingCartCount();
     });
 
+    // event handler on clicking button for removing a shopping cart position
     $(".removeFromShoppingCart").on( "click", function() {
         console.log("adding to shopping cart link clicked");
 
@@ -159,15 +161,17 @@ function insertTotalPriceAndOrderButton(totalPrice) {
         })
     ).appendTo("#shoppingCartContainer");
 
-
+    // event handler on clicking button for send order from shopping cart
     $("#orderBtn").on( "click", function() {
         console.log("send order from shopping cart button clicked");
-
+        // check if an user is logged and if so send request to backend for saving the order to database
         orderIfUserIsLoggedIn()
     });
 }
 
 function updateShoppingCart(positionId, newQuantity) {
+
+    // send request to backend to update the quantity of a shopping cart's position
 
     const parameter = {
         positionId: positionId,
@@ -198,6 +202,8 @@ function updateShoppingCart(positionId, newQuantity) {
 
 function removePositionFromShoppingCart(positionId) {
 
+    // send request to backend to delete a shopping cart's position
+
     $.ajax({
         type: "DELETE",
         url: "../../../../backend/order/controller/OrderController.php",
@@ -221,6 +227,9 @@ function removePositionFromShoppingCart(positionId) {
 }
 
 function orderIfUserIsLoggedIn() {
+
+    // if no user is logged in then a message should be displayed that an order could only be sent if the user is logged in
+
     console.log("check if user is logged in");
 
     $.ajax({
@@ -244,6 +253,8 @@ function orderIfUserIsLoggedIn() {
 
 function orderFromShoppingCart() {
 
+    // send request to backend to save shopping cart's order to database
+
     $.ajax({
         type: "GET",
         url: "../../../../backend/order/controller/OrderController.php",
@@ -261,8 +272,9 @@ function orderFromShoppingCart() {
     });
 }
 
-
 function showOrderConfirmation(orderId) {
+
+    // display a message of confirmation after the user clicked the order button in the shopping cart and the order has been saved to database
 
     $("#shoppingCartTitle").html("Ihr Auftrag mit der Bestellnummer " + orderId + " wurde erfolgreich abgesendet!");
     $("#shoppingCartTitle").attr("class", "text-danger orderConfirmationText");

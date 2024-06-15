@@ -29,7 +29,9 @@ function getUserOrders() {
             data: {method: "getOrdersForUserId", param: {userId: userId}},
             dataType: "json"
         }).done(function (response) {
-            orders = response;
+            if(response != "no orders available") {
+                orders = response;
+            }
         }).fail(function () {
             console.log("Request failed!");
             alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
@@ -45,7 +47,9 @@ function getUserOrders() {
             data: {method: "getOrdersForUser", param: null},
             dataType: "json"
         }).done(function (response) {
-            orders = response;
+            if(response != "no orders available") {
+                orders = response;
+            }
         }).fail(function () {
             console.log("Request failed!");
             alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +

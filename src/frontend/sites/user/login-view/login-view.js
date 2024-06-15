@@ -7,6 +7,7 @@ $(document).ready(function () {
 
 function setLoginFormIfUserIsLoggedIn() {
     setTopNavBarLinksIfUserIsLoggedIn();
+    // check if an user is logged in and set up login form accordingly
     $.ajax({
         type: "GET",
         url: "../../../../backend/user/controller/UserController.php",
@@ -84,13 +85,13 @@ function logout() {
 }
 
 function setLoginForm(userIsLoggedIn) {
-
+    // if an user is logged in then show form to edit profile
     if(userIsLoggedIn) {
         $("#loginForm").remove();
         $("#noProfile").hide();
         showLogoutButton();
         showOrderButton();
-        showProfileOfCurrentUser();
+        showProfileOfCurrentUser(false);
     } else {
         $("#logoutBtn").remove();
         $("#orderBtn").remove();
@@ -250,8 +251,7 @@ function showOrderButton() {
     ).appendTo("#loginContainer");
 }
 
-
-function showProfileOfCurrentUser() {
+function showProfileOfCurrentUser(userProfileUpdated) {
     console.log("show profile of current user");
     $.ajax({
         type: "GET",
@@ -261,7 +261,7 @@ function showProfileOfCurrentUser() {
         dataType: "json"
     }).done(function(response) {
         //console.log("Request succeeded! Response: " + JSON.stringify(response));
-        showUserProfile(response)
+        showUserProfile(response, userProfileUpdated)
     }).fail(function() {
         console.log("Request failed!");
         alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
@@ -269,7 +269,9 @@ function showProfileOfCurrentUser() {
     });
 }
 
-function showUserProfile(currentUser) {
+function showUserProfile(currentUser, userProfileUpdated) {
+
+    // build form for editing user's profile
 
     var sex = currentUser["sex"];
     var firstname = currentUser["name"];
@@ -569,17 +571,30 @@ function showUserProfile(currentUser) {
 
     $("#updateUserProfile").remove();
 
-    $("<button/>", {
-        id: "updateUserProfile",
-        class: "btn btn-success",
-        type: "submit",
-        name: "updateUserProfile",
-        text: "Änderungen übernehmen"
-    }).appendTo("#updateProfileForm");
+    $("<div/>", {
+        id: "updateUserProfile"
+    }).append(
+        $("<button/>", {
+            id: "updateUserProfileBtn",
+            class: "btn btn-success",
+            type: "submit",
+            name: "updateUserProfileBtn",
+            "aria-describedby": "updateUserProfileInfo",
+            text: "Änderungen übernehmen"
+        }),
+        $("<div/>", {
+            id: "updateUserProfileInfo",
+            class: "text-success"
+        })
+    ).appendTo("#updateProfileForm");
+
+    if(userProfileUpdated) {
+        $("#updateUserProfileInfo").html("Die Änderungen wurden erfolgreich übernommen!");
+    }
 
     // event handler for clicking on update user profile button
-    $("#updateUserProfile").click(function () {
-
+    $("#updateUserProfileBtn").click(function () {
+        // send request to backend to update user's profile as edited by user
         updateUserProfile(
             username,
             $("#sex").val(),
@@ -624,7 +639,7 @@ function updateUserProfile(username, sex, name, lastname, address, postal_code, 
         }).done(function (response) {
             console.log("Request succeeded! Response: " + response);
             if(response === "user profile has been updated") {
-                showProfileOfCurrentUser()
+                showProfileOfCurrentUser(true);
             } else {
                 $("#password").addClass("is-invalid");
                 $("#passwordHelp").addClass("text-danger");
@@ -635,7 +650,6 @@ function updateUserProfile(username, sex, name, lastname, address, postal_code, 
             alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
                 "Bitte probieren Sie es später erneut.");
         });
-
     }
 }
 
@@ -643,7 +657,7 @@ function checkNewPasswordInput(passwordNew, passwordNew2) {
     if (passwordNew == "" && passwordNew2 == "") {
         // no new password has been set
         return true;
-    }else {
+    } else {
 
         if (passwordNew != passwordNew2) {
             console.log("new passwords do not match!");
@@ -663,6 +677,7 @@ function checkNewPasswordInput(passwordNew, passwordNew2) {
             $("#passwordNewHelp").html("");
             $("#passwordNew2Help").html("");
 
+            // validate new password input's length
             if (passwordNew.length < 8) {
                 $("#passwordNew").addClass("is-invalid");
                 $("#passwordNewHelp").addClass("text-danger");

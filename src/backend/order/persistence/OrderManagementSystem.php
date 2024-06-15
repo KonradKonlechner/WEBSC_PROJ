@@ -34,7 +34,6 @@ class OrderManagementSystem
                 return $newOrderId;
             }
         }
-
         return null;
     }
 

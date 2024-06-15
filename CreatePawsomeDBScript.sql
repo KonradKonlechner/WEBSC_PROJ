@@ -101,6 +101,17 @@ CREATE TABLE IF NOT EXISTS `orderpositions` (
 INSERT INTO `orderpositions` (`order_id`, `position_id`, `product_id`, `quantity`) 
 VALUES
 	(1, 1, 1, 1);
+	
+DROP TABLE IF EXISTS `invoices`;
+	
+CREATE TABLE IF NOT EXISTS `invoices` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` int(11) NOT NULL,   
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `FK_invoice_order_id` (`order_id`) USING BTREE,    
+  CONSTRAINT `FK_invoice_order_id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=UTF8MB4_GENERAL_CI;
 
 GRANT USAGE ON *.* TO `pawsomeadmin`@`localhost` IDENTIFIED BY PASSWORD '*122F3B009504D146B213A98575C23E23B399E76C';
 

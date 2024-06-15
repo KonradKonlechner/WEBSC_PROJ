@@ -1,8 +1,11 @@
 import {setTopNavBarShoppingCartCount} from "../../navigation/navbar/topNavBar_logic.js";
 
 $(document).ready(function () {
+
+    // show filtered product list based on selection of product category and search term input
     filterProductList();
 
+    // event handlers to trigger filtering of product list
     $("#productCategory").on( "change", function() {
         filterProductList();
     });
@@ -47,6 +50,9 @@ function filterProductListByCategory() {
 }
 
 function insertAllProductsOfCategory(productCategory) {
+
+    // send request to backend to get filtered list of products from database based on selection of product category
+
     $.ajax({
         type: "GET",
         url: "../../../../backend/product/controller/ProductController.php",
@@ -63,6 +69,9 @@ function insertAllProductsOfCategory(productCategory) {
 }
 
 function insertAllProducts() {
+
+    // get list of all products if no filter is set
+
     $.ajax({
         type: "GET",
         url: "../../../../backend/product/controller/ProductController.php",
