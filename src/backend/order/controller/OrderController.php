@@ -35,7 +35,7 @@ switch ($httpRequestMethod) {
 
         $data = $requestHandler->handleRequest($method, $param);
 
-        if ($data == null) {
+        if ($data == null && !empty($errors)) {
             $httpStatus = 400;
         }
         http_response_code($httpStatus);

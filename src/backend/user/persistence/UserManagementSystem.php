@@ -80,4 +80,9 @@ class UserManagementSystem
         }
         return false;
     }
+
+    public function getUserById(string $id): User
+    {
+        return $this->repository->getUserById($id);
+    }
 }

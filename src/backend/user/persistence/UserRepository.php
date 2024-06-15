@@ -234,4 +234,17 @@ class UserRepository
 
         return $allUsers;
     }
+
+    public function getUserById(string $id): User
+    {
+        $connection = db\DBConnection::getConnection();
+        $sqlSelect = "SELECT * FROM users WHERE id = ?";
+
+        $statement = $connection->prepare($sqlSelect);
+        $statement->bind_param("s", $id); # character "s" is used due to placeholders of type String
+
+        $fetchedUser = $this->fetchAndBindResult($statement);
+        $connection->close();
+        return $fetchedUser;
+    }
 }

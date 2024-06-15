@@ -1,8 +1,10 @@
 import {translateState} from "../util/order-state-translator.js";
+import {userIsAdmin} from "../util/user-state.js";
 
-$(document).ready(function () {
+function init() {
     const urlParams = new URLSearchParams(window.location.search);
     const orderId = urlParams.get('orderId');
+    const userId = urlParams.get('userId');
 
     const order = getOrder(orderId);
     if (order == null) {
@@ -11,9 +13,13 @@ $(document).ready(function () {
 
     updateHead(order);
     updateOrderInformation(order);
-    if (userIsAdmin()) {
-        activateAdminMode();
+    if (userIsAdmin() && userId != null && userId !== "") {
+        activateAdminMode(userId);
     }
+}
+
+$(document).ready(function () {
+    init();
 });
 
 function getOrder(orderId) {
@@ -45,9 +51,10 @@ function updateHead(order) {
     $("h1").text("Bestellung mit Bestellnummer: " + order.orderId);
 }
 
-function appendPosition(position) {
+function appendPosition(position, orderId) {
     const product = position.product;
     $( "<li/>", {
+        id: "positionListItem"+position.positionId,
         class: "list-group-item"
     }).append(
         $( "<div/>", {
@@ -95,7 +102,7 @@ function appendPosition(position) {
                         max: 1000,
                         disabled: true,
                         "data-positionId": position.quantity
-                    }).change(function () {updatePositionPriceAndTotalPrice(position.positionId, product.price)}),
+                    }).change(function () {updatePosition(position.positionId, product.price, orderId)}),
                     $( "<p/>", {
                         id: "productTotalPrice"+position.positionId,
                         class: "productPrice",
@@ -107,7 +114,7 @@ function appendPosition(position) {
                         id: "removeButton"+position.positionId,
                         text: "entfernen",
                         hidden: true
-                    }).click(function () {removeItem()})
+                    }).click(function () {removeItem(orderId, position.positionId)})
                 )
             )
         )
@@ -124,13 +131,18 @@ function updateOrderInformation(order) {
         .val(order.totalPrice)
 
     order.positions.forEach(position => {
-        appendPosition(position);
+        appendPosition(position, order.orderId);
     })
 }
 
-function updatePositionPriceAndTotalPrice(positionId, price) {
+function updatePosition(positionId, price, orderId) {
+    const positionQty = $("#positionQuantity" + positionId).val();
+
+    // update position
+    updatePositionQuantityForOrder(positionId, orderId, positionQty)
+
     // Update position price
-    let totalPosPrice = ($("#positionQuantity" + positionId).val() * price);
+    let totalPosPrice = (positionQty * price);
     $("#productTotalPrice"+positionId)
         .text(
             "Preis gesamt: " +
@@ -147,7 +159,10 @@ function updatePositionPriceAndTotalPrice(positionId, price) {
     );
 }
 
-function activateAdminMode() {
+function activateAdminMode(userId) {
+    // change backwards button
+    $("#back-button-text").text("Zurück zu den Bestellungen");
+    $("#userorder-view-button").click(function () {location.href="../../orders/userorders-view/userorder-view.html?userId="+userId})
     // display remove button
     $(".removeButton").attr("hidden", false);
     // enable quantity input
@@ -156,11 +171,15 @@ function activateAdminMode() {
     $("#totalPrice").attr("disabled", false);
 }
 
-function removeItem() {
+function removeItem(orderId, positionId) {
+    deletePositionFromOrder(orderId);
+    $("#positionListItem"+positionId).remove();
+}
+
+function deletePositionFromOrder(orderId) {
     // ToDO:
 }
 
-function userIsAdmin() {
-    // ToDo: add methods
-    return true;
+function updatePositionQuantityForOrder(positionId, orderId, positionQty) {
+    // ToDo
 }

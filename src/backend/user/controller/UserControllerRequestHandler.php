@@ -41,6 +41,9 @@ class UserControllerRequestHandler
             case "updateUserProfileAsAdmin":
                 $res = $this->service->updateUserProfileAsAdmin($param);
                 break;
+            case "getUserDataById":
+                $res = $this->service->getUserById($param);
+                break;
             default:
                 $res = null;
                 break;

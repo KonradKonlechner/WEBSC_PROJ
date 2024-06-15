@@ -37,6 +37,9 @@ class OrderControllerRequestHandler
             case "getOrderByOrderId":
                 $res = $this->service->getOrderByOrderId($param);
                 break;
+            case "getOrdersForUserId":
+                $res = $this->service->getOrderByUserId($param);
+                break;
             default:
                 $res = null;
                 break;

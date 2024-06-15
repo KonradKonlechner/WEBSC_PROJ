@@ -103,7 +103,7 @@ class OrderService
             $userId = $_SESSION["currentUser"]->getUserId();
             $_SESSION["shoppingCart"]->setUserId($userId);
             $orderId = $this->oms->saveOrder($_SESSION["shoppingCart"]);
-            if($orderId != null) {
+            if ($orderId != null) {
                 // after successful saving of new order to database the shopping cart should be reset to empty
                 $_SESSION["shoppingCart"] = null;
             }
@@ -133,6 +133,16 @@ class OrderService
         $sanitizedInput = htmlspecialchars($data);
         $sanitizedInput = trim($sanitizedInput);
         return stripslashes($sanitizedInput);
+    }
+
+    public function getOrderByUserId($param): array
+    {
+        if ($_SESSION["currentUser"]->isAdmin()) {
+            $userId = $this->prepareInput($param["userId"]);
+            $ordersForUser = $this->oms->getOrdersForUser($userId);
+            return $ordersForUser;
+        }
+        throw new \Exception('You have no permission to excess this order.');
     }
 
 

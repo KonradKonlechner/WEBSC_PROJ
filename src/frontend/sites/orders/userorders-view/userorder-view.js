@@ -1,4 +1,5 @@
 import {translateState} from "../util/order-state-translator.js";
+import {userIsAdmin} from "../util/user-state.js";
 
 $(document).ready(function () {
     const orders = getUserOrders();
@@ -8,29 +9,76 @@ $(document).ready(function () {
 
 
 function getUserOrders() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('userId');
+
     let orders = [];
 
+    if (userIsAdmin() && userId != null) {
+        const user = getUserInfo(userId);
+        if (user == null || user.id == null) {
+            $("h1").text("Benutzer mit der Id "+ userId + " existiert nicht.");
+            return;
+        }
+        $("h1").text("Bestellungen von "+ user.name)
+        $.ajax({
+            type: "GET",
+            url: "../../../../backend/order/controller/OrderController.php",
+            cache: false,
+            async: false,
+            data: {method: "getOrdersForUserId", param: {userId: userId}},
+            dataType: "json"
+        }).done(function (response) {
+            orders = response;
+        }).fail(function () {
+            console.log("Request failed!");
+            alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
+                "Bitte probieren Sie es später erneut.");
+        });
+
+    } else {
+        $.ajax({
+            type: "GET",
+            url: "../../../../backend/order/controller/OrderController.php",
+            cache: false,
+            async: false,
+            data: {method: "getOrdersForUser", param: null},
+            dataType: "json"
+        }).done(function (response) {
+            orders = response;
+        }).fail(function () {
+            console.log("Request failed!");
+            alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
+                "Bitte probieren Sie es später erneut.");
+        });
+    }
+
+    return orders;
+}
+
+function getUserInfo(userId) {
+    let user;
     $.ajax({
         type: "GET",
-        url: "../../../../backend/order/controller/OrderController.php",
+        url: "../../../../backend/user/controller/UserController.php",
         cache: false,
         async: false,
-        data: {method: "getOrdersForUser", param: null},
+        data: {method: "getUserDataById", param: {userId: userId}},
         dataType: "json"
     }).done(function (response) {
-        orders = response;
+        user = response;
     }).fail(function () {
         console.log("Request failed!");
         alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
             "Bitte probieren Sie es später erneut.");
     });
-    return orders;
+    return user;
 }
 
 function displayOrders(orders) {
     if (orders == null || orders.length <=0) {
         $("<h2>", {
-          text: "Sie haben noch keine Bestellungen bei uns getätigt."
+          text: "Es wurden noch keine Bestellungen bei uns getätigt."
         }).appendTo("#productContainer")
     }
 
@@ -41,10 +89,13 @@ function displayOrders(orders) {
 }
 
 function getOrderAppendable(order) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('userId');
+
     return $("<a>", {
         id: "order"+order.orderId,
         class: order,
-        href: "../../orders/orderdetail-view/orderdetail-view.html?orderId="+order.orderId
+        href: "../../orders/orderdetail-view/orderdetail-view.html?orderId="+order.orderId + (userId == null ? "" : ("&userId="+userId))
     })
         .append(
             $("<div>", {
