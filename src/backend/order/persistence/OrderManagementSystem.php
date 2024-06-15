@@ -45,7 +45,7 @@ class OrderManagementSystem
         foreach ($orders as $order) {
             $positions = $this->orderPositionRepo->findAllOrdersJoinedProductsByOrderId($order->getOrderId());
             foreach ($positions as $position) {
-                $order->addPositionWithQuantity($position->getProduct(), $position->getQuantity());
+                $order->addPositionValue($position);
             }
         }
         return $orders;
@@ -57,7 +57,7 @@ class OrderManagementSystem
         $positions = $this->orderPositionRepo->findAllOrdersJoinedProductsByOrderId($oderId);
 
         foreach ($positions as $position) {
-            $order->addPositionWithQuantity($position->getProduct(), $position->getQuantity());
+            $order->addPositionValue($position);
         }
 
         return $order;
