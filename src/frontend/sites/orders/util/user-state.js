@@ -1,4 +1,5 @@
 export function userIsAdmin() {
+    let isAdmin = false;
     $.ajax({
         type: "GET",
         url: "../../../../backend/user/controller/UserController.php",
@@ -8,9 +9,9 @@ export function userIsAdmin() {
         dataType: "json"
     }).done(function (response) {
         console.log("Request succeeded! IsAdmin - Response: " + response);
-        return response === '1';
-
+        isAdmin = (response === '1');
     }).fail(function () {
-        return false;
+        return isAdmin;
     });
+    return isAdmin;
 }
