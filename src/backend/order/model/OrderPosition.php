@@ -16,8 +16,9 @@ class OrderPosition implements JsonSerializable
 
     private $quantity;
 
-    public function __construct($positionId, $product, $quantity)
+    public function __construct($orderId, $positionId, $product, $quantity)
     {
+        $this->orderId = $orderId;
         $this->positionId = $positionId;
         $this->product = $product;
         $this->quantity = $quantity;

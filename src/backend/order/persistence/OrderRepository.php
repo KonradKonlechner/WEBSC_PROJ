@@ -6,6 +6,7 @@ use db;
 
 include ('../../config/dbaccess.php');
 require_once "../model/Order.php";
+require_once "../model/OrderPosition.php";
 
 class OrderRepository
 {
@@ -50,6 +51,9 @@ class OrderRepository
         // Using our current format, these query methods are long and ugly enough, event without doing multiple actions
         // For exactly this reason (keeping our repositories somewhat neat and clean) we use the management systems
         // In a real world application which uses actually modern technology this would be done by JDBC or something similar
+        // As a rule of thumb I suggest: if you can reasonably put in in one query, then its ok (e.g. simple joins that reduce overhead
+        // time as we do not have to open and close connections x times) and event then, we try to do as much logic outside of the repos
+        // (e.g. using mappers, etc.)
 
         $orderId = $this->getUsersMaxOrderId($userId);
         $positions = $order->getPositions();
@@ -86,10 +90,10 @@ class OrderRepository
 
         $statement = $connection->prepare($sqlSelect);
         $statement->bind_param("i", $userId); # character "s" is used due to placeholders of type String
-        $allProductsOfCategory = $this->fetchAllAndBindResult($statement);
+        $orders = $this->fetchAllAndBindResult($statement);
         $statement->close();
         $connection->close();
-        return $allProductsOfCategory;
+        return $orders;
     }
 
     private function fetchAllAndBindResult(mixed $statement): array
