@@ -87,7 +87,7 @@ class OrderRepository
         return $allOrders;
     }
 
-    public function findByOrderId($orderId): Order
+    public function findByOrderId($orderId): ?Order
     {
         $connection = db\DBConnection::getConnection();
         $sqlSelect = "SELECT * FROM orders WHERE id = ?";
@@ -98,6 +98,11 @@ class OrderRepository
         $statement->execute();
         $statement->bind_result($foundOrderId, $userid, $totalPrice, $state, $createdAt);
         $statement->fetch();
+
+        if($foundOrderId == null) {
+            return null;
+        }
+
         $order = new Order( # use constructor to create new instance of order
             $foundOrderId,
             $userid,
@@ -109,5 +114,18 @@ class OrderRepository
         $statement->close();
         $connection->close();
         return $order;
+    }
+
+    public function updateOrderState(string $orderId, string $state)
+    {
+        $connection = db\DBConnection::getConnection();
+        $sqlSelect = "UPDATE orders SET state = ? WHERE id = ? ";
+
+        $statement = $connection->prepare($sqlSelect);
+        $statement->bind_param("ss", $state, $orderId); # character "s" is used due to placeholders of type String
+
+        $statement->execute();
+        $statement->close();
+        $connection->close();
     }
 }

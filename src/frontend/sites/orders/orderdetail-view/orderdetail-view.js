@@ -14,7 +14,7 @@ function init() {
     updateHead(order);
     updateOrderInformation(order);
     if (userIsAdmin() && userId != null && userId !== "") {
-        activateAdminMode(userId);
+        activateAdminMode(userId, order);
     }
 }
 
@@ -159,7 +159,7 @@ function updatePosition(positionId, price, orderId) {
     );
 }
 
-function activateAdminMode(userId) {
+function activateAdminMode(userId, order) {
     // change backwards button
     $("#back-button-text").text("Zurück zu den Bestellungen");
     $("#userorder-view-button").click(function () {location.href="../../orders/userorders-view/userorder-view.html?userId="+userId})
@@ -169,6 +169,46 @@ function activateAdminMode(userId) {
     $(".quantityInput").attr("disabled", false);
     // enable total order price --> not sure if this is a real use case
     $("#totalPrice").attr("disabled", false);
+    // display state selection
+    $("#orderStateSelector")
+        .attr("hidden", false)
+        .attr("disabled", false);
+    $("option").each(function (option) {
+        if (this.value === order.state) {
+            this.selected = true;
+        }
+    })
+    $("#orderStateTag")
+        .attr("hidden", true);
+    $("#orderState").change(function() {
+        updateState();
+    })
+}
+
+function updateState() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderId = urlParams.get('orderId');
+    const state = $("#orderState").val();
+
+    const param = {
+        state: state,
+        orderId: orderId
+    }
+
+    $.ajax({
+        type: "PUT",
+        url: "../../../../backend/order/controller/OrderController.php",
+        cache: false,
+        data: {method: "updateOrderState", param: param},
+        dataType: "json"
+    }).done(function () {
+        console.log("Updating order state was successful");
+    }).fail(function () {
+        console.log("Request failed!");
+        alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
+            "Bitte probieren Sie es später erneut.");
+        return null;
+    });
 }
 
 function removeItem(orderId, positionId) {

@@ -102,7 +102,7 @@ class PositionRepository
         return $allOrderPositions;
     }
 
-    public function findOrderByIds(string $orderId, string $positionId): ?Position
+    public function findPositionByIds(string $orderId, string $positionId): ?Position
     {
         $connection = db\DBConnection::getConnection();
         $sqlSelect = "SELECT * FROM orderpositions WHERE order_id = ? AND position_id= ?";

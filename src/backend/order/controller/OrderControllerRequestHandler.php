@@ -46,6 +46,9 @@ class OrderControllerRequestHandler
             case "deleteOrderPosition":
                 $res = $this->service->deleteOrderPos($param);
                 break;
+            case "updateOrderState":
+                $res = $this->service->updateOrderState($param);
+                break;
             default:
                 $res = null;
                 break;

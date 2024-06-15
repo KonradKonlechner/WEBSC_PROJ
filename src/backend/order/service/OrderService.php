@@ -168,5 +168,16 @@ class OrderService
         throw new \Exception('You have no permission to excess this order.');
     }
 
+    public function updateOrderState($param)
+    {
+        if ($_SESSION["currentUser"]->isAdmin()) {
+            $orderId = $this->prepareInput($param["orderId"]);
+            $positionId = $this->prepareInput($param["state"]);
+            $this->oms->updateOrderState($orderId, $positionId);
+            return true;
+        }
+        throw new \Exception('You have no permission to excess this order.');
+    }
+
 
 }

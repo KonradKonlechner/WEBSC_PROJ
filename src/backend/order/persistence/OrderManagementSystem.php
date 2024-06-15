@@ -65,8 +65,7 @@ class OrderManagementSystem
 
     public function updateOrderPositionQty(string $orderId, string $positionId, string $qty)
     {
-
-        $orderPos = $this->orderPositionRepo->findOrderByIds($orderId, $positionId);
+        $orderPos = $this->orderPositionRepo->findPositionByIds($orderId, $positionId);
         if ($orderPos == null) {
             throw new \Exception("Keine Bestellungsposition mit den gesuchten Kriterien vorhanden.");
         }
@@ -75,10 +74,19 @@ class OrderManagementSystem
 
     public function deleteOrderPosition(string $orderId, string $positionId)
     {
-        $orderPos = $this->orderPositionRepo->findOrderByIds($orderId, $positionId);
+        $orderPos = $this->orderPositionRepo->findPositionByIds($orderId, $positionId);
         if ($orderPos == null) {
             throw new \Exception("Keine Bestellungsposition mit den gesuchten Kriterien vorhanden.");
         }
         $this->orderPositionRepo->deleteOrderPosition($orderId, $positionId);
+    }
+
+    public function updateOrderState(string $orderId, string $state)
+    {
+        $orderPos = $this->orderRepo->findByOrderId($orderId);
+        if ($orderPos == null) {
+            throw new \Exception("Keine Bestellung mit den gesuchten Kriterien vorhanden.");
+        }
+        $this->orderRepo->updateOrderState($orderId, $state);
     }
 }
