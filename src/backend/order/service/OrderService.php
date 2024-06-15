@@ -145,5 +145,28 @@ class OrderService
         throw new \Exception('You have no permission to excess this order.');
     }
 
+    public function updateOrderQty($param)
+    {
+        if ($_SESSION["currentUser"]->isAdmin()) {
+            $qty = $this->prepareInput($param["positionQty"]);
+            $orderId = $this->prepareInput($param["orderId"]);
+            $positionId = $this->prepareInput($param["positionId"]);
+            $this->oms->updateOrderPositionQty($orderId, $positionId, $qty);
+            return true;
+        }
+        throw new \Exception('You have no permission to excess this order.');
+    }
+
+    public function deleteOrderPos($param)
+    {
+        if ($_SESSION["currentUser"]->isAdmin()) {
+            $orderId = $this->prepareInput($param["orderId"]);
+            $positionId = $this->prepareInput($param["positionId"]);
+            $this->oms->deleteOrderPosition($orderId, $positionId);
+            return true;
+        }
+        throw new \Exception('You have no permission to excess this order.');
+    }
+
 
 }

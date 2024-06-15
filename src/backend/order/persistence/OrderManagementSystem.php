@@ -62,4 +62,23 @@ class OrderManagementSystem
 
         return $order;
     }
+
+    public function updateOrderPositionQty(string $orderId, string $positionId, string $qty)
+    {
+
+        $orderPos = $this->orderPositionRepo->findOrderByIds($orderId, $positionId);
+        if ($orderPos == null) {
+            throw new \Exception("Keine Bestellungsposition mit den gesuchten Kriterien vorhanden.");
+        }
+        $this->orderPositionRepo->updateOrderPositionQty($orderId, $positionId, $qty);
+    }
+
+    public function deleteOrderPosition(string $orderId, string $positionId)
+    {
+        $orderPos = $this->orderPositionRepo->findOrderByIds($orderId, $positionId);
+        if ($orderPos == null) {
+            throw new \Exception("Keine Bestellungsposition mit den gesuchten Kriterien vorhanden.");
+        }
+        $this->orderPositionRepo->deleteOrderPosition($orderId, $positionId);
+    }
 }

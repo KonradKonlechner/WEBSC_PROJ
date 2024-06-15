@@ -172,14 +172,51 @@ function activateAdminMode(userId) {
 }
 
 function removeItem(orderId, positionId) {
-    deletePositionFromOrder(orderId);
+    deletePositionFromOrder(orderId, positionId);
     $("#positionListItem"+positionId).remove();
 }
 
-function deletePositionFromOrder(orderId) {
-    // ToDO:
+function deletePositionFromOrder(orderId, positionId) {
+    const param = {
+        positionId: positionId,
+        orderId: orderId
+    }
+
+    $.ajax({
+        type: "DELETE",
+        url: "../../../../backend/order/controller/OrderController.php",
+        cache: false,
+        data: {method: "deleteOrderPosition", param: param},
+        dataType: "json"
+    }).done(function () {
+        console.log("deleting order position was successful");
+    }).fail(function () {
+        console.log("Request failed!");
+        alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
+            "Bitte probieren Sie es später erneut.");
+        return null;
+    });
 }
 
 function updatePositionQuantityForOrder(positionId, orderId, positionQty) {
-    // ToDo
+    const param = {
+        positionId: positionId,
+        orderId: orderId,
+        positionQty: positionQty
+    }
+
+    $.ajax({
+        type: "PUT",
+        url: "../../../../backend/order/controller/OrderController.php",
+        cache: false,
+        data: {method: "updateOrderQty", param: param},
+        dataType: "json"
+    }).done(function (response) {
+        console.log("Updating order was successful");
+    }).fail(function () {
+        console.log("Request failed!");
+        alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
+            "Bitte probieren Sie es später erneut.");
+        return null;
+    });
 }

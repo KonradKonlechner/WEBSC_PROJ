@@ -6,6 +6,7 @@ namespace order;
 use db;
 
 require_once "../mapper/OrderPositionMapper.php";
+require_once "../model/Position.php";
 
 class PositionRepository
 {
@@ -99,5 +100,58 @@ class PositionRepository
         };
 
         return $allOrderPositions;
+    }
+
+    public function findOrderByIds(string $orderId, string $positionId): ?Position
+    {
+        $connection = db\DBConnection::getConnection();
+        $sqlSelect = "SELECT * FROM orderpositions WHERE order_id = ? AND position_id= ?";
+
+        $statement = $connection->prepare($sqlSelect);
+        $statement->bind_param("ss", $orderId, $positionId); # character "s" is used due to placeholders of type String
+
+
+        $statement->execute();
+        $statement->bind_result($foundOrderId, $foundPositionId, $productId, $qty);
+        $statement->fetch();
+        $statement->close();
+        $connection->close();
+
+        if ($foundPositionId == null) {
+            return null;
+        }
+
+        return new Position(
+            $foundOrderId,
+            $foundPositionId,
+            $productId,
+            $qty
+        );
+    }
+
+    public function updateOrderPositionQty(string $orderId, string $positionId, string $qty)
+    {
+        $connection = db\DBConnection::getConnection();
+        $sqlSelect = "UPDATE orderpositions SET quantity = ? WHERE order_id = ? AND position_id= ?";
+
+        $statement = $connection->prepare($sqlSelect);
+        $statement->bind_param("sss", $qty, $orderId, $positionId); # character "s" is used due to placeholders of type String
+
+        $statement->execute();
+        $statement->close();
+        $connection->close();
+    }
+
+    public function deleteOrderPosition(string $orderId, string $positionId)
+    {
+        $connection = db\DBConnection::getConnection();
+        $sqlSelect = "DELETE FROM orderpositions WHERE order_id = ? AND position_id= ?";
+
+        $statement = $connection->prepare($sqlSelect);
+        $statement->bind_param("ss", $orderId, $positionId); # character "s" is used due to placeholders of type String
+
+        $statement->execute();
+        $statement->close();
+        $connection->close();
     }
 }

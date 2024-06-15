@@ -40,6 +40,12 @@ class OrderControllerRequestHandler
             case "getOrdersForUserId":
                 $res = $this->service->getOrderByUserId($param);
                 break;
+            case "updateOrderQty":
+                $res = $this->service->updateOrderQty($param);
+                break;
+            case "deleteOrderPosition":
+                $res = $this->service->deleteOrderPos($param);
+                break;
             default:
                 $res = null;
                 break;
