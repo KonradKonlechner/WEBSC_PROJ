@@ -50,7 +50,7 @@ function openUserInfo(user) {
         $("#userInfo" + user.username)
             .removeClass("closed")
             .css("display", "block");
-        $("#"+user.username)
+        $("#" + user.username)
             .addClass("active");
     }
 }
@@ -182,6 +182,13 @@ function setFieldsToUpdatedValues(user) {
 function getAppendableObjectsFor(user) {
     // Note: yes, this is ugly but its easy to write and gets the job done.
     return "<div class=\"mb-3\">\n" +
+        "  <button id=\"userorder-view-button\" class=\"btn btn-primary\" " +
+        " onclick=\"location.href='../../orders/userorders-view/userorder-view.html?userId=" + user.id + "'\">\n" +
+        "      <div class=\"fa fa-arrow-left\"></div>\n" +
+        "      <div id=\"back-button-text\">Bestellungen</div>\n" +
+        "   </button>" +
+        "</div>" +
+        "<div class=\"mb-3\">\n" +
         "  <label for=\"sex\" class=\"form-label\">Anrede</label>\n" +
         "  <select name=\"sex\" id=\"sex" + user.username + "\" class=\"form-select\">\n" +
         "    <option " + (user.sex === "Keine" ? "selected" : "") + " value=\"Keine\">Keine</option>\n" +
@@ -216,7 +223,7 @@ function getAppendableObjectsFor(user) {
         "</div>\n" +
         "<div class=\"mb-3\">\n" +
         "  <label for=\"isActive\" class=\"form-label\">Ist Aktiv?</label>\n" +
-        "  <input type=\"checkbox\"  name=\"isActive\" id=\"isActive" + user.username + "\" value=\"isActive\" "+(user.isInactive === 0 ? "checked" : "")+">\n" +
+        "  <input type=\"checkbox\"  name=\"isActive\" id=\"isActive" + user.username + "\" value=\"isActive\" " + (user.isInactive === 0 ? "checked" : "") + ">\n" +
         "</div>\n" +
         "<button class=\"btn btn-success\" type=\"submit\" name=\"submit\" id=\"submit" + user.username + "\">Ändern</button>\n"
 }
