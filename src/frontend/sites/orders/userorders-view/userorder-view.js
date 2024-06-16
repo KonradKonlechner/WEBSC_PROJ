@@ -67,7 +67,7 @@ function getUserInfo(userId) {
         url: "../../../../backend/user/controller/UserController.php",
         cache: false,
         async: false,
-        data: {method: "getUserDataById", param: {userId: userId}},
+        data: {method: "getUserDataById", param: userId},
         dataType: "json"
     }).done(function (response) {
         user = response;

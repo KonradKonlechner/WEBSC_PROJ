@@ -68,7 +68,7 @@ class UserInputValidator
         return count($errors) > 0;
     }
 
-    public function prepareInput($data)
+    public function prepareInput($data): string
     {
         // Hier findet die Aufbereitung des User-inputs für sämtliche Eingabemasken statt
         $sanitizedInput = htmlspecialchars($data);

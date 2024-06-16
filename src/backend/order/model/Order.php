@@ -105,7 +105,7 @@ class Order implements JsonSerializable
 
         $newOrderPosition = new OrderPosition($this->orderId, $positionId, $product, 1);
 
-        array_push($this->positions, $newOrderPosition);
+        $this->positions[] = $newOrderPosition;
 
         $this->calculateTotalPrice();
     }
