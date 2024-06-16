@@ -90,6 +90,16 @@ class Order implements JsonSerializable
         if(count($this->positions) === 0) {
             $positionId = 1;
         } else {
+            $productExists = array_filter($this->getPositions(), function ($position) use ($product) {
+                return $position->getProduct()->getId() === $product->getId();
+            });
+
+            if (count($productExists)) {
+                $productExists[0]->setQuantity( ($productExists[0]->getQuantity() + 1) );
+                $this->calculateTotalPrice();
+                return;
+            }
+
             $positionId = $this->positions[count($this->positions)-1]->getPositionId()+1;
         }
 
