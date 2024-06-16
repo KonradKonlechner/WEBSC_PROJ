@@ -13,21 +13,33 @@
     border-radius: 5px;
 }
 
-/* todo: prettify these*/
+#orderStateTag {
+    margin-top: 1em;
+    width: 10em;
+    border-radius: 4px;
+    padding: 0.3em;
+    text-align: center;
+    font-weight: bold;
+}
+
 .new {
-    background: blue;
+    color: whitesmoke;
+    background: #46cee3;
 }
 
 .confirmed {
-    background: yellow;
+    color: #636363;
+    background: #fffa73;
 }
 
 .cancelled {
-    background: red;
+    color: whitesmoke;
+    background: #fc604c;
 }
 
 .shipped {
-    background: green;
+    color: #636363;
+    background: #b3ffb0;
 }
 
 .productPrice {
@@ -40,4 +52,15 @@
 
 .orderConfirmationText {
     font-size: 1.5em;
+}
+
+ul {
+    width: available;
+}
+
+.product-container {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    border: #444444;
 }

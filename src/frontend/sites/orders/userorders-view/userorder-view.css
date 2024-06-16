@@ -1,3 +1,45 @@
-/*
-toDO: add styling
-*/
+
+
+.orderState {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    width: 10em;
+    border-radius: 4px;
+    padding: 0.3em;
+    text-align: center;
+    font-weight: bold;
+}
+
+.new {
+    color: whitesmoke;
+    background: #46cee3;
+}
+
+.confirmed {
+    color: #636363;
+    background: #fffa73;
+}
+
+.cancelled {
+    color: whitesmoke;
+    background: #fc604c;
+}
+
+.shipped {
+    color: #636363;
+    background: #b3ffb0;
+}
+
+.order {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background: #cccccc;
+    font-weight: bolder;
+}
+
+.order:hover {
+    text-decoration-line: none !important;
+    background: #aaaaaa !important;
+}

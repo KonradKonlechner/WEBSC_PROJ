@@ -98,7 +98,7 @@ function getOrderAppendable(order) {
 
     return $("<a>", {
         id: "order"+order.orderId,
-        class: order,
+        class: "order",
         href: "../../orders/orderdetail-view/orderdetail-view.html?orderId="+order.orderId + (userId == null ? "" : ("&userId="+userId))
     })
         .append(
@@ -113,14 +113,14 @@ function getOrderAppendable(order) {
                 text: "Bestellnummer: "+order.orderId // Hint: in a real world application, this would never be actual id, but for simplification we used it here
             }),
             $("<div>", {
-                id: "orderState"+order.orderId,
-                class: "orderData orderState",
-                text: "Status: "+translateState(order.state)
-            }),
-            $("<div>", {
                 id: "orderPrice"+order.orderId,
                 class: "orderData orderTimeStamp",
                 text: "Bestellwert: "+order.totalPrice + "€"
+            }),
+            $("<div>", {
+                id: "orderState"+order.orderId,
+                class: "orderData orderState " + order.state,
+                text: translateState(order.state)
             }),
         )
 }

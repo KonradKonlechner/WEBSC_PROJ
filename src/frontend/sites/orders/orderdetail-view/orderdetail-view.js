@@ -62,13 +62,13 @@ function appendPosition(position, orderId) {
         class: "list-group-item"
     }).append(
         $( "<div/>", {
-            class: "container text-center"
+            class: "container text-center product-container"
         }).append(
             $( "<h3/>", {
                 text: product.name
             }),
             $( "<div/>", {
-                class: "row align-items-center"
+                class: "row align-items-space-between"
             }).append(
                 $( "<div/>", {
                     class: "col-sm"
