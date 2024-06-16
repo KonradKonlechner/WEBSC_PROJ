@@ -232,11 +232,11 @@ class LoginService
         throw new \Exception("You are not allowed to change user profiles");
     }
 
-    public function getUserById($param): User
+    public function getUserById($userId): User
     {
-        if ($_SESSION["currentUser"]->isAdmin() == 1) {
+        if ($_SESSION["currentUser"]->isAdmin() == 1 || $_SESSION["currentUser"]->getUserId() == $userId) {
 
-            $id = $this->inputValidator->prepareInput($param["userId"]);
+            $id = $this->inputValidator->prepareInput($userId);
             return $this->ums->getUserById($id);
         }
         throw new \Exception("You are not allowed to view user data");

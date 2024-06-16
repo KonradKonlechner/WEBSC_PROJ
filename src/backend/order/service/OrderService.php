@@ -187,5 +187,8 @@ class OrderService
         throw new \Exception('You have no permission to excess this order.');
     }
 
-
+    public function getInvoiceIdByOrderId($orderId)
+    {
+        return $this->oms->getInvoiceIdByOrderId($orderId);
+    }
 }

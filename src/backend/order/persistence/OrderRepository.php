@@ -59,11 +59,56 @@ class OrderRepository
         $sqlSelect = "SELECT * FROM orders WHERE user_id = ?";
 
         $statement = $connection->prepare($sqlSelect);
-        $statement->bind_param("i", $userId); # character "s" is used due to placeholders of type String
+        $statement->bind_param("i", $userId); # character "i" is used due to placeholders of type Integer
         $orders = $this->fetchAllAndBindResult($statement);
         $statement->close();
         $connection->close();
         return $orders;
+    }
+
+    public function addNewInvoiceForOrderId($orderId): bool
+    {
+        $connection = db\DBConnection::getConnection();
+        $sqlInsert = "INSERT INTO invoices (order_id) VALUES (?)";
+
+        $statement = $connection->prepare($sqlInsert);
+        $statement->bind_param(
+            "i",
+            $orderId
+        );
+
+        $statementExecutionSuccess = $statement->execute();
+        $statement->close();
+        $connection->close();
+        return $statementExecutionSuccess;
+    }
+
+    public function getOrdersMaxInvoiceId($orderId)
+    {
+        $connection = db\DBConnection::getConnection();
+        $sqlSelect = "SELECT MAX(id) FROM invoices WHERE order_id = ?";
+
+        $statement = $connection->prepare($sqlSelect);
+        $statement->bind_param("i", $orderId);
+        $statement->execute();
+        $statement->bind_result($invoiceId);
+        $statement->fetch();
+        $statement->close();
+        $connection->close();
+        return $invoiceId;
+    }
+
+    public function getInvoiceIdByOrderId($orderId)
+    {
+        $invoiceId = $this->getOrdersMaxInvoiceId($orderId);
+
+        if($invoiceId === null) {
+            if($this->addNewInvoiceForOrderId($orderId) === true) {
+                $invoiceId = $this->getOrdersMaxInvoiceId($orderId);
+            }
+        }
+
+        return $invoiceId;
     }
 
     private function fetchAllAndBindResult(mixed $statement): array
