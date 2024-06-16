@@ -49,6 +49,9 @@ class OrderControllerRequestHandler
             case "updateOrderState":
                 $res = $this->service->updateOrderState($param);
                 break;
+            case "getInvoiceIdByOrderId":
+                $res = $this->service->getInvoiceIdByOrderId($param);
+                break;
             default:
                 $res = null;
                 break;

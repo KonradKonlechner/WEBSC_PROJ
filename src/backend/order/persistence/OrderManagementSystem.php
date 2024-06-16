@@ -88,4 +88,10 @@ class OrderManagementSystem
         }
         $this->orderRepo->updateOrderState($orderId, $state);
     }
+
+    public function getInvoiceIdByOrderId($orderId)
+    {
+        return $this->orderRepo->getInvoiceIdByOrderId($orderId);
+    }
+
 }

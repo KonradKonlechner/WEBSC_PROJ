@@ -16,6 +16,10 @@ function init() {
     if (userIsAdmin() && userId != null && userId !== "") {
         activateAdminMode(userId, order);
     }
+
+    $("#showInvoiceBtn").on("click", function () {
+        showInvoice(order);
+    })
 }
 
 $(document).ready(function () {
@@ -61,7 +65,7 @@ function appendPosition(position, orderId) {
             class: "container text-center"
         }).append(
             $( "<h3/>", {
-                text: name
+                text: product.name
             }),
             $( "<div/>", {
                 class: "row align-items-center"
@@ -237,6 +241,186 @@ function deletePositionFromOrder(orderId, positionId) {
         return null;
     });
 }
+
+function showInvoice(order) {
+
+    const orderId = order.orderId;
+    const invoiceId = getInvoiceIdByOrderId(orderId);
+    const invoiceDate = new Date().toLocaleDateString();
+    const userId = order.userId;
+    const user = getUserById(userId);
+    const userSex = user.sex;
+    const userName = user.name;
+    const userLastname = user.lastname;
+    const userAddress = user.address;
+    const userCity = user.city;
+    const positions = order.positions;
+    const orderTotalPrice = order.totalPrice.toString().replace(".", ",");
+
+    let invoiceWindow = window.open();
+    invoiceWindow.document.title = "Rechnung";
+
+    const header = document.createElement("div");
+    header.appendChild(document.createTextNode("PawsomeMart GmbH, Höchstädtplatz 6, 1200 Wien | Tel.: 01 33340770 | E-Mail: office@pawsomemart.com"));
+    header.setAttribute("style", "border-bottom: 2px solid black;")
+    invoiceWindow.document.body.appendChild(header);
+
+    const invoiceTitle = document.createElement("h1");
+    invoiceTitle.appendChild(document.createTextNode("RECHNUNG Nr.: " + invoiceId));
+
+    invoiceWindow.document.body.appendChild(invoiceTitle);
+
+    const customer = document.createElement("div");
+    const customerName = document.createElement("p");
+    customerName.appendChild(document.createTextNode(userSex + " " + userName + " " + userLastname));
+    const customerAddress = document.createElement("p");
+    customerAddress.appendChild(document.createTextNode(userAddress + ", " + userCity));
+
+    customer.appendChild(customerName);
+    customer.appendChild(customerAddress);
+
+    invoiceWindow.document.body.appendChild(customer);
+
+    const invoiceDateInfo = document.createElement("div");
+    invoiceDateInfo.appendChild(document.createTextNode("Rechnungsdatum: " + invoiceDate));
+    invoiceDateInfo.setAttribute("style", "border-top: 1px solid black; border-bottom: 1px solid black;")
+    invoiceWindow.document.body.appendChild(invoiceDateInfo);
+
+    const invoiceOrderInfo = document.createElement("p");
+    invoiceOrderInfo.appendChild(document.createTextNode("Bestellnr.: " + orderId));
+    invoiceWindow.document.body.appendChild(invoiceOrderInfo);
+
+    const invoiceInfoText = document.createElement("p");
+    invoiceInfoText.appendChild(document.createTextNode("Vielen Dank für Ihre Bestellung! Gemäß Ihres Auftrags berechnen wir Ihnen folgende Artikel:"));
+    invoiceWindow.document.body.appendChild(invoiceInfoText);
+
+    const orderItemsTable = document.createElement("table");
+
+    const columnHeaderRow = document.createElement("tr");
+    const columnheader1 = document.createElement("th");
+    columnheader1.appendChild(document.createTextNode("Bezeichung"));
+    columnHeaderRow.appendChild(columnheader1);
+    const columnheader2 = document.createElement("th");
+    columnheader2.appendChild(document.createTextNode("Artikel-Nr."));
+    columnHeaderRow.appendChild(columnheader2);
+    const columnheader3 = document.createElement("th");
+    columnheader3.appendChild(document.createTextNode("Menge"));
+    columnHeaderRow.appendChild(columnheader3);
+    const columnheader4 = document.createElement("th");
+    columnheader4.appendChild(document.createTextNode("Einzelpreis"));
+    columnHeaderRow.appendChild(columnheader4);
+    const columnheader5 = document.createElement("th");
+    columnheader5.appendChild(document.createTextNode("Gesamtpreis"));
+    columnHeaderRow.appendChild(columnheader5);
+    columnHeaderRow.setAttribute("style", "border-bottom: 1px solid black;");
+    orderItemsTable.appendChild(columnHeaderRow);
+
+    $.each( positions, function( key, val ) {
+
+        const productName = val["product"]["name"];
+        const productId = val["product"]["id"];
+        const productPrice_num = val["product"]["price"];
+        const productPrice = productPrice_num.toString().replace(".", ",");
+        const quantity = val["quantity"];
+        const positionPrice_num = productPrice_num * quantity;
+        const positionPrice = positionPrice_num.toFixed(2).toString().replace(".", ",");
+
+        const positionRow = document.createElement("tr");
+        const positionProductName = document.createElement("td");
+        positionProductName.appendChild(document.createTextNode(productName));
+        positionRow.appendChild(positionProductName);
+        const positionProductId = document.createElement("td");
+        positionProductId.appendChild(document.createTextNode(productId));
+        positionRow.appendChild(positionProductId);
+        const positionQuantity = document.createElement("td");
+        positionQuantity.appendChild(document.createTextNode(quantity));
+        positionRow.appendChild(positionQuantity);
+        const positionSinglePrice = document.createElement("td");
+        positionSinglePrice.appendChild(document.createTextNode(productPrice + " EUR"));
+        positionRow.appendChild(positionSinglePrice);
+        const positionTotalPrice = document.createElement("td");
+        positionTotalPrice.appendChild(document.createTextNode(positionPrice + " EUR"));
+        positionRow.appendChild(positionTotalPrice);
+        orderItemsTable.appendChild(positionRow);
+
+    });
+
+    const positionRow = document.createElement("tr");
+    positionRow.appendChild(document.createElement("td"));
+    positionRow.appendChild(document.createElement("td"));
+    positionRow.appendChild(document.createElement("td"));
+    positionRow.appendChild(document.createElement("td"));
+
+    const overallTotalPrice = document.createElement("td");
+    const overallTotalPriceLabel = document.createElement("div");
+    overallTotalPriceLabel.appendChild(document.createTextNode("Rechnungsendbetrag"));
+    overallTotalPriceLabel.setAttribute("style", "font-weight: bold;");
+    overallTotalPrice.appendChild(overallTotalPriceLabel);
+    const overallTotalPriceValue = document.createElement("div")
+    overallTotalPriceValue.appendChild(document.createTextNode(orderTotalPrice + " EUR"));
+    overallTotalPriceValue.setAttribute("style", "font-size: 30px;");
+    overallTotalPrice.appendChild(overallTotalPriceValue);
+    positionRow.appendChild(overallTotalPrice);
+    orderItemsTable.appendChild(positionRow);
+
+    invoiceWindow.document.body.appendChild(orderItemsTable);
+
+    const paymentInfo = document.createElement("p");
+    paymentInfo.appendChild(document.createTextNode("Wir bitten um Zahlung des Rechnungsbetrages per Banküberweisung innerhalb von 14 Tagen ab Erhalt der Ware."));
+    invoiceWindow.document.body.appendChild(paymentInfo);
+
+    const footer = document.createElement("div");
+    footer.appendChild(document.createTextNode("Geschäftsführer: Le Chef Big-Boss | UID-Nummer: ATU123456789 | Bankverbindung: Erste Bank Wien, BIC: SPSPAT11XXX, IBAN: AT01 1111 2222 3333 4567"));
+    footer.setAttribute("style", "border-top: 2px solid black;")
+    invoiceWindow.document.body.appendChild(footer);
+
+}
+
+function getUserById(userId) {
+    let user = null;
+
+    $.ajax({
+        type: "GET",
+        url: "../../../../backend/user/controller/UserController.php",
+        cache: false,
+        async: false,
+        data: {method: "getUserDataById", param: userId},
+        dataType: "json"
+    }).done(function (response) {
+        user = response;
+    }).fail(function () {
+        console.log("Request failed!");
+        alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
+            "Bitte probieren Sie es später erneut.");
+        return null;
+    });
+
+    return user;
+}
+
+function getInvoiceIdByOrderId(orderId) {
+    console.log("getting invoice id by order id...")
+    let invoiceId = null;
+
+    $.ajax({
+        type: "POST",
+        url: "../../../../backend/order/controller/OrderController.php",
+        cache: false,
+        async: false,
+        data: {method: "getInvoiceIdByOrderId", param: orderId},
+        dataType: "json"
+    }).done(function (response) {
+        invoiceId = response;
+    }).fail(function () {
+        console.log("Request failed!");
+        alert("Es tut uns Leid, auf unserer Seite scheint es zu einem Fehler gekommen zu sein. " +
+            "Bitte probieren Sie es später erneut.");
+        return null;
+    });
+
+    return invoiceId;
+}
+
 
 function updatePositionQuantityForOrder(positionId, orderId, positionQty) {
     const param = {

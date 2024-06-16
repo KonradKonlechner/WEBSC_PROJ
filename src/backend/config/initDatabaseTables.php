@@ -13,7 +13,6 @@ $connection = $dbconnection->getConnection();
 if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
-
 $hashedMaximPW = '$2y$10$mBjBRPMcb2hsPdQ1D6dmJe3.zzo.sPr2/vY/ywC4ZRz5sUsP9RMvi';
 $hashedAdminPW = '$2y$10$EDDkpyGs3izycQrfP/XFZela9Ua8HMqpNguFNpJt7wy3AgAlhgZj6';
 
@@ -53,7 +52,7 @@ $tableSqlList = [
           `thumbnail_path` varchar(255) DEFAULT NULL,
           `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP(),  
           PRIMARY KEY (`id`) USING BTREE
-    ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"
+    ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"
     ,
     "INSERT INTO `products` (`id`, `name`, `description`, `category`, `price_per_unit_eur`, `image_path`, `thumbnail_path`) 
     VALUES
@@ -70,7 +69,7 @@ $tableSqlList = [
        PRIMARY KEY (`id`) USING BTREE,
        KEY `FK_user_id` (`user_id`) USING BTREE,
        CONSTRAINT `FK_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-     ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=UTF8MB4_GENERAL_CI;"
+     ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=UTF8MB4_GENERAL_CI;"
     ,
     "INSERT INTO `orders` (`id`, `user_id`, `total_price_eur`) 
     VALUES
@@ -86,20 +85,20 @@ $tableSqlList = [
         CONSTRAINT `FK_order_id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
         KEY `FK_product_id` (`product_id`) USING BTREE,
         CONSTRAINT `FK_product_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
-      ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"
     ,
     "INSERT INTO `orderpositions` (`order_id`, `position_id`, `product_id`, `quantity`) 
     VALUES
     (1, 1, 1, 1);"
     ,
-    "CREATE TABLE IF NOT EXISTS `invoices` (
+    "CREATE TABLE `invoices` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
       `order_id` int(11) NOT NULL,   
       `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
       PRIMARY KEY (`id`) USING BTREE,
       KEY `FK_invoice_order_id` (`order_id`) USING BTREE,    
       CONSTRAINT `FK_invoice_order_id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-    ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=UTF8MB4_GENERAL_CI;"
+    ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=UTF8MB4_GENERAL_CI;"
 ];
 
 foreach ($tableSqlList as $tableSql) {
