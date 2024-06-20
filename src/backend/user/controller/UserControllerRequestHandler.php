@@ -1,4 +1,5 @@
 <?php
+namespace user;
 require_once "../service/LoginService.php";
 
 class UserControllerRequestHandler
@@ -7,7 +8,7 @@ class UserControllerRequestHandler
 
     function __construct()
     {
-        $this->service = new \user\LoginService();
+        $this->service = new LoginService();
     }
 
     function handleRequest($method, $param)
@@ -15,6 +16,33 @@ class UserControllerRequestHandler
         switch ($method) {
             case "login":
                 $res = $this->service->loginWithParameters($param);
+                break;
+            case "logout":
+                $res = $this->service->logout();
+                break;
+            case "checkUserSession":
+                $res = $this->service->checkUserSession();
+                break;
+            case "checkUserIsAdmin":
+                $res = $this->service->checkUserIsAdmin();
+                break;
+            case "getCurrentUser":
+                $res = $this->service->getCurrentUser();
+                break;
+            case "getAllUsers":
+                $res = $this->service->getAllUsers();
+                break;
+            case "registerUser":
+                $res = $this->service->registerUser($param);
+                break;
+            case "updateUserProfile":
+                $res = $this->service->updateUserProfile($param);
+                break;
+            case "updateUserProfileAsAdmin":
+                $res = $this->service->updateUserProfileAsAdmin($param);
+                break;
+            case "getUserDataById":
+                $res = $this->service->getUserById($param);
                 break;
             default:
                 $res = null;

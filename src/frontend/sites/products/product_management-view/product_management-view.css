@@ -1,0 +1,101 @@
+main {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+.productClickBox {
+    display: flex;
+    flex-direction: row;
+
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 95%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+
+    justify-content: space-between;
+}
+
+.active, .productClickBox:hover {
+    background-color: #ccc;
+}
+
+.deleteButton {
+    width: 2em;
+    height: 2em;
+    font-size: 24px;
+    color: white;
+    background: darkred;
+    border: darkred;
+    border-radius: 4px;
+}
+
+.deleteButton:hover {
+    background: red;
+}
+
+.headerText {
+    width: 100%;
+    text-align: center;
+}
+.productNameHeader {
+    font-size: 18px;
+    font-weight: bold;
+}
+.productCategoryHeader {
+    font-size: 16px;
+}
+
+.inlineProductInfo {
+    display: flex;
+    flex-direction: row;
+}
+
+.thumbnail {
+    width: 7em;
+}
+
+.productInfo {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 0 0 10px 10px;
+    border-top: 0;
+    width: 95%;
+}
+
+.closed {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.productImage {
+    width: 5em;
+}
+
+input[type=file]::file-selector-button {
+    border-radius: 5px;
+    border: #eeeeee;
+    background: #eeeeee;
+    color: #444444;
+}
+
+input[type=file]::file-selector-button:hover {
+    border-radius: 5px;
+    border: darkgray;
+    background: darkgray;
+    color: white;
+}
+
+#addProductButton {
+    max-width: 3em;
+    align-self: center;
+    margin-bottom: 4em;
+}

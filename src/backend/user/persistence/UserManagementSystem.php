@@ -17,8 +17,6 @@ class UserManagementSystem
     {
         if (!$this->isRegisteredUser($user->getUsername())) {
             $this->repository->addUserToDatabase($user);
-        } else {
-            echo "<script>console.log(' User with Username $user->getUsername() already exists ' );</script>";
         }
     }
 
@@ -26,8 +24,6 @@ class UserManagementSystem
     {
         if ($this->isRegisteredUser($updatedUser->getUsername())) {
             $this->repository->updateUserProfileData($updatedUser);
-        } else {
-            echo "<script>console.log(' User with Username $updatedUser->getUsername() does not exist ' );</script>";
         }
     }
 
@@ -42,7 +38,7 @@ class UserManagementSystem
         return false;
     }
 
-    public function getUserByUsername($usernameToCheck)
+    public function getUserByUsername($usernameToCheck): User
     {
         return $this->repository->getUserByUsername($usernameToCheck);
     }
@@ -73,5 +69,20 @@ class UserManagementSystem
         } else {
             echo "<script>console.log(' User with Username $username does not exist ' );</script>";
         }
+    }
+
+    public function isUserInactive(string $username) {
+        if ($this->isRegisteredUser($username)) {
+            User: $user = $this->getUserByUsername($username);
+            if ($user != null) {
+                return $user->isInactive();
+            }
+        }
+        return false;
+    }
+
+    public function getUserById(string $id): User
+    {
+        return $this->repository->getUserById($id);
     }
 }

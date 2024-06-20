@@ -2,7 +2,9 @@
 
 namespace user;
 
-class User
+use JsonSerializable;
+
+class User implements JsonSerializable
 {
 
     private $id = 1;
@@ -11,22 +13,29 @@ class User
     private $sex = "Herr";
     private $name = "Admin";
     private $lastname = "LeBoss";
+    private $address = "47th floor";
+    private $postal_code = "47001";
+    private $city = "Rooftop Penthouse";
     private $email = "chef.admin@mailmail.com";
     private $isAdmin = true;
     private $isInactive = false;
 
-    public function setAllValues($username, $password, $sex, $name, $lastname, $email)
+    public function setAllValues($username, $password, $sex, $name, $lastname, $address, $postal_code, $city, $email)
     {
         $this->username = $username;
         $this->password = $password;
         $this->sex = $sex;
         $this->name = $name;
         $this->lastname = $lastname;
+        $this->address = $address;
+        $this->postal_code = $postal_code;
+        $this->city = $city;
         $this->email = $email;
         $this->isAdmin = false;
+        $this->isInactive = false;
     }
 
-    public static function of($id, $username, $password, $sex, $name, $lastname, $email, $isAdmin, $isInactive): User
+    public static function of($id, $username, $password, $sex, $name, $lastname, $address, $postal_code, $city, $email, $isAdmin, $isInactive): User
     {
         $user = new User();
         $user->id = $id;
@@ -35,6 +44,9 @@ class User
         $user->sex = $sex;
         $user->name = $name;
         $user->lastname = $lastname;
+        $user->address = $address;
+        $user->postal_code = $postal_code;
+        $user->city = $city;
         $user->email = $email;
         $user->isAdmin = $isAdmin;
         $user->isInactive = $isInactive;
@@ -100,6 +112,30 @@ class User
     /**
      * @return string
      */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPostalCode()
+    {
+        return $this->postal_code;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @return string
+     */
     public function getEmail()
     {
         return $this->email;
@@ -116,5 +152,22 @@ class User
     public function isInactive()
     {
         return $this->isInactive;
+    }
+
+    public function jsonSerialize() {
+        return [
+            'id' => $this->id,
+            'username' => $this->username,
+            'password' => $this->password,
+            'sex' => $this->sex,
+            'name' => $this->name,
+            'lastname' => $this->lastname,
+            'address' => $this->address,
+            'postal_code' => $this->postal_code,
+            'city' => $this->city,
+            'email' => $this->email,
+            'isAdmin' => $this->isAdmin,
+            'isInactive' => $this->isInactive
+        ];
     }
 }

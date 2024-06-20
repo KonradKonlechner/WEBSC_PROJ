@@ -4,6 +4,7 @@ namespace user;
 use db;
 
 include ('../../config/dbaccess.php');
+require_once "../model/User.php";
 
 class UserRepository
 {
@@ -24,7 +25,7 @@ class UserRepository
     private function fetchAndBindResult($statement): User
     {
         $statement->execute();
-        $statement->bind_result($id, $uName, $password, $sex, $fname, $lname, $email, $isAdmin, $isInactive);
+        $statement->bind_result($id, $uName, $password, $sex, $fname, $lname, $address, $postalCode, $city, $email, $isAdmin, $isInactive);
         $statement->fetch();
 
         $statement->close();
@@ -36,6 +37,9 @@ class UserRepository
             $sex,
             $fname,
             $lname,
+            $address,
+            $postalCode,
+            $city,
             $email,
             $isAdmin,
             $isInactive
@@ -70,18 +74,24 @@ class UserRepository
         $sex = $user->getSex();
         $firstname = $user->getName();
         $lastname = $user->getLastname();
+        $address = $user->getAddress();
+        $postalCode = $user->getPostalCode();
+        $city = $user->getCity();
         $email = $user->getEmail();
 
-        $sqlInsert = "INSERT INTO users (username, password, sex, firstname, lastname, email) VALUES (?,?,?,?,?,?)";
+        $sqlInsert = "INSERT INTO users (username, password, sex, firstname, lastname, address, postal_code, city, email) VALUES (?,?,?,?,?,?,?,?,?)";
         
         $statement = $connection->prepare($sqlInsert);
         $statement->bind_param(
-            "ssssss", 
+            "sssssssss",
             $userName,
             $password,
             $sex,
             $firstname,
             $lastname,
+            $address,
+            $postalCode,
+            $city,
             $email
         );
 
@@ -96,11 +106,11 @@ class UserRepository
 
         $password_hash = password_hash($newPassword, PASSWORD_BCRYPT);
 
-        $sqlInsert = "UPDATE users SET 
+        $sqlUpdate = "UPDATE users SET 
                  password = ?
                  WHERE username = ?";
 
-        $statement = $connection->prepare($sqlInsert);
+        $statement = $connection->prepare($sqlUpdate);
         $statement->bind_param(
             "ss",
             $password_hash,
@@ -117,24 +127,28 @@ class UserRepository
         $connection = db\DBConnection::getConnection();
 
         $userName = $user->getUsername();
-        $password = password_hash($user->getPassword(), PASSWORD_BCRYPT);
         $sex = $user->getSex();
         $firstname = $user->getName();
         $lastname = $user->getLastname();
-        $email = $user->getEmail();
+        $address = $user->getAddress();
+        $postalCode = $user->getPostalCode();
+        $city = $user->getCity();
         $email = $user->getEmail();
         $userInactive = (integer) $user->isInactive();
 
         $sqlInsert = "UPDATE users SET 
-                 sex = ?, firstname = ?, lastname = ?, email = ?, is_user_inactive = ?
+                 sex = ?, firstname = ?, lastname = ?, address = ?, postal_code = ?, city = ?, email = ?, is_user_inactive = ?
                  WHERE username = ?";
 
         $statement = $connection->prepare($sqlInsert);
         $statement->bind_param(
-            "ssssis",
+            "sssssssis",
             $sex,
             $firstname,
             $lastname,
+            $address,
+            $postalCode,
+            $city,
             $email,
             $userInactive,
             $userName
@@ -197,7 +211,7 @@ class UserRepository
     private function fetchAllAndBindResult(mixed $statement)
     {
         $statement->execute();
-        $statement->bind_result($id, $uName, $password, $sex, $fname, $lname, $email, $isAdmin, $isInactive);
+        $statement->bind_result($id, $uName, $password, $sex, $fname, $lname, $address, $postalCode, $city, $email, $isAdmin, $isInactive);
 
         $allUsers = [];
         while($statement->fetch()) {
@@ -208,6 +222,9 @@ class UserRepository
                 $sex,
                 $fname,
                 $lname,
+                $address,
+                $postalCode,
+                $city,
                 $email,
                 $isAdmin,
                 $isInactive
@@ -218,5 +235,16 @@ class UserRepository
         return $allUsers;
     }
 
+    public function getUserById(string $id): User
+    {
+        $connection = db\DBConnection::getConnection();
+        $sqlSelect = "SELECT * FROM users WHERE id = ?";
 
+        $statement = $connection->prepare($sqlSelect);
+        $statement->bind_param("s", $id); # character "s" is used due to placeholders of type String
+
+        $fetchedUser = $this->fetchAndBindResult($statement);
+        $connection->close();
+        return $fetchedUser;
+    }
 }

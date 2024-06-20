@@ -1,0 +1,69 @@
+.userClickBox {
+    display: flex;
+    flex-direction: row;
+
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 95%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+
+    justify-content: space-between;
+}
+
+.active, .userClickBox:hover {
+    background-color: #ccc;
+}
+
+.userInfo {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 0 0 10px 10px;
+    border-top: 0;
+    width: 95%;
+}
+
+.closed {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.userNameHeader {
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.nameHeader {
+    border-left: 2px solid black;
+    width: 100%;
+    text-align: center;
+}
+
+.userState {
+    text-align: left;
+    border-radius: 5px;
+    padding: 3px;
+}
+
+.inactiveState {
+    border: darkred;
+    color: white;
+    background: darkred;
+    font-weight: bolder;
+}
+
+.activeState {
+    border: green;
+    color: white;
+    background: green;
+    font-weight: bolder;
+}

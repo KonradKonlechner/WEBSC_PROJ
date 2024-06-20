@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Welcome</title>
+
+    <!-- Load all JQuery and co -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../../res/css/styles.css"/>
+
+    <!-- Scripts -->
+    <script src="../../navigation/include_nav.js"></script>
+    <script src="registration-view.js"></script>
+</head>
+<body>
+<header id="navbar"></header>
+<main class="mt-2">
+
+    <div class="container justify-content-left">
+        <h1>Benutzer-Registrierung</h1>
+
+        <div class="col-3 mb-3">
+
+            <div class="mb-3">
+                <label for="sex" class="form-label">Anrede</label>
+                <select name="sex" id="sex" class="form-select">
+                    <option selected value="Keine">Keine</option>
+                    <option value="Frau">Frau</option>
+                    <option value="Herr">Herr</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="name" class="form-label">Vorname</label>
+                <input type="text" class="form-control" name="name" id="name" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="lastname" class="form-label">Nachname</label>
+                <input type="text" class="form-control" name="lastname" id="lastname" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="address" class="form-label">Adresse</label>
+                <input type="text" class="form-control" name="address" id="address" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="postalCode" class="form-label">Postleitzahl</label>
+                <input type="text" class="form-control" name="postalCode" id="postalCode" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="city" class="form-label">Ort</label>
+                <input type="text" class="form-control" name="city" id="city" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input class="form-control" name="email" id="email" aria-describedby="emailHelp" required>
+                <div id="emailHelp" class="form-text"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="username" class="form-label">Benutzername</label>
+                <input type="text" class="form-control" name="username" id="username" aria-describedby="usernameHelp"
+                       required>
+                <div id="usernameHelp" class="form-text"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Passwort</label>
+                <input type="password" class="form-control" name="password" id="password"
+                       aria-describedby="passwordHelp" required>
+                <div id="passwordHelp" class="form-text"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="password2" class="form-label">Passwort bestätigen</label>
+                <input type="password" class="form-control" name="password2" id="password2"
+                       aria-describedby="password2Help" required>
+                <div id="password2Help" class="form-text"></div>
+            </div>
+
+            <button class="btn btn-success" type="submit" name="submit" id="submit">Registrieren</button>
+
+        </div>
+    </div>
+
+</main>
+<footer id="footer"></footer>
+</body>
+</html>
